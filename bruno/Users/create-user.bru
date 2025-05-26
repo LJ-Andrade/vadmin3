@@ -1,0 +1,14 @@
+type = "http"
+name = "Create User"
+method = "POST"
+url = "http://laravel.test/api/users"
+headers = [
+    { name = "Authorization", value = "Bearer {{access_token}}" }
+]
+body = '''
+{
+    "name": "New User",
+    "email": "newuser@example.com",
+    "password": "password"
+}
+'''

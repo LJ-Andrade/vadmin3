@@ -1,0 +1,13 @@
+type = "http"
+name = "Update User"
+method = "PUT"
+url = "http://laravel.test/api/users/1"
+headers = [
+    { name = "Authorization", value = "Bearer {{access_token}}" }
+]
+body = '''
+{
+    "name": "Updated User",
+    "email": "updated@example.com"
+}
+'''

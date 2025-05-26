@@ -1,0 +1,7 @@
+type = "http"
+name = "Get Auth User"
+method = "GET"
+url = "http://laravel.test/api/user"
+headers = [
+    { name = "Authorization", value = "Bearer {{access_token}}" }
+]
