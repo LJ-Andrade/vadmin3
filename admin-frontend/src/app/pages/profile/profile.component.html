@@ -1,0 +1,18 @@
+
+<p-card styleClass="mb-4">
+    <h1>Profile</h1>
+    <p-divider />
+    <div class="mb-2"><b>Username:</b> {{ userData()?.name }} {{ userData()?.last_name }}</div>
+    <div class="mb-2"><b>Name:</b> {{ userData()?.first_name }} {{ userData()?.last_name }}</div>
+    <div class="mb-2"><b>Email:</b> {{ userData()?.email }}</div>
+    <div>
+    @if (userData()?.roles?.length ?? 0 > 0) {
+        <b>Role</b>
+    } @else {
+        <b>Roles</b>
+    }
+        @for(role of userData()?.roles; track role) {
+            <p-badge [value]="role" severity="info" class="ml-2 mr-2"></p-badge>
+        }
+    </div>
+</p-card>

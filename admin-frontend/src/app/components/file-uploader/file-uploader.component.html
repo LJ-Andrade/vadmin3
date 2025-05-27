@@ -1,0 +1,45 @@
+
+<div>
+	<input #fileInput type="file" (change)="handleFileInput($event)" multiple hidden />
+	<p-button [label]="'Select files'" (click)="fileInput.click()" class="mb-4"></p-button>
+	<br>
+
+	@if(files.length > 0) {
+			
+	
+		<p-table [value]="files" [tableStyle]="{ 'min-width': '30rem' }" >
+			<ng-template pTemplate="header" class="mt-6">
+				<tr>
+					<th>Files</th>
+					<th></th>
+				</tr>
+			</ng-template>
+			<ng-template pTemplate="body" let-file let-rowIndex="rowIndex">
+				<tr>
+					<td>{{ file.name }}</td>
+					<td>
+						<button type="button" pButton icon="pi pi-trash" severity="danger"
+							(click)="askFileDeletion(rowIndex)">
+						</button>
+					</td>
+				</tr>
+			</ng-template>
+		</p-table>
+	}
+
+	<p-dialog
+		[(visible)]="confirmingDelete"
+		[modal]="true"
+		[closable]="false"
+		header="Confirmar eliminación"
+		[style]="{ width: '300px' }"
+	>
+		<p>Are you sure you want to delete this file?</p>
+		<ng-template pTemplate="footer">
+			<button pButton label="Cancelar" icon="pi pi-times"
+				(click)="cancelFileDeletion()" class="p-button-text"></button>
+			<button pButton label="Eliminar" icon="pi pi-check" severity="danger"
+				(click)="confirmFileDeletion()"></button>
+		</ng-template>
+	</p-dialog>
+</div>

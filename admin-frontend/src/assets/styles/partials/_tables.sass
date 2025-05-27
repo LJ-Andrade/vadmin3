@@ -1,0 +1,53 @@
+
+
+
+// TABLE
+.table-responsive
+	display: block
+	width: 100%
+	overflow-x: auto
+	-webkit-overflow-scrolling: touch
+	margin-bottom: 1rem
+	&::-webkit-scrollbar
+		height: 8px
+		background-color: #f5f5f5
+	&::-webkit-scrollbar-thumb
+		background-color: #888
+		border-radius: 4px
+	table
+		margin-bottom: 0
+		min-width: 100%
+		white-space: nowrap
+		border-radius: 10px
+		overflow: hidden
+		tbody tr
+			background-color: #ebebeb
+		thead
+			tr
+				text-align: left
+				background-color: #e0e0e0
+			.checkbox-col
+				width: 30px
+		td, th
+			padding: .75rem
+			vertical-align: top
+		thead th
+			vertical-align: bottom
+		tbody tr:nth-child(odd)
+			background-color: rgba(0, 0, 0, 0.05)
+		.action-column
+			text-align: right
+			width: 130px
+
+
+// .app-dark
+// 	.table-responsive
+// 		.table
+// 			tbody tr
+// 				background-color: #222222
+// 			tbody tr:nth-child(odd)
+// 				background-color: #2a2a2a
+// 			thead
+// 				tr
+// 					text-align: left
+// 					background-color: rgb(25 25 25)

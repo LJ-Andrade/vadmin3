@@ -1,0 +1,101 @@
+<div class="card client-primary-bg">
+	<p-menubar [model]="items">
+		<!-- App Logo -->
+		<ng-template #start>
+			LOGO
+		</ng-template>
+
+		<!-- Menu Items -->
+		<ng-template #item let-item let-root="root">
+			<a pRipple class="flex items-center p-menubar-item-link"
+			   [routerLink]="item.routerLink"
+			   [routerLinkActive]="'active-menuitem'"
+			   [attr.href]="item.url || null"
+			   (click)="item.command && item.command($event, item)">
+				@if (item.icon) {
+					<i class="" [class]="item.icon"></i>
+				}
+				@if(item.label) {
+					<span>{{ item.label }}</span>
+				}
+				@if (item.badge) {
+					<p-badge [ngClass]="{ 'ml-auto': !root, 'ml-2': root, 'item-centered': true }" [value]="item.badge" />
+				}
+				@if (item.shortcut) {
+					<span class="ml-auto border border-surface rounded bg-emphasis text-muted-color text-xs p-1">{{ item.shortcut }}</span>
+				}
+				@if (item.items) {
+					<i [ngClass]="['ml-auto pi', root ? 'pi-angle-down' : 'pi-angle-right']"></i>
+				}
+			</a>
+		</ng-template>
+		
+		<!-- Header right container -->
+		<ng-template #end>
+			<div class="flex items-center gap-2">
+				
+				<!-- Profile Button -->
+				<div class="c-dropdown flex items-center" (click)="toggle($event)">
+					<div class="text-center gap-2 mr-3">
+						<p>{{ this.userData()?.last_name }}, {{ this.userData()?.first_name }}</p>
+						<span class="text-xs">{{ this.userData()?.email }}</span>
+					</div>
+					<div class="round-empty-button">
+						<img src="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" class="w-4 h-4 rounded-full" />
+					</div>
+				</div>
+
+				<!-- Logged User Actions -->
+				<p-popover #op>
+					<div class="flex flex-col gap-4">
+						<div>
+							<ul class="list-none p-0 m-0 flex flex-col">
+								<li class="flex hover:bg-emphasis cursor-pointer rounded-border">
+									<p-button
+										[styleClass]="'full-width-button'"
+										label="Profile"
+										icon="pi pi-user"
+										variant="text" severity="secondary"
+										(onClick)="goToProfile()"
+									/>
+								</li>
+								<!-- <li class="flex hover:bg-emphasis cursor-pointer rounded-border gap-2 px-2 py-3 ">
+									<p-button
+										[styleClass]="'full-width-button'"
+										[label]="isDarkTheme()? 'Light Mode' : 'Dark Mode' "
+										[icon]="isDarkTheme() ? 'pi pi-sun' : 'pi pi-moon'"
+										variant="text" severity="secondary"
+										(onClick)="toggleDarkMode()"
+									/>
+								</li> -->
+								<li class="flex hover:bg-emphasis cursor-pointer rounded-border">
+									<p-button 
+										[styleClass]="'full-width-button'"
+										class="p-button-block"
+										label="Logout" 
+										icon="pi pi-sign-out"
+										variant="text" severity="secondary"
+										(click)="openLogoutConfirmation()"
+										/>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</p-popover>
+				
+				<!-- Logout Button -->
+				<p-dialog header="Do you want to logout?" [(visible)]="displayConfirmation" [style]="{ width: '350px' }" [modal]="true">
+                    <div class="flex items-center justify-center">
+                        <i class="pi pi-exclamation-triangle mr-4" style="font-size: 2rem"> </i>
+                        <span>Click YES to proceed.</span>
+                    </div>
+                    <ng-template #footer>
+                        <p-button label="No" icon="pi pi-times" (click)="closeLogoutConfirmation()" text severity="secondary" />
+                        <p-button label="YES" icon="pi pi-check" (click)="requestLogout()" severity="danger" outlined autofocus />
+                    </ng-template>
+				</p-dialog>
+
+			</div>
+		</ng-template>
+	</p-menubar>
+</div>

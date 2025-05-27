@@ -1,0 +1,30 @@
+
+<div class="image-uploader">
+    <div class="centered">
+        <p-button label="Select image..." (onClick)="inputImage.click()" styleClass="mb-2"></p-button>
+    </div>
+
+    <input class="hidden" #inputImage type="file" (change)="fileChangeEvent($event)">
+
+    <div @fadeIn class="row d-flex justify-content-center align-items-start">
+        <div class="flex flex-col sm:flex-row gap-4 justify-center items-start">
+            <ng-container *ngIf="useCropper && showCropper">
+                <div class="w-full sm:w-1/2">
+                    <image-cropper
+                        [imageChangedEvent]="imageChangedEvent"
+                        [aspectRatio]="aspectRatio"
+                        [resizeToWidth]="resizeToWidth"
+                        format="png"
+                        (imageCropped)="imageCropped($event)"
+                        (imageLoaded)="imageLoaded($event)"
+                        (cropperReady)="cropperReady()"
+                        (loadImageFailed)="loadImageFailed()"
+                    ></image-cropper>
+                </div>
+            </ng-container>
+            <div [ngClass]="{ 'w-full': !useCropper || !showCropper, 'w-full sm:w-1/2': useCropper && showCropper }">
+                <app-image-previewer [image]="selectedImage" [allowDelete]="true" (deleteImageRequested)="deleteImage()"/>
+            </div>
+        </div>
+    </div>
+</div>

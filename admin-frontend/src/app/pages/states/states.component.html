@@ -1,0 +1,25 @@
+<app-crud-manager
+    [apiDataResponse]="crudService.apiDataResponse"
+    [sectionConfig]="sectionConfig"
+    [listData]="listData"
+    [listConfig]="listConfig"
+    [listVisibility]="listVisibility"
+    [creationFormVisibility]="creationFormVisibility"
+    [searchForm]="searchForm"
+    (rowsSelected)="onRowsSelected($event)"
+    (requestRead)="fetchData($event)"
+    (requestCreation)="toggleCreationForm()"
+    (requestList)="toggleList()"
+    (requestEdit)="editRecord($event)">
+    
+	<div mainForm>
+		<app-crud-form
+			[sectionForm]="sectionForm"
+			[formFields]="formFields"
+			[formSize]="sectionConfig.formSize"
+			[loading]="crudService.apiDataResponse().loading"
+			(submitFormEvent)="submitForm()"
+		/>
+	</div>
+
+</app-crud-manager>

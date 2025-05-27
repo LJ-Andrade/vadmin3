@@ -1,0 +1,119 @@
+.image-container
+	display: flex
+	align-items: center
+	justify-content: center
+	.content
+		margin-top: 20px
+		display: flex
+		align-items: center
+		justify-content: center
+		border-radius: 10px
+		margin-bottom: 10px
+		overflow: hidden
+		max-width: 500px
+		position: relative
+		.actions
+			position: absolute
+			top: 10px
+			right: 10px
+			display: flex
+			justify-content: space-between
+			align-items: center
+			.loading-message
+				color: #fff
+				font-size: .8rem
+				margin: 0
+			.action
+				margin-right: 10px
+				border-radius: 50%
+				width: 30px
+				height: 30px
+				padding: 5px
+				display: flex
+				justify-content: center
+				align-items: center
+				text-decoration: none
+				transition: all ease 0.3s
+				z-index: 9999
+				i
+					font-size: 1rem
+				&:hover
+					cursor: pointer
+					filter: brightness(0.8)
+			.confirm-delete-img-button
+				background-color: #399e57
+				color: #fff
+			.cancel-delete-img-button
+				background-color: #fc6060
+				color: #fff
+			.delete-img-button
+				background-color: #fc6060
+				color: #fff
+
+
+
+		img
+			max-width: 100%
+			max-height: 400px
+		.overlay
+			position: absolute
+			display: flex
+			justify-content: center
+			align-items: center
+			background-color: rgba(0, 0, 0, 0.5)
+			top: 0
+			left: 0
+			height: 100%
+			width: 100%
+			opacity: 0
+			transition: all ease 0.3s
+			overflow: auto
+			.icon
+				font-size: 2rem
+		&:hover
+			cursor: pointer
+			.overlay
+				opacity: 1
+
+
+.full-image
+	display: none
+	opacity: 0
+	position: fixed !important
+	z-index: 8000
+	padding: 30px
+	width: 100%
+	height: 100%
+	background-color: rgba(0, 0, 0, 0.8)
+	top: 0
+	left: 0
+	transition: all ease 0.5s
+	.close-button
+		position: absolute
+		right: 10px
+		top: 10px
+		border-radius: 50%
+		background-color: #fc6060
+		color: #fff
+		width: 50px
+		height: 50px
+		display: flex
+		justify-content: center
+		align-items: center
+		text-decoration: none
+		transition: all ease 0.3s
+		i
+			font-size: 2rem
+		&:hover
+			cursor: pointer
+			filter: brightness(0.8)
+	img
+		border-radius: 15px
+		max-width: 100%
+		max-height: 90vh
+
+.full-image.show
+	opacity: 1
+	display: flex
+	justify-content: center
+	align-items: center

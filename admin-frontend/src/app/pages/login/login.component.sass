@@ -1,0 +1,72 @@
+.login-container
+    min-height: 100vh
+    display: flex
+    justify-content: center
+    align-items: center
+    background-color: var(--surface-ground)
+    padding: 2rem
+
+.login-form
+    background: var(--surface-card)
+    border-radius: 12px
+    padding: 2rem
+    width: 100%
+    max-width: 400px
+    box-shadow: 0 2px 1px -1px rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 1px 3px 0 rgba(0,0,0,.12)
+
+    .text-center
+        text-align: center
+        margin-bottom: 2rem
+
+        h2
+            margin: 0
+            color: var(--text-color)
+            font-size: 1.75rem
+            font-weight: 600
+            margin-bottom: 0.5rem
+
+        p
+            margin: 0
+            color: var(--text-color-secondary)
+
+.form-content
+    display: flex
+    flex-direction: column
+    gap: 1.5rem
+
+.form-field
+    display: flex
+    flex-direction: column
+    gap: 0.5rem
+
+    label
+        color: var(--text-color)
+        font-weight: 500
+
+    input, ::ng-deep .p-password
+        width: 100%
+
+    ::ng-deep .p-password input
+        width: 100%
+
+    .error-message
+        color: var(--red-500)
+        font-size: 0.875rem
+
+.forgot-password
+    text-align: right
+    margin-bottom: 0.5rem
+    
+    a
+        color: var(--primary-color)
+        text-decoration: none
+        font-weight: 500
+        
+        &:hover
+            text-decoration: underline
+
+::ng-deep .submit-button
+    width: 100%
+    
+    .p-button
+        width: 100%
