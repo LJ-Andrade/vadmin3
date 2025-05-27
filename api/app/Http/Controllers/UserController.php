@@ -1,4 +1,3 @@
-
 <?php
 
 namespace App\Http\Controllers;
@@ -10,11 +9,43 @@ use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
-    public function index()
+    // public function index()
+    // {
+    //     $users = User::paginate(10);
+    //     return response()->json(['success' => true, 'data' => $users]);
+    // }
+
+    public function index(Request $request)
     {
-        $users = User::paginate(10);
-        return response()->json(['success' => true, 'data' => $users]);
+        // Paginación, por si querés pasar por query el tamaño de página
+        $perPage = $request->input('per_page', 10);
+        $users = \App\Models\User::paginate($perPage);
+
+        // Adaptar la respuesta al formato de tu frontend
+        $pagination = [
+            "current_page"       => $users->currentPage(),
+            "data"               => $users->items(),
+            "first_page_url"     => $users->url(1),
+            "from"               => $users->firstItem(),
+            "last_page"          => $users->lastPage(),
+            "last_page_url"      => $users->url($users->lastPage()),
+            "links"              => $users->linkCollection()->toArray(), // Laravel >= 8
+            "next_page_url"      => $users->nextPageUrl(),
+            "path"               => $users->path(),
+            "list_regs_per_page" => $users->perPage(), // Nombre específico para tu frontend
+            "per_page"           => $users->perPage(),
+            "prev_page_url"      => $users->previousPageUrl(),
+            "to"                 => $users->lastItem(),
+            "total"              => $users->total(),
+        ];
+
+        return response()->json([
+            "success"    => true,
+            "pagination" => $pagination,
+            "message"    => null,
+        ]);
     }
+
 
     public function store(Request $request)
     {

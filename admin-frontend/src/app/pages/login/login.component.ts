@@ -11,7 +11,6 @@ import { DividerModule } from 'primeng/divider';
 import { MessageService } from 'primeng/api';
 import { AuthService } from '@src/app/services/auth/auth.service';
 import { FieldErrorComponent } from '@src/app/components/field-error/field-error.component';
-import { SkinService } from '@src/app/services/skin.service';
 
 @Component({
 	selector: 'app-login',
@@ -27,7 +26,11 @@ import { SkinService } from '@src/app/services/skin.service';
 export class LoginComponent implements OnInit {
 	authService = inject(AuthService);
 	messageService = inject(MessageService);
-	skinService = inject(SkinService);
+
+	// Move effect to a field initializer
+	loginEffect = effect(() => {
+		this.handleLoginState(this.authService.loginState() as 'authenticating' | 'success' | 'error' | 'idle');
+	});
 
 	formFields = [
 		{
@@ -50,6 +53,7 @@ export class LoginComponent implements OnInit {
 	loading = false;
 
 	constructor() {
+		this.authService.dataService.testConnection();
 		this.buildForm();
 	}
 
@@ -57,13 +61,7 @@ export class LoginComponent implements OnInit {
 		if (this.authService.isAuthenticated()) {
 			this.authService.router.navigate(['/dashboard']);
 		}
-
-		effect(() => {
-			this.handleLoginState(this.authService.loginState() as 'authenticating' | 'success' | 'error' | 'idle');
-		});
-
-		// Apply skin if desired
-		this.skinService.initializeSkin();
+		// Remove effect() call from here
 	}
 
 	private buildForm() {
@@ -105,4 +103,5 @@ export class LoginComponent implements OnInit {
 			detail: 'Please fill all required fields correctly'
 		});
 	}
+
 }

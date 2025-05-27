@@ -4,76 +4,89 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Validation\ValidationException;
+
 class AuthController extends Controller
 {
-    /**
-     * Handle user login
-     * 
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     */
     public function login(Request $request)
     {
-        try {
-            // Validate request
-            $validated = $request->validate([
-                'email' => 'required|email',
-                'password' => 'required|string'
-            ]);
-
-            if (!Auth::attempt($validated)) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Invalid credentials'
-                ], 401);
-            }
-
-            $user = Auth::user();
-            $token = $user->createToken('api-token')->plainTextToken;
-
-            return response()->json([
-                'success' => true,
-                'message' => 'Login successful',
-                'data' => [
-                    'user' => $user,
-                    'access_token' => $token
-                ]
-            ], 200);
-        } catch (ValidationException $e) {
+        $login = $request->input('user');
+        $password = $request->input('password');
+        
+        if (empty($login) || empty($password)) {
             return response()->json([
                 'success' => false,
-                'message' => 'Validation failed',
-                'errors' => $e->errors()
+                'message' => 'Usuario y contraseña requeridos',
             ], 422);
-        } catch (\Exception $e) {
+        }
+
+        // Intentar login por username primero, luego por email
+        $credentialsUsername = ['user' => $login, 'password' => $password];
+        $credentialsEmail    = ['email'    => $login, 'password' => $password];
+
+        if (Auth::attempt($credentialsUsername)) {
+            $user = Auth::user();
+        } elseif (Auth::attempt($credentialsEmail)) {
+            $user = Auth::user();
+        } else {
             return response()->json([
                 'success' => false,
-                'message' => 'An error occurred during login'
-            ], 500);
+                'message' => 'Credenciales inválidas',
+            ], 401);
         }
+
+        $user = $request->user();
+
+        $tokenResult = $user->createToken('Personal Access Token');
+
+        return response()->json([
+            'data' => [
+                'id'          => $user->id,
+                'roles'       => $user->getRoleNames(),
+                'user'        => $user->user,
+                'email'       => $user->email,
+                'first_name'  => $user->first_name,
+                'last_name'   => $user->last_name,
+                'avatar'      => $user->avatar,
+                'client'      => $user->client,
+                'customer'    => $user->customer,
+                'created_at'  => $user->created_at->timestamp,
+            ],
+            'token' => [
+                'access_token' => $tokenResult->accessToken,
+                'token_type'   => 'Bearer',
+                'expires_at'   => $tokenResult->token->expires_at ? $tokenResult->token->expires_at->timestamp : null,
+            ],
+        ]);
     }
 
-    /**
-     * Handle user logout
-     * 
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     */
     public function logout(Request $request)
     {
-        try {
-            $request->user()->currentAccessToken()->delete();
-            
-            return response()->json([
-                'success' => true,
-                'message' => 'Logged out successfully'
-            ], 200);
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'An error occurred during logout'
-            ], 500);
-        }
+        $request->user()->token()->revoke();
+
+        return response()->json([
+            'success' => true,
+            'status'  => true,
+            'message' => 'Success',
+        ]);
+    }
+
+    public function me(Request $request)
+    {
+        $user = $request->user();
+
+        return response()->json([
+            'data' => [
+                'id'          => $user->id,
+                'roles'       => $user->roles->pluck('name'), // Ajusta según tu relación
+                'user'        => $user->user,
+                'email'       => $user->email,
+                'first_name'  => $user->first_name,
+                'last_name'   => $user->last_name,
+                'avatar'      => $user->avatar,
+                'client'      => $user->client,
+                'customer'    => $user->customer,
+                'created_at'  => $user->created_at->timestamp,
+            ],
+        ]);
     }
 }

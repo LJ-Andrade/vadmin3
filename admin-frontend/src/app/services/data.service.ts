@@ -17,6 +17,20 @@ export class DataService {
 		})
 	};
 
+	
+	testConnection(): void {
+		this.http.get(`${environment.apiUrl}health`)
+			.subscribe({
+				next: (res: any) => {
+					console.log(res);
+				},
+				error: (err: any) => {
+					console.log(err);
+				}
+			});
+
+	}
+
 	getQueryString(params: any): string {
 		if (params && Object.keys(params).length > 0) {
 			const queryString = Object.keys(params).map(function (key) {

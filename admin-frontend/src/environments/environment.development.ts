@@ -1,6 +1,6 @@
 export const environment = {
-    apiUrl: 'https://vimana3.test/api/',
+    apiUrl: 'http://vadmin3.test/api/',
     production: false,
-	tokenKeyName: 'fsr-token',
+	tokenKeyName: 'vadmin3-token',
     byPassLogin: false,
 };

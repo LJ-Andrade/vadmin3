@@ -40,6 +40,8 @@ export class AuthService {
     private user = signal<AuthState>({ user: null });
     loginState = computed(() => this.loginStatus().status);
 
+
+
     authenticate(data: any, redirectTo: string = '/dashboard') {
         this.loginStatus.set({ status: 'authenticating' });
 
@@ -196,4 +198,5 @@ export class AuthService {
 		}
 		this.notificationService.error('Error', message);
 	}
+
 }
