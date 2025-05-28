@@ -12,6 +12,7 @@ import { RolesComponent } from './pages/roles/roles.component';
 import { CountriesComponent } from './pages/countries/countries.component';
 import { StatesComponent } from './pages/states/states.component';
 import { ClientsComponent } from './pages/clients/clients.component';
+import { ChatComponent } from './pages/chat/chat.component';
 
 /**
  * App routes
@@ -101,10 +102,10 @@ export const routes: Routes = [
 				]
 			},
 			{
-				path: 'clients',
-				component: ClientsComponent,
+				path: 'chat',
+				component: ChatComponent,
 				data: {
-					title: 'Clients',
+					title: 'Chat',
 					icon: 'pi pi-map'
 				}
 			}

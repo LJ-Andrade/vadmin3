@@ -1,0 +1,17 @@
+meta {
+  name: AI Test
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{url}}ai-raw-test
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+      "prompt": "Hola, contame un chiste"
+  }
+}

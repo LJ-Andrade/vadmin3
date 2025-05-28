@@ -1,0 +1,31 @@
+<div>
+    <h2>Consulta IA</h2>
+    <textarea [(ngModel)]="prompt" placeholder="Escribí tu consulta" rows="5" 
+    style="padding: 15px; border: 1px solid #ccc; border-radius: 10px; width: 100%; min-height: 60px;">
+        Me podès dar la lista de usuarios completa con todos sus campos y sus valores?
+    </textarea>
+    <p-button (onClick)="submitQuery()" label="Consultar" icon="pi pi-sparkles" class="mt-4"></p-button>
+
+    <!-- <div *ngIf="results.length">
+        <h3>Resultados:</h3>
+        <pre>{{ results | json }}</pre>
+    </div> -->
+    <div *ngIf="rawResponse">
+        <h3>Respuesta:</h3>
+        <p [innerHTML]="rawResponse.split('\n').join('<br>')"></p>
+        <!-- <p>{{ rawResponse }}</p> -->
+    </div>
+</div>
+
+<!-- 
+<div>
+    <h2>Chat con IA (raw)</h2>
+  
+    <input type="text" [(ngModel)]="prompt" placeholder="Escribí tu mensaje" />
+    <button (click)="submitRawChat()">Enviar</button>
+  
+    <div *ngIf="rawResponse">
+      <h3>Respuesta:</h3>
+      <p>{{ rawResponse }}</p>
+    </div>
+  </div> -->

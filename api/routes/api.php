@@ -4,7 +4,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\AIQueryController;
 use Spatie\Permission\Middleware\PermissionMiddleware;
+
 
 Route::get('/health', function () {
     return response()->json(["success" => true, "message" => "Server is responding"]);
@@ -19,8 +21,15 @@ Route::prefix('auth')->group(function () {
     });
 });
 
+Route::post('/ai-query', [ AIQueryController::class, 'handle' ]);
+Route::post('/ai-chat', [AIQueryController::class, 'testRawAI']);
+
 
 Route::middleware('auth:api')->group(function () {
+
+ 
+
+
     Route::prefix('users')->group(function() {
         Route::get('/', [UserController::class, 'index'])
             ->name('users.list')

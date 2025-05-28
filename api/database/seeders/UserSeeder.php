@@ -22,5 +22,7 @@ class UserSeeder extends Seeder
         $admin->assignRole('admin');
         
         $this->command->info('Usuario admin creado y rol asignado correctamente.');
+
+        \App\Models\User::factory(20)->create();
     }
 }
