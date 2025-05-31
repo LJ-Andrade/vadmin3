@@ -65,7 +65,6 @@ export class CrudManagerComponent {
 	advancedSearchOptionsVisibility: boolean = false;
 	advancedSearchAvailable: boolean = true;
 
-	utilsService: any
 
 	ngOnInit() {
 		this.searchOptionsVisibility = this.helpersService.loadSetting('searchVisibility', false);
@@ -103,19 +102,19 @@ export class CrudManagerComponent {
 
 //#region Search
 
-submitSearch() {
-	let searchParams: any = {};
+	submitSearch() {
+		let searchParams: any = {};
 
-	for (const key in this.searchForm.value) {
-		const value = this.searchForm.value[key];
+		for (const key in this.searchForm.value) {
+			const value = this.searchForm.value[key];
 
-		if (value !== null && value !== undefined && value !== '') {
-			searchParams[key] = value;
+			if (value !== null && value !== undefined && value !== '') {
+				searchParams[key] = value;
+			}
 		}
-	}
 
-	this.requestRead.emit(searchParams);
-}
+		this.requestRead.emit(searchParams);
+	}
 
 
 	// submitSearch() {
@@ -136,7 +135,9 @@ submitSearch() {
 			this.searchOptionsVisibility = false;
 			this.advancedSearchOptionsVisibility = false;
 		}
-		this.utilsService.saveSetting('searchVisibility', this.searchOptionsVisibility);
+
+		// SYNC FIX
+		this.helpersService.saveSetting('searchVisibility', this.searchOptionsVisibility);
 	}
 
 

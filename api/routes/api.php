@@ -1,11 +1,12 @@
 <?php
 
-use Illuminate\Http\Request;
+// use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\AIQueryController;
-use Spatie\Permission\Middleware\PermissionMiddleware;
+// use Spatie\Permission\Middleware\PermissionMiddleware;
 
 
 Route::get('/health', function () {
@@ -27,34 +28,21 @@ Route::post('/ai-chat', [AIQueryController::class, 'testRawAI']);
 
 Route::middleware('auth:api')->group(function () {
 
- 
-
-
-    Route::prefix('users')->group(function() {
-        Route::get('/', [UserController::class, 'index'])
-            ->name('users.list')
-            ->middleware([PermissionMiddleware::class . ':users.list']);
-        Route::post('/', [UserController::class, 'store'])
-            ->name('users.store')
-            ->middleware([PermissionMiddleware::class . ':users.store']);
-        Route::get('/{id}', [UserController::class, 'show'])
-            ->name('users.show')
-            ->middleware([
-                PermissionMiddleware::class . ':users.show',
-                'user.exist'
-            ]);
-        Route::put('/{id}', [UserController::class, 'update'])
-            ->name('users.update')
-            ->middleware([
-                PermissionMiddleware::class . ':users.update',
-                'user.exist'
-            ]);
-        Route::delete('/{id}', [UserController::class, 'delete'])
-            ->name('users.delete')
-            ->middleware([
-                PermissionMiddleware::class . ':users.delete',
-                'user.exist',
-                'user.is.not.the.same'
-            ]);
+    Route::prefix('users')->group(function () {
+        Route::get   ('/',     [UserController::class, 'index'  ])->name('users.index');
+        Route::post  ('/',     [UserController::class, 'store'  ])->name('users.store');
+        Route::get   ('/{id}', [UserController::class, 'show'   ])->name('users.show');
+        Route::post   ('/{id}', [UserController::class, 'update' ])->name('users.update');
+        Route::delete('/{id}', [UserController::class, 'destroy'])->name('users.destroy');
     });
+
+    
+    Route::prefix('roles')->group(function () {
+        Route::get   ('/',     [RoleController::class, 'index'  ])->name('roles.index');
+        Route::get   ('/{id}', [RoleController::class, 'show'   ])->name('roles.show');
+        Route::post  ('/',     [RoleController::class, 'store'  ])->name('roles.store');
+        Route::post   ('/{id}', [RoleController::class, 'update' ])->name('roles.update');
+        Route::delete('/{id}', [RoleController::class, 'destroy'])->name('roles.destroy');
+    });
+
 });

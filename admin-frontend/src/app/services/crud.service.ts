@@ -70,8 +70,12 @@ export class CrudService extends DataService  {
 	save(data: any, model: string): Observable<any>  {
 		
 		this.#state.update(state => ({ ...state, loading: true }))
-		
-		if (data.id == null) {
+
+
+		// SYNC FIX
+		const id = data instanceof FormData ? data.get('id') : data.id;
+
+		if (id == null || id === '' || id === 'null') {
 			return this.create(data, model);
 		} else {
 			return this.update(data, model);
@@ -102,23 +106,48 @@ export class CrudService extends DataService  {
 
 	}
 
+	// SYNC FIX
 	update(data: any, model: string): Observable<any>  {
+		const id = data instanceof FormData ? data.get('id') : data.id;
+	
 		return new Observable(observer => {
-			this.httpPut(model+'/'+data.id, data).subscribe({
+			this.httpPost(`${model}/${id}`, data).subscribe({
 				next: (res: any) => {
-					res.meta = { operation: 'update' }
+					res.meta = { operation: 'update' };
 					observer.next(res);
 				},
 				error: (error: any) => {
+					// SYNC FIX
+					this.#state.update(state => ({ ...state, loading: false }))
 					observer.error(error);
 				},
 				complete: () => {
-					this.#state.update(state => ({ ...state, loading: true }))
+					// SYNC FIX
+					this.#state.update(state => ({ ...state, loading: false }))
 					observer.complete();
 				}
 			});
 		});
 	}
+	
+
+	// update(data: any, model: string): Observable<any>  {
+	// 	return new Observable(observer => {
+	// 		this.httpPut(model+'/'+data.id, data).subscribe({
+	// 			next: (res: any) => {
+	// 				res.meta = { operation: 'update' }
+	// 				observer.next(res);
+	// 			},
+	// 			error: (error: any) => {
+	// 				observer.error(error);
+	// 			},
+	// 			complete: () => {
+	// 				this.#state.update(state => ({ ...state, loading: true }))
+	// 				observer.complete();
+	// 			}
+	// 		});
+	// 	});
+	// }
 
 	delete(id: number, route: string) {
 

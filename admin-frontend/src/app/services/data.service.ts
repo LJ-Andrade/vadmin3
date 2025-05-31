@@ -12,7 +12,7 @@ export class DataService {
 
 	protected defaultOptions = {
 		headers: new HttpHeaders({
-			'Content-Type': 'application/json',
+			// 'Content-Type': 'application/json',
 			'Authorization': `Bearer ${localStorage.getItem(environment.tokenKeyName)}`
 		})
 	};
@@ -47,17 +47,34 @@ export class DataService {
 		return this.http.get<T>(`${environment.apiUrl}${url}${this.getQueryString(params)}`, options ?? this.defaultOptions);
 	}
 
+	// httpPost<T>(url: string, body: any, options?: any): Observable<any> {
+	// 	return this.http.post<T>(`${environment.apiUrl}${url}`, body, options ?? this.defaultOptions);
+	// }
+
+	// httpPut<T>(url: string, body: any, options?: any): Observable<any> {
+	// 	return this.http.put<T>(`${environment.apiUrl}${url}`, body, options ?? this.defaultOptions);
+	// }
+	
 	httpPost<T>(url: string, body: any, options?: any): Observable<any> {
-		return this.http.post<T>(`${environment.apiUrl}${url}`, body, options ?? this.defaultOptions);
+		return this.http.post<T>(
+			`${environment.apiUrl}${url}`,
+			body,
+			options ?? { headers: this.getHeadersForBody(body) }
+		);
+	}
+	
+	httpPut<T>(url: string, body: any, options?: any): Observable<any> {
+		return this.http.put<T>(
+			`${environment.apiUrl}${url}`,
+			body,
+			options ?? { headers: this.getHeadersForBody(body) }
+		);
 	}
 
 	httpDelete<T>(url: string, options?: any): Observable<any> {
 		return this.http.delete<T>(`${environment.apiUrl}${url}`, options ?? this.defaultOptions);
 	}
 
-	httpPut<T>(url: string, body: any, options?: any): Observable<any> {
-		return this.http.put<T>(`${environment.apiUrl}${url}`, body, options ?? this.defaultOptions);
-	}
 
 	getDataFromModel<T>(model: string, params?: any): Observable<any> {
 		return this.httpFetch<T>(model + this.getQueryString(params));
@@ -93,5 +110,15 @@ export class DataService {
 				return of([]);
 			})
 		);
+	}
+
+	private getHeadersForBody(body: any): HttpHeaders {
+		const isFormData = body instanceof FormData;
+	
+		return isFormData
+			? new HttpHeaders({
+				'Authorization': `Bearer ${localStorage.getItem(environment.tokenKeyName)}`
+			})
+			: this.defaultOptions.headers;
 	}
 }

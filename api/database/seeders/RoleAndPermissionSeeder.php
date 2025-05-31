@@ -10,17 +10,10 @@ class RoleAndPermissionSeeder extends Seeder
 {
     public function run(): void
     {
-        // Lista de permisos
         $permissions = [
-            'users.list',
-            'users.store',
-            'users.show',
-            'users.update',
-            'users.delete',
-            // agrega más si los necesitás
+            'read', 'create', 'update', 'delete', 'ai',
         ];
 
-        // Crear permisos con guard_name = 'api'
         foreach ($permissions as $permission) {
             Permission::firstOrCreate([
                 'name' => $permission,
@@ -28,15 +21,16 @@ class RoleAndPermissionSeeder extends Seeder
             ]);
         }
 
-        // Crear rol admin con guard_name = 'api'
-        $adminRole = Role::firstOrCreate([
-            'name' => 'admin',
-            'guard_name' => 'api',
-        ]);
+        $superadmin = Role::firstOrCreate(['name' => 'superadmin', 'guard_name' => 'api']);
+        $superadmin->syncPermissions(Permission::where('guard_name', 'api')->get());
 
-        // Asignar todos los permisos al rol admin
-        $adminRole->syncPermissions(Permission::all());
+        $admin = Role::firstOrCreate(['name' => 'admin', 'guard_name' => 'api']);
+        $admin->syncPermissions(['read', 'create', 'update', 'delete']);
 
-        $this->command->info('Permisos y rol admin (guard: api) creados correctamente.');
+        $reader = Role::firstOrCreate(['name' => 'reader', 'guard_name' => 'api']);
+        $reader->syncPermissions(['read']);
+
+        $ai = Role::firstOrCreate(['name' => 'ai', 'guard_name' => 'api']);
+        $ai->syncPermissions(['ai']);
     }
 }

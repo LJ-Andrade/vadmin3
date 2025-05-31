@@ -2,90 +2,72 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\UserResource;
 use App\Models\User;
+use App\Services\UserService;
+use App\Traits\CrudOperations;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
-    // public function index()
-    // {
-    //     $users = User::paginate(10);
-    //     return response()->json(['success' => true, 'data' => $users]);
-    // }
+    use CrudOperations;
+
+    public function __construct(private readonly UserService $service) {}
 
     public function index(Request $request)
     {
-        // Paginación, por si querés pasar por query el tamaño de página
-        $perPage = $request->input('per_page', 10);
-        $users = \App\Models\User::paginate($perPage);
+        $query = $this->service->list($request->all());
 
-        // Adaptar la respuesta al formato de tu frontend
-        $pagination = [
-            "current_page"       => $users->currentPage(),
-            "data"               => $users->items(),
-            "first_page_url"     => $users->url(1),
-            "from"               => $users->firstItem(),
-            "last_page"          => $users->lastPage(),
-            "last_page_url"      => $users->url($users->lastPage()),
-            "links"              => $users->linkCollection()->toArray(), // Laravel >= 8
-            "next_page_url"      => $users->nextPageUrl(),
-            "path"               => $users->path(),
-            "list_regs_per_page" => $users->perPage(), // Nombre específico para tu frontend
-            "per_page"           => $users->perPage(),
-            "prev_page_url"      => $users->previousPageUrl(),
-            "to"                 => $users->lastItem(),
-            "total"              => $users->total(),
-        ];
-
-        return response()->json([
-            "success"    => true,
-            "pagination" => $pagination,
-            "message"    => null,
-        ]);
-    }
-
-
-    public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|min:8'
-        ]);
-
-        $validated['password'] = Hash::make($validated['password']);
-        $user = User::create($validated);
-
-        return response()->json(['success' => true, 'message' => 'User created', 'data' => $user]);
+        return $this->respondWithCollection(
+            $request,
+            $query,
+            UserResource::class,
+            defaultPerPage: 10
+        );
     }
 
     public function show(User $user)
     {
-        return response()->json(['success' => true, 'data' => $user]);
+        return new UserResource($user->load('roles'));
+    }
+
+    public function store(Request $request)
+    {   
+        \Illuminate\Support\Facades\Log::info('ROLE STORE REQUEST:', $request->all());
+        
+        $validated = $request->validate([
+            'username'   => 'required|string|max:255|unique:users,username',
+            'email'      => 'required|email|max:255|unique:users,email',
+            'first_name' => 'required|string|max:255',
+            'last_name'  => 'required|string|max:255',
+            'password'   => 'required|string|min:8',
+            'roles'      => 'array',
+        ]);
+
+        $user = $this->service->create($validated);
+
+        return $this->ok(['id' => $user->id], 201);
     }
 
     public function update(Request $request, User $user)
     {
         $validated = $request->validate([
-            'name' => 'sometimes|required|string|max:255',
-            'email' => ['sometimes', 'required', 'email', Rule::unique('users')->ignore($user->id)],
-            'password' => 'sometimes|required|min:8'
+            'username'   => "sometimes|string|max:255|unique:users,username,{$user->id}",
+            'email'      => "sometimes|email|max:255|unique:users,email,{$user->id}",
+            'first_name' => 'sometimes|string|max:255',
+            'last_name'  => 'sometimes|string|max:255',
+            'password'   => 'sometimes|string|min:8',
+            'roles'      => 'sometimes|array',
         ]);
 
-        if (isset($validated['password'])) {
-            $validated['password'] = Hash::make($validated['password']);
-        }
+        $this->service->update($user, $validated);
 
-        $user->update($validated);
-
-        return response()->json(['success' => true, 'message' => 'User updated', 'data' => $user]);
+        return $this->ok(status: 204);
     }
 
     public function destroy(User $user)
     {
-        $user->delete();
-        return response()->json(['success' => true, 'message' => 'User deleted']);
+        $this->service->delete($user);
+        return $this->ok(status: 204);
     }
 }

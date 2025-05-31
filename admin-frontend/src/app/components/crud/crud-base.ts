@@ -18,7 +18,7 @@ export class CrudBase implements OnInit {
 	existingImageUrl: string | null = null;
 	// relations: { [key: string]: any } = {};
 	debugData: boolean = false;
-	debugCreationForm: boolean = true;
+	debugCreationForm: boolean = false;
 
     ngOnInit(): void {
 	   	this.fetchData()
@@ -227,13 +227,16 @@ export class CrudBase implements OnInit {
 		this.crudService.save(formData, this.sectionConfig.model)!
 		.subscribe({
 			next: (res: any) => {
+				console.log("Response ", res)
 				let message: string = '';
 				if (res.meta && res.meta.operation == 'update') {
 					message = 'The record has been updated successfully';
 					operation = 'update';
+					console.log("Update ", res)
 				} else {
 					operation = 'create';
 					message = 'The record has been created successfully';
+					console.log("Create ", res)
 				}
 				this.crudService.notificationService.success(message, '');
 				this.fetchData();

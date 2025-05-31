@@ -4,14 +4,14 @@ meta {
   seq: 3
 }
 
-get {
-  url: {{url}}ai-raw-test
+post {
+  url: {{url}}ai-chat
   body: json
   auth: inherit
 }
 
 body:json {
   {
-      "prompt": "Hola, contame un chiste"
+      "prompt": "Hola, estas online ?"
   }
 }

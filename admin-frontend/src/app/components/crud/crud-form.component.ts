@@ -42,7 +42,7 @@ export class CrudFormComponent {
 	}
 
 	submitForm() {
-		// this.submitFormEvent.emit(this.sectionForm.value)
+		
 	this.submitFormEvent.emit({
 			formValue: this.sectionForm.value,
 			files: this.files 
