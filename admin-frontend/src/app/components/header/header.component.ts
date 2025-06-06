@@ -37,7 +37,7 @@ export class HeaderComponent implements OnInit {
     @ViewChild('op') op!: Popover;
     
     isLoggedIn = computed(() => this.authService.isAuthenticated());
-    // isDarkTheme = computed(() => this.layoutService.layoutConfig().darkTheme);
+    isDarkTheme = computed(() => this.layoutService.layoutConfig().darkTheme);
     
     userData = computed(() => this.authService.getUserData());
     

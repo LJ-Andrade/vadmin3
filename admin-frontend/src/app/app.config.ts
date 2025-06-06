@@ -24,6 +24,6 @@ export const appConfig: ApplicationConfig = {
 		),
 		importProvidersFrom(ToastModule),
 		MessageService,
-		providePrimeNG({ theme: { preset: CustomTheme, options: { darkModeSelector: '' } } }),
+		providePrimeNG({ theme: { preset: CustomTheme, options: { darkModeSelector: '.app-dark' } } }),
 	]
 };

@@ -1,16 +1,16 @@
 @use 'tailwindcss'
-@use 'assets/styles/main'
+
+@import partials/_setup
+@import partials/_resets
+@import partials/_overrides
+@import partials/_buttons
+@import partials/_elements
+@import partials/_tables
+@import partials/_fonts
+
 @tailwind base
 @tailwind components
 
 .p-menubar
     background: transparent !important
 
-.text-nowrap
-    white-space: nowrap
-    overflow: hidden
-    text-overflow: ellipsis
-    display: inline-block
-
-.test-bg
-    background-color: red !important
