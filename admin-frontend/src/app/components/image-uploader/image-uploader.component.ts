@@ -28,14 +28,19 @@ export class ImageUploaderComponent {
 	dataService = inject(DataService)
 	helpers: any = inject(HelpersService)
 	acceptedFiles: string[] = ['png', 'jpg', 'jpeg']
-	selectedImage: any = null
+	texts: any = {
+		selectImagesButton: 'Seleccionar imágen...',
+		adjustImage: 'Ajuste la imágen',
+		previewImage: 'Previsualización'
+	}	
+	selectedImage: any = undefined
 	imageId: number | null = null
 	showCropper: boolean = false
 
 	@Input() formGroup?: FormGroup
 	@Input() fieldName: string = ''
 	@Input() currentImage?: any
-	@Input() useCropper: boolean = false	
+	@Input() useCropper: boolean = false
 	@Input() aspectRatio: number = 0
 	@Input() resizeToWidth: number = 400
 	@Output() onImageSelected = new EventEmitter<any>()
@@ -52,9 +57,9 @@ export class ImageUploaderComponent {
 				this.showCropper = true
 				this.imageChangedEvent = event;
 			} else {
-				this.selectedImage = image ? URL.createObjectURL(image) : null
 				this.formGroup?.controls[this.fieldName]?.setValue(image);
 			}
+			this.selectedImage = image ? URL.createObjectURL(image) : null
 
 		} else {
 			this.clearImageInput()

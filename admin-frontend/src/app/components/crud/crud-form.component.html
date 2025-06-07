@@ -40,7 +40,6 @@
 								<div [class]="field.class" [ngClass]="{ 'Hidden': field.hidden, 'mb-3': true }"
 									class="col-span-12">
 									<!-- Field: {{ field | json}} -->
-									
 									<p-iftalabel class="w-full">
 										@if(field.options.items != null && field.options.items.length > 0) {
 											<p-select class="w-full"
@@ -67,29 +66,31 @@
 
 							@case('image') {
 								<div [class]="field.class" [ngClass]="{'mb-3': true }" class="col-span-12">
-									<app-image-uploader
-										[formGroup]="sectionForm"
-										[fieldName]="field.name"
-										[currentImage]="field.currentImage"
-										[useCropper]="field.imageProperties.useCropper ?? false"
-										[aspectRatio]="field.imageProperties.aspectRatio ?? 16/9"
-										[resizeToWidth]="field.imageProperties.resizeToWidth ?? 400"
-										(onImageSelected)="field.onImageSelected ? field.onImageSelected($event) : null"
-										(onImageDeleted)="field.onImageDeleted ? field.onImageDeleted($event) : null"
-									></app-image-uploader>
+									<div class="hollow-panel">
+										<app-image-uploader
+											[formGroup]="sectionForm"
+											[fieldName]="field.name"
+											[currentImage]="field.currentImage"
+											[useCropper]="field.imageProperties.useCropper ?? false"
+											[aspectRatio]="field.imageProperties.aspectRatio ?? 16/9"
+											[resizeToWidth]="field.imageProperties.resizeToWidth ?? 400"
+											(onImageSelected)="field.onImageSelected ? field.onImageSelected($event) : null"
+											(onImageDeleted)="field.onImageDeleted ? field.onImageDeleted($event) : null"
+										></app-image-uploader>
+									</div>
 								</div>
-
 							}
-
 
 							@case('file') {
 								<div [class]="field.class" [ngClass]="{'mb-3': true }" class="col-span-12">
-									<app-file-uploader
-										[fieldName]="field.name"
-										[files]="files[field.name] || []"
-										(onSingleFileSelected)="onSingleFileSelected($event)"
-										(onSingleFileDeleted)="onSingleFileDeleted($event)">
-									</app-file-uploader>
+									<div class="hollow-panel">
+										<app-file-uploader
+											[fieldName]="field.name"
+											[files]="files[field.name] || []"
+											(onSingleFileSelected)="onSingleFileSelected($event)"
+											(onSingleFileDeleted)="onSingleFileDeleted($event)">
+										</app-file-uploader>
+									</div>
 								</div>
 							}
 						}

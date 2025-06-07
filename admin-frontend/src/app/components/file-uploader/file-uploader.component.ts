@@ -9,10 +9,12 @@ import { DialogModule } from 'primeng/dialog';
 	selector: 'app-file-uploader',
 	standalone: true,
 	imports: [CommonModule, ButtonModule, TableModule, DialogModule],
-	templateUrl: './file-uploader.component.html'
+	templateUrl: './file-uploader.component.html',
+	styleUrl: './file-uploader.component.sass'
 })
 
 export class FileUploaderComponent {
+
 	@Input() fieldName!: string;
 	@Input() files: File[] = [];
 	@Output() onSingleFileSelected = new EventEmitter<{ fieldName: string, files: File[] }>();
@@ -20,6 +22,11 @@ export class FileUploaderComponent {
 
 	confirmingDelete: boolean = false;
 	fileToDeleteIndex: number | null = null;
+	texts: any = {
+		selectFiles: 'Seleccionar archivos...',
+		attachedFiles: 'Archivos adjuntados',
+		deleteFile: 'Desea eliminar este archivo?'
+	}
 
 	handleFileInput(event: any) {
 		const selectedFiles = Array.from(event.target.files) as File[];

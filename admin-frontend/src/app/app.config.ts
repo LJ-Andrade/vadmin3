@@ -19,9 +19,7 @@ export const appConfig: ApplicationConfig = {
 		provideZoneChangeDetection({ eventCoalescing: true }),
 		provideRouter(routes),
 		provideAnimationsAsync(),
-		provideHttpClient(
-			withInterceptors([AuthInterceptor])
-		),
+		provideHttpClient(withInterceptors([AuthInterceptor])),
 		importProvidersFrom(ToastModule),
 		MessageService,
 		providePrimeNG({ theme: { preset: CustomTheme, options: { darkModeSelector: '.app-dark' } } }),

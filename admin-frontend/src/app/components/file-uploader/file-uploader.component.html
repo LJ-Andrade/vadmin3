@@ -1,23 +1,21 @@
 
-<div>
+<div class="file-uploader">
 	<input #fileInput type="file" (change)="handleFileInput($event)" multiple hidden />
-	<p-button [label]="'Select files'" (click)="fileInput.click()" class="mb-4"></p-button>
+	<p-button [label]="texts.selectFiles" (click)="fileInput.click()" class="mb-4"></p-button>
 	<br>
-
 	@if(files.length > 0) {
-			
-	
-		<p-table [value]="files" [tableStyle]="{ 'min-width': '30rem' }" >
+		<br>
+		<p-table [value]="files" [tableStyle]="{ 'min-width': '30rem' }">
 			<ng-template pTemplate="header" class="mt-6">
 				<tr>
-					<th>Files</th>
+					<th>{{ texts.attachedFiles }}</th>
 					<th></th>
 				</tr>
 			</ng-template>
 			<ng-template pTemplate="body" let-file let-rowIndex="rowIndex">
 				<tr>
 					<td>{{ file.name }}</td>
-					<td>
+					<td style="text-align: right;">
 						<button type="button" pButton icon="pi pi-trash" severity="danger"
 							(click)="askFileDeletion(rowIndex)">
 						</button>
@@ -34,7 +32,7 @@
 		header="Confirmar eliminación"
 		[style]="{ width: '300px' }"
 	>
-		<p>Are you sure you want to delete this file?</p>
+		<p>{{ texts.deleteFile }}</p>
 		<ng-template pTemplate="footer">
 			<button pButton label="Cancelar" icon="pi pi-times"
 				(click)="cancelFileDeletion()" class="p-button-text"></button>
