@@ -1,15 +1,59 @@
+// .field-error-container
+// 	padding: 0 15px
+// 	transition: all ease 0.3s
+// 	min-height: 24px
+// 	.field-error
+// 		opacity: 0
+// 		background-color: #fb4848
+// 		border-radius: 0 0 5px 5px
+// 		font-size: .8rem
+// 		padding: 2px 10px 2px 10px
+// 		color: #fff
+
+// .field-error.show
+// 	opacity: 1 !important
+// 	transition: all ease 0.3s
+
+// .hidden
+// 	border: 2px solid red !important
+
 .field-error-container
 	padding: 0 15px
-	transition: all ease 0.3s
-	min-height: 24px
-	.field-error
-		opacity: 0
-		background-color: #fb4848
-		border-radius: 0 0 5px 5px
-		font-size: .8rem
-		padding: 2px 10px 2px 10px
-		color: #fff
+	overflow: hidden
+	max-height: 0
+	transition: max-height 0.25s cubic-bezier(.4,0,.2,1), padding 0.2s
+	will-change: max-height, padding
 
-.field-error.show
-	opacity: 1 !important
-	transition: all ease 0.3s
+.field-error
+	opacity: 0
+	padding: 0 10px
+	margin: 0
+	transform: translateY(-14px)
+	font-size: .8rem
+	background: #fb4848
+	border-radius: 0 0 5px 5px
+	color: #fff
+	pointer-events: none
+	transition: opacity 0.2s, transform 0.22s cubic-bezier(.4,0,.2,1), padding 0.2s, margin 0.2s
+	will-change: opacity, transform, padding, margin
+
+// Estado visible: muestra el error y expande el contenedor
+.field-error-container.show
+	max-height: 60px // ajusta según el alto máximo de tu mensaje (puede ser 40, 80, etc)
+	padding: 0 15px 3px 15px // extra bottom para separar del campo siguiente
+
+.field-error
+	opacity: 1
+	padding: 2px 10px
+	margin: 0 0 4px 0
+	transform: translateY(0)
+	pointer-events: auto
+
+// Extra: estado oculto, por si necesitas forzarlo (opcional)
+.field-error-container:not(.show)
+	padding: 0 15px 0 15px
+
+// Si usás un estado 'hidden' en el contenedor, podés agregarlo así (opcional)
+.field-error-container.hidden
+	display: none
+

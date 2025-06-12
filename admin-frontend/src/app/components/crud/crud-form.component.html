@@ -13,10 +13,10 @@
 					@if(!field.hidden) {
 						@switch (field.type) {
 							@case('text') {
-								<div [class]="field.class" [ngClass]="{ 'Hidden': field.hidden, 'mb-3': true }"
+								<div [class]="field.class" [ngClass]="{ 'Hidden': field.hidden }"
 									class="col-span-12">
-									<p-iftalabel>
-										<input [fluid]="true" [formControlName]="field.name" pInputText 
+									<p-iftalabel class="label"> 
+										<input [fluid]="true" [formControlName]="field.name" pInputText class="input-text"
 										[placeholder]="field.placeholder" type="text" />
 										<label for="username">{{ field.label }}</label>
 									</p-iftalabel>
@@ -25,10 +25,10 @@
 							}
 
 							@case('number') {
-								<div [class]="field.class" [ngClass]="{ 'Hidden': field.hidden,'mb-3': true }"
+								<div [class]="field.class" [ngClass]="{ 'Hidden': field.hidden }"
 									class="col-span-12">
-									<p-iftalabel>
-										<input [fluid]="true" [formControlName]="field.name" pInputText 
+									<p-iftalabel class="label">
+										<input [fluid]="true" [formControlName]="field.name" pInputText class="input-text"
 										[placeholder]="field.placeholder" type="number" />
 										<label for="username">{{ field.label }}</label>
 									</p-iftalabel>
@@ -37,12 +37,12 @@
 							}
 
 							@case('select') {
-								<div [class]="field.class" [ngClass]="{ 'Hidden': field.hidden, 'mb-3': true }"
+								<div [class]="field.class" [ngClass]="{ 'Hidden': field.hidden,  }"
 									class="col-span-12">
 									<!-- Field: {{ field | json}} -->
-									<p-iftalabel class="w-full">
+									<p-iftalabel class="w-full label">
 										@if(field.options.items != null && field.options.items.length > 0) {
-											<p-select class="w-full"
+											<p-select class="w-full input-select"
 												[formControlName]="field.name"
 												[options]="field.options.items"
 												[optionLabel]="field.options.displayField"
@@ -50,7 +50,7 @@
 												[optionValue]="field.options.valueName"
 											/>
 										} @else {
-											<p-select class="w-full"
+											<p-select class="w-full input-select"
 												[formControlName]="field.name"
 												[options]="field.options.data"
 												[optionLabel]="field.options.displayField"
@@ -65,7 +65,7 @@
 							}
 
 							@case('image') {
-								<div [class]="field.class" [ngClass]="{'mb-3': true }" class="col-span-12">
+								<div [class]="field.class"  class="col-span-12">
 									<div class="hollow-panel">
 										<app-image-uploader
 											[formGroup]="sectionForm"
@@ -82,7 +82,7 @@
 							}
 
 							@case('file') {
-								<div [class]="field.class" [ngClass]="{'mb-3': true }" class="col-span-12">
+								<div [class]="field.class"  class="col-span-12">
 									<div class="hollow-panel">
 										<app-file-uploader
 											[fieldName]="field.name"

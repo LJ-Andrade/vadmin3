@@ -1,27 +1,29 @@
 @use 'tailwindcss'
 
-@import partials/_setup
-@import partials/_resets
-@import partials/_overrides
-@import partials/_buttons
-@import partials/_elements
-@import partials/_tables
-@import partials/_fonts
+
+@use 'styles/setup'
+@use 'styles/resets'
+@use 'styles/overrides'
+@use 'styles/buttons'
+@use 'styles/elements'
+@use 'styles/tables'
+@use 'styles/fonts'
+@use 'styles/forms'
+
 
 @tailwind base
 @tailwind components
+@tailwind utilities
+
 
 .p-menubar
-    background: transparent !important
+	background: transparent !important
 
-
-
-    
 .hollow-panel
-    border: 1px solid #ccc!important
-    padding: 10px
-    border-radius: 10px
+	border: 1px solid #ccc!important
+	padding: 10px
+	border-radius: 10px
 
 .app-dark
-    .hollow-panel
-        border: 1px solid #4F4F4F !important
+	.hollow-panel
+		border: 1px solid #4F4F4F !important

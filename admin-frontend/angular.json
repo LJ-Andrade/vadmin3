@@ -32,21 +32,25 @@
 							},
 							{
 								"glob": "**/*",
-								"input": "src/assets",
-								"output": "assets/"
+								"input": "src/assets"
 							}
 						],
 						"styles": [
 							"src/styles.sass",
+							"src/styles/setup.sass",
+							"src/styles/buttons.sass",
+							"src/styles/elements.sass",
+							"src/styles/fonts.sass",
+							"src/styles/overrides.sass",
+							"src/styles/tables.sass",
+							"src/styles/resets.sass",
+							"src/styles/forms.sass",
 							"node_modules/primeicons/primeicons.css"
 						],
-						"scripts": [],
 						"stylePreprocessorOptions": {
-							"includePaths": [
-								"src/styles",
-								"src/assets/styles"
-							]
-						}
+							"includePaths": ["src/styles"]
+						},
+						"scripts": []
 					},
 					"configurations": {
 						"production": {
@@ -87,21 +91,13 @@
 						"disableHostCheck": true
 					},
 					"configurations": {
-						"kuhlman.com": {
-							"host": "kuhlman.com",
-							"buildTarget": "frontend:build:development"
-						},
-						"jacobson.com": {
-							"host": "jacobson.com",
-							"buildTarget": "frontend:build:development"
-						},
 						"production": {
 							"buildTarget": "frontend:build:production"
 						},
 						"development": {
 							"buildTarget": "frontend:build:development",
-							"poll": 2000,
-							"hmr": true
+							"hmr": true,
+							"poll": 1000
 						}
 					},
 					"defaultConfiguration": "development"

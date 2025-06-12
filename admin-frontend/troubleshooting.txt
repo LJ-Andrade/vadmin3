@@ -1,0 +1,4 @@
+
+PROBLEMAS CON SASS
+
+Cuando se agregan partials de sass en src/styles/ hay que agregar el archivo en el angular.json

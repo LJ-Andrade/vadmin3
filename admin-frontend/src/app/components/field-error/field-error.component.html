@@ -1,8 +1,14 @@
-<div class="field-error-container">
-    <div class="field-error" [ngClass]="{ 'show': (field.invalid && (field.touched || field.dirty)) || debugShow }">
-        {{ getText( field?.errors ) }}
+<!-- @if (field?.errors != null) {
+    <div class="field-error-container"> 
+        <div class="field-error" [ngClass]="{ 'show': (field.invalid && (field.touched || field.dirty)) || debugShow }">
+            {{ getText( field?.errors ) }}
+        </div>
     </div>
-    <!-- <div class="field-error" [ngClass]="{ 'show': field.invalid && field.touched || debugShow}">
-        {{ getText( field?.errors ) }}
-    </div> -->
+} -->
+
+<div class="field-error-container"
+     [ngClass]="{ 'show': field.invalid && field.touched || debugShow }">
+  <div class="field-error">
+    {{ getText(field?.errors) }}
+  </div>
 </div>

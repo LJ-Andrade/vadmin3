@@ -16,53 +16,6 @@ export class FieldErrorComponent {
 	@Input() debugShow: boolean = false;
 
 
-	// getText(errors: any): string {
-
-    //     if (!errors) return '';
-    //     if(errors?.required) {
-    //         return 'This field is required';
-    //     }
-
-    //     if(errors?.minlength) {
-    //         let requiredLength = errors.minlength.requiredLength;
-
-    //         if(requiredLength) {
-    //             return 'Must enter at least ' + requiredLength + ' characters';
-    //         }
-
-    //         return 'Must enter more characters';
-    //     }
-
-    //     if(errors?.maxLength) {
-    //         let requiredLength = errors.maxLength.requiredLength;
-
-    //         if(requiredLength) {
-    //             return 'Must enter maximum ' + requiredLength + ' characters';
-    //         }
-
-    //         return 'Must enter fewer characters';
-    //     }
-
-    //     if(errors?.maxlength) {
-    //         return 'Must enter less than 50 characters';
-    //     }
-
-    //     if(errors?.email) {
-    //         return 'Must enter a valid email';
-    //     }
-
-    //     if(errors?.mustMatch) {
-    //         return 'Passwords do not match';
-    //     }  
-
-    //     if (errors?.match) {
-    //         return 'Passwords do not match';
-    //     }
-
-    //     return 'Error';
-    // }
-
-
     getText(errors: any): string {
         if (!errors) return '';
     
