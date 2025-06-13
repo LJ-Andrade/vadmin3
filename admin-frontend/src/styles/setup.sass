@@ -9,52 +9,71 @@
 .test-bg
 	background-color: red !important
 
-
 .section-title
 	font-size: 1.2rem
 	margin-left: 10px
 
+	
+.p-panel
+	.p-panel-header
+		padding: 5px 20px
 
+.p-menubar
+	padding: 5px 20px !important
+
+	
 .header-user
 	margin-left: 10px
 	margin-right: 10px
 	font-size: 1.2rem
 	.user-name
-		font-size: .9rem
+		font-size: 0.9rem
 		font-weight: bold
-	.user-email
-		font-size: .8rem
-	.squarish-mini-container
-		width: 40px
-		height: 40px
-		border-radius: 10px
-		background-color: palette.$app-blue
-		display: flex
-		justify-content: center
-		align-items: center
-		span
-			font-size: 1.2rem
-			font-weight: bold
-		.user-letter
-			color: #fff
-		
+		.user-email
+			font-size: 0.8rem
+			.squarish-mini-container
+				width: 40px
+				height: 40px
+				border-radius: 10px
+				background-color: palette.$app-blue
+				display: flex
+				justify-content: center
+				align-items: center
+				span
+					font-size: 1.2rem
+					font-weight: bold
+					.user-letter
+						color: #fff
 
 .header-container
 	.header-buttons
-		font-size: .9rem
+		font-size: 0.9rem
 		padding: 10px 10px !important
 		i
-			font-size: .8rem
-	.c-dropdown
-		padding: 5px
-		&:hover
-			filter: drop-shadow(2px 0px 6px #858585)
+			font-size: 0.8rem
+			.c-dropdown
+				padding: 5px
+				&:hover
+					filter: drop-shadow(2px 0px 6px #858585)
+				.p-menubar-submenu
+					.p-menubar-item-link
+						padding: 10px 15px !important
 
-	.p-menubar-submenu
-		.p-menubar-item-link
-			padding: 10px 15px !important
-
+body
+	background: radial-gradient(circle, rgb(255 255 255) 54%, rgb(210 240 255) 100%)
 
 .app-dark
-	.main-button
-		color: #fff !important
+	body
+		background: url('/images/grain.png') repeat, radial-gradient(circle, rgb(41 41 63) 0%, rgb(13, 13, 13) 100%)
+		background-blend-mode: overlay, normal, normal
+		.p-popover
+			border: 0 !important
+			&:after, &:before
+				display: none
+				.p-panel
+					border: 0
+					border-radius: 10px
+					background-color: #1e1e1e !important
+					.p-panel-header
+						// padding: 5px 20px
+						border-radius: 10px 10px 0 0

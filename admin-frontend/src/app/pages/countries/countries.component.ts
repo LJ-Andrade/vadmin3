@@ -8,7 +8,7 @@ import { SectionConfig, ListData, ListConfig } from '@src/app/interfaces/crud.in
 
 
 @Component({
-    selector: 'app-roles',
+    selector: 'app-countries',
     standalone: true,
     imports: [ CommonModule, CrudManagerComponent, CrudFormComponent ],
     templateUrl: './countries.component.html'

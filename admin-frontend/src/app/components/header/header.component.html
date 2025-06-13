@@ -40,7 +40,7 @@
 						<div class="squarish-mini-container mr-4">
 							<span class="user-letter">{{ this.userData()?.last_name?.charAt(0) }}</span>
 						</div>
-						<div class="flex flex-col items-center text-center gap-2 mr-3">
+						<div class="flex flex-col items-center text-center">
 							<span class="user-name">{{ this.userData()?.last_name }}, {{ this.userData()?.first_name }}</span>
 							<span class="user-email">{{ this.userData()?.email }}</span>
 						</div>
@@ -51,7 +51,7 @@
 						<div class="flex flex-col gap-4">
 							<div>
 								<ul class="list-none p-0 m-0 flex flex-col">
-									<li class="flex hover:bg-emphasis cursor-pointer rounded-border gap-2 px-2 py-3">
+									<li class="flex hover:bg-emphasis cursor-pointer rounded-border gap-2 px-2 ">
 										<p-button
 											[styleClass]="'full-width-button'"
 											label="Profile"
