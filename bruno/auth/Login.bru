@@ -16,3 +16,12 @@ body:json {
       "password": "admin123"
   }
 }
+
+script:post-response {
+  if( res.getStatus() == 200 )
+  {
+    let data = res.getBody();
+    let token = bru.setEnvVar("token", data.access_token);
+    console.log("Token stored");
+  }
+}

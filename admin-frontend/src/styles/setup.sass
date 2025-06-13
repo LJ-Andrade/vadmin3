@@ -1,3 +1,5 @@
+@use 'palette'
+
 .text-nowrap
 	white-space: nowrap
 	overflow: hidden
@@ -6,3 +8,53 @@
 
 .test-bg
 	background-color: red !important
+
+
+.section-title
+	font-size: 1.2rem
+	margin-left: 10px
+
+
+.header-user
+	margin-left: 10px
+	margin-right: 10px
+	font-size: 1.2rem
+	.user-name
+		font-size: .9rem
+		font-weight: bold
+	.user-email
+		font-size: .8rem
+	.squarish-mini-container
+		width: 40px
+		height: 40px
+		border-radius: 10px
+		background-color: palette.$app-blue
+		display: flex
+		justify-content: center
+		align-items: center
+		span
+			font-size: 1.2rem
+			font-weight: bold
+		.user-letter
+			color: #fff
+		
+
+.header-container
+	.header-buttons
+		font-size: .9rem
+		padding: 10px 10px !important
+		i
+			font-size: .8rem
+	.c-dropdown
+		padding: 5px
+		&:hover
+			filter: drop-shadow(2px 0px 6px #858585)
+
+	.p-menubar-submenu
+		.p-menubar-item-link
+			padding: 10px 15px !important
+
+
+.app-dark
+	.main-button
+		color: #fff !important

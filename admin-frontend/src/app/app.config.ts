@@ -22,6 +22,10 @@ export const appConfig: ApplicationConfig = {
 		provideHttpClient(withInterceptors([AuthInterceptor])),
 		importProvidersFrom(ToastModule),
 		MessageService,
-		providePrimeNG({ theme: { preset: CustomTheme, options: { darkModeSelector: '.app-dark' } } }),
+		providePrimeNG({ theme: { 
+				preset: CustomTheme, 
+				options: { darkModeSelector: '.app-dark' } 
+			} 
+		}),
 	]
 };

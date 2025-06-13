@@ -37,6 +37,7 @@
 						],
 						"styles": [
 							"src/styles.sass",
+							"src/styles/palette.sass",
 							"src/styles/setup.sass",
 							"src/styles/buttons.sass",
 							"src/styles/elements.sass",

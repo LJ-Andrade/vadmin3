@@ -1,17 +1,19 @@
-<h1><i [class]="sectionConfig.icon" style="color: slateblue"></i> {{ sectionConfig.namePlural | titlecase }}</h1>
+<h1><i [class]="sectionConfig.icon" style="color: slateblue"></i> 
+	<span class="section-title">{{ sectionConfig.namePlural | titlecase }}</span>
+</h1>
 
 <p-toolbar styleClass="mb-1" >
 	<div class="p-toolbar-group-start">
 		@if(listVisibility) {
-			<p-button [label]="'New ' + sectionConfig.nameSingular" icon="pi pi-plus" class="mr-2"
+			<p-button [label]="'New ' + sectionConfig.nameSingular" icon="pi pi-plus" class="mr-2 main-button"
 				(onClick)="emitRequestCreation()" />
 		} @else {
-			<p-button label="List" icon="pi pi-list" class="mr-2"
+			<p-button label="List" icon="pi pi-list" class="mr-2 main-button"
 				(onClick)="emitRequestList()"
 			/>
 		}
 		@if(selectedRows().length > 0) {
-			<p-button severity="danger" label="Delete selected" icon="pi pi-trash" outlined 
+			<p-button severity="danger" label="Delete selected" icon="pi pi-trash" class="main-button" outlined 
 				(onClick)="addSelectedToDeleteQueue()"
 			/>
 		}
@@ -43,7 +45,7 @@
 </p-toolbar>
 
 <!-- ADVANCE SEARCH -->
-<p-toolbar styleClass="mb-2" *ngIf="advancedSearchOptionsVisibility && advancedSearchAvailable">
+<p-toolbar styleClass="mb-2 " *ngIf="advancedSearchOptionsVisibility && advancedSearchAvailable">
 	<ng-template #start>
 		<!-- SEARCH FORM -->
 		<form [formGroup]="searchForm" (ngSubmit)="submitSearch()">
