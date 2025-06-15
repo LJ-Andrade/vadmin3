@@ -18,7 +18,7 @@ export class CrudBase implements OnInit {
 	existingImageUrl: string | null = null;
 	// relations: { [key: string]: any } = {};
 	debugData: boolean = false;
-	debugCreationForm: boolean = false;
+	debugCreationForm: boolean = true;
 
     ngOnInit(): void {
 	   	this.fetchData()

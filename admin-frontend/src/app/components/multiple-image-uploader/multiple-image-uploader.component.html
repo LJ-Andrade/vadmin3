@@ -1,0 +1,18 @@
+<div class="multiple-image-uploader">
+    <div class="centered">
+        <p-button class="main-button" 
+            [label]="texts.selectImagesButton" 
+            (onClick)="inputImage.click()">
+        </p-button>
+    </div>
+
+    <input class="hidden" multiple #inputImage type="file" (change)="fileChangeEvent($event)">
+
+    @for(image of sectionForm.get('images').value; track $index; let odd = $odd) {
+        <app-image-previewer [image]="image" [allowDelete]="true" (deleteImageRequested)="deleteImage($index)" />
+    }
+
+    <pre>{{ sectionForm.get('images')?.value | json }}</pre>
+    <!-- (deleteImageRequested)="deleteImage()" -->
+
+</div>

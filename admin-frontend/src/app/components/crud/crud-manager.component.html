@@ -170,14 +170,15 @@
 									} 
 								}
 							}
+							
 							<!-- ROW ACTIONS -->
 							<td class="action-column">
 								<!-- EDIT ACTION -->
 							
 								@if(listConfig.unEditableIds && !listConfig.unEditableIds.includes(+record.id)) {
-									<p-button styleClass="mr-3 small-action-button" icon="pi pi-pencil" [rounded]="true" [text]="true"
-										[raised]="true" size="small" 
-										(onClick)="emitRequestEdit(record)"
+									<p-button styleClass="mr-3 small-action-button" icon="pi pi-pencil" 
+										[rounded]="true" [text]="true" [raised]="true" size="small" 
+										(onClick)="emitRequestEdit(record)" class="main-button"
 									/>
 								}
 
@@ -190,6 +191,8 @@
 							</td>
 						</tr>
 					}
+
+					
 
 				</tbody>
 			</table>
@@ -227,7 +230,7 @@
 			</ng-template>
 
 			<ng-template #icons>
-				<p-button icon="pi pi-times" [rounded]="true" [text]="true" [raised]="true" severity="danger"
+				<p-button icon="pi pi-times" [rounded]="true" [text]="true" [raised]="true" severity="danger" class="main-button"
 					(onClick)="emitRequestList()"
 				/>
 			</ng-template>

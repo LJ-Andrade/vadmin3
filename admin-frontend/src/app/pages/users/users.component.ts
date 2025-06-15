@@ -110,10 +110,22 @@ export class UsersComponent extends CrudBase  {
 			matchTo: 'password',
 			validators: [ Validators.required, matchToValidator('password') ] },
 
-		{ name: 'attachments', type: 'file', label: 'Adjuntar archivos', class: 'sm:col-span-12' },
+		// { name: 'attachments', type: 'file', label: 'Adjuntar archivos', class: 'sm:col-span-12' },
 
-		{ name: 'avatar', label: 'Avatar', value: '', placeholder: 'Upload an avatar image', class: '',
-			type: 'image',
+		// { name: 'avatar', label: 'Avatar', value: '', placeholder: 'Upload an avatar image', class: '',
+		// 	type: 'image',
+		// 	imageProperties: {
+		// 		accept: 'image/*',
+		// 		maxSize: 1000000,
+		// 		useCropper: true,
+		// 		aspectRatio: 1,
+		// 		resizeToWidth: 300,
+		// 	},
+		// 	validators: []
+		// },
+
+		{ name: 'images', label: 'Imágenes', value: '', placeholder: 'sube imagenes', class: 'col-span-12',
+			type: 'images',
 			imageProperties: {
 				accept: 'image/*',
 				maxSize: 1000000,

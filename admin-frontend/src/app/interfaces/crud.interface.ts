@@ -40,7 +40,7 @@ export interface ListData {
 }
 
 
-export type FormFieldType = 'text' | 'select' | 'number' | 'checkbox' | 'textarea' | 'file' | 'image';
+export type FormFieldType = 'text' | 'select' | 'number' | 'checkbox' | 'textarea' | 'file' | 'images' ;
 export interface FormFieldOptionConfig {
     /**
      * The name of the field to be used as identifier

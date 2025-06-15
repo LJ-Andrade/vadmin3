@@ -37,7 +37,7 @@
 							}
 
 							@case('select') {
-								<div [class]="field.class" [ngClass]="{ 'Hidden': field.hidden,  }"
+								<div [class]="field.class" [ngClass]="{ 'Hidden': field.hidden }"
 									class="col-span-12">
 									<!-- Field: {{ field | json}} -->
 									<p-iftalabel class="w-full label">
@@ -64,8 +64,8 @@
 								</div>
 							}
 
-							@case('image') {
-								<div [class]="field.class"  class="col-span-12">
+							@case('images') {
+								<!-- <div [class]="field.class"  class="col-span-12">
 									<div class="hollow-panel">
 										<app-image-uploader
 											[formGroup]="sectionForm"
@@ -78,7 +78,17 @@
 											(onImageDeleted)="field.onImageDeleted ? field.onImageDeleted($event) : null"
 										></app-image-uploader>
 									</div>
+								</div> -->
+								<div [class]="field.class"  class="col-span-12">
+									<app-multiple-image-uploader
+										[sectionForm]="sectionForm"
+										[maxFiles]="5"
+										[acceptedExtensions]="['jpeg', 'png']"
+										[maxFileSize]="5242880">
+									</app-multiple-image-uploader>
 								</div>
+								<!-- (filesSelected)="onFilesSelected({ fieldName: field.name, files: $event }) -->
+								
 							}
 
 							@case('file') {
@@ -103,6 +113,7 @@
 						icon="pi pi-check" severity="success"
 						(onClick)="submitForm()"
 						[loading]="loading"
+						class="main-button"
 					/>
 				</div>
 			</div>

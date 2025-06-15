@@ -1,7 +1,7 @@
 
 <div class="file-uploader">
 	<input #fileInput type="file" (change)="handleFileInput($event)" multiple hidden />
-	<p-button [label]="texts.selectFiles" (click)="fileInput.click()" class="mb-4"></p-button>
+	<p-button [label]="texts.selectFiles" (click)="fileInput.click()" class="mb-4 main-button"></p-button>
 	<br>
 	@if(files.length > 0) {
 		<br>
@@ -16,7 +16,7 @@
 				<tr>
 					<td>{{ file.name }}</td>
 					<td style="text-align: right;">
-						<button type="button" pButton icon="pi pi-trash" severity="danger"
+						<button type="button" pButton icon="pi pi-trash" severity="danger" 
 							(click)="askFileDeletion(rowIndex)">
 						</button>
 					</td>

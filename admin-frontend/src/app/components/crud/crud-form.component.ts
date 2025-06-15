@@ -6,15 +6,15 @@ import { FieldErrorComponent } from '../field-error/field-error.component'
 import { ButtonModule } from 'primeng/button'
 import { CommonModule } from '@angular/common'
 import { SelectModule } from 'primeng/select'
-import { ImageUploaderComponent } from '@app/components/image-uploader/image-uploader.component'
 import { TableModule } from 'primeng/table'
 import { FileUploaderComponent } from '../file-uploader/file-uploader.component'
+import { MultipleImageUploaderComponent } from '../multiple-image-uploader/multiple-image-uploader.component'
 
 @Component({
 	selector: 'app-crud-form',
 	imports: [CommonModule, ButtonModule, SelectModule, FormsModule, ReactiveFormsModule,
 		IftaLabelModule, FieldErrorComponent, InputTextModule, TableModule, 
-		FileUploaderComponent, ImageUploaderComponent ],
+		FileUploaderComponent, MultipleImageUploaderComponent ],
 	templateUrl: './crud-form.component.html',
 })
 
@@ -28,7 +28,7 @@ export class CrudFormComponent {
 	
 	imageChangedEvent: any = '';
 	croppedImage: any = '';
-
+	uploadedImages: File[] = [];
 	files: { [key: string]: File[] } = {};
 
 	get saveBtnLabel(): string {
@@ -42,17 +42,22 @@ export class CrudFormComponent {
 	}
 
 	submitForm() {
-		
-	this.submitFormEvent.emit({
-			formValue: this.sectionForm.value,
-			files: this.files 
-		});
+		console.log(this.sectionForm.value)
+		console.log(this.files);
+		// this.submitFormEvent.emit({
+		// 	formValue: this.sectionForm.value,
+		// 	files: this.files 
+		// });
+	}
+
+	handleImages(images: File[]) {
+		this.uploadedImages = images;
+		console.log('Imágenes seleccionadas:', this.uploadedImages);
 	}
 
 	fileChangeEvent(event: any): void {
 		this.imageChangedEvent = event;
 	}
-
 
 
 	loadExistingImage(url: string) {
