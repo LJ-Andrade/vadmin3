@@ -82,6 +82,7 @@ export interface FormField {
 	value?: any;
 	placeholder?: string;
 	class?: string;
+	cols?: string;
 	hidden?: boolean;
 	isRelation?: boolean;
 	options?: FormFieldOptionConfig;
@@ -92,6 +93,7 @@ export interface FormField {
 		maxSize?: number;
 	},
 	imageProperties?: {
+		maxImages: number;
 		accept?: string;
 		maxSize?: number;
 		useCropper?: boolean;

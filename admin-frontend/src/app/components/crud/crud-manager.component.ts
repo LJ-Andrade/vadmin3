@@ -11,7 +11,7 @@ import { DialogModule } from 'primeng/dialog'
 import { PanelModule } from 'primeng/panel'
 import { NotificationService } from '@src/app/services/notification.service'
 import { CrudService } from '@src/app/services/crud.service'
-import { SectionConfig } from '@src/app/interfaces/crud.interface'
+import { FormSize, SectionConfig } from '@src/app/interfaces/crud.interface'
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon'
 import { InputTextModule } from 'primeng/inputtext'
 import { InputGroup } from 'primeng/inputgroup'
@@ -58,17 +58,22 @@ export class CrudManagerComponent {
 	currentData: any[] = []; // Check why I made this for,
 	displayDeleteConfirmation: boolean = false;
 	recordsToDelete: any[] = [];
-	creationFormTitle: string = 'Creating ' + this.sectionConfig.nameSingular;
+	creationFormTitle: string = 'Creando ' + this.sectionConfig.nameSingular;
 	currentPage: number = 1;
 
 	searchOptionsVisibility: boolean = false;
 	advancedSearchOptionsVisibility: boolean = false;
 	advancedSearchAvailable: boolean = true;
 
+	originalFormSize: FormSize = this.sectionConfig.formSize;
+	formIsShrinked: boolean = false;
+
 
 	ngOnInit() {
 		this.searchOptionsVisibility = this.helpersService.loadSetting('searchVisibility', false);
 		this.ensureSearchFormControls();
+		this.originalFormSize= this.sectionConfig.formSize;
+		this.creationFormTitle = 'Creando ' + this.sectionConfig.nameSingular
 	}
 
 	ensureSearchFormControls() {
@@ -257,6 +262,21 @@ export class CrudManagerComponent {
 
 //#endregion Delete
 
+
+//#region Style
+
+changeFormSize() {
+	if (this.sectionConfig.formSize === 'LARGE' || this.sectionConfig.formSize === 'MEDIUM') {
+		this.sectionConfig.formSize = 'SMALL';
+		this.formIsShrinked = true;
+	} else {
+		this.sectionConfig.formSize = this.originalFormSize;
+		this.formIsShrinked = false;
+	}
+}
+
+//#endregion Style
+
 //#region Pagination
 
 
@@ -287,5 +307,5 @@ export class CrudManagerComponent {
 		  if (!item.isRelation) return true;
 		  return !!this.crudService.apiDataResponse().relations[item.relationName];
 		});
-	  }
+	}
 }

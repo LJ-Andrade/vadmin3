@@ -26,8 +26,8 @@ export class UsersComponent extends CrudBase  {
 	override sectionConfig: SectionConfig = {
 		model: 'users',
 		icon: 'pi pi-users',
-		nameSingular: 'user',
-		namePlural: 'users',
+		nameSingular: 'usuario',
+		namePlural: 'usuarios',
 		formSize: 'LARGE',
 	}
 
@@ -71,42 +71,42 @@ export class UsersComponent extends CrudBase  {
 
 	override formFields: FormField[] = [
 
-		{ name: 'id', label: 'Id', value: '', placeholder: 'Enter the id', type: 'text', class: 'col-span-12',
+		{ name: 'id', label: 'Id', value: '', placeholder: 'Enter the id', type: 'text', cols: 'col-span-12',
 			hidden: true },
 
 		{ name: 'user', label: 'Username', value: '', placeholder: 'Enter the username', type: 'text', 
-			class: 'sm:col-span-3 md:col-span-3',
+			cols: 'sm:col-span-3 md:col-span-3', class: '',
 			validators: [ Validators.required, Validators.minLength(3), Validators.maxLength(50)] },
 	   
 		{ name: 'first_name', label: 'First Name', value: '', placeholder: 'Enter the first name', type: 'text', 
-			class: 'sm:col-span-3 md:col-span-3',
+			cols: 'sm:col-span-3 md:col-span-3',
 			validators: [ Validators.required, Validators.minLength(3), Validators.maxLength(50)] },
 	   
 		{ name: 'last_name', label: 'Last Name', value: '', placeholder: 'Enter the last name', type: 'text', 
-			class: 'sm:col-span-3 md:col-span-3',
+			cols: 'sm:col-span-3 md:col-span-3',
 			validators: [ Validators.required, Validators.minLength(3), Validators.maxLength(50)] },
 		
 		{ name: 'role', label: 'Role', value: '', placeholder: 'Select the role', type: 'select', 
-			class: 'sm:col-span-3 md:col-span-3',
+			cols: 'sm:col-span-3 md:col-span-3',
 			isRelation: true,
 			options: { 
 				name: 'roles', valueName: 'name', displayField: 'name'
 			},
-			validators: [  ]
+			validators: []
 		},
 
 		{ name: 'email', label: 'Email', value: '', placeholder: 'Enter the email', type: 'text', 
-			class: 'sm:col-span-4 md:col-span-4',
+			cols: 'sm:col-span-4 md:col-span-4',
 				validators: [ Validators.required, Validators.email, Validators.minLength(3), Validators.maxLength(50)] },
 
 		{ name: 'password', label: 'Password', value: '', placeholder: 'Enter the password', 
 			type: 'text', 
-			class: 'sm:col-span-4 md:col-span-4',
+			cols: 'sm:col-span-4 md:col-span-4',
 			validators: [ Validators.required, Validators.minLength(3), Validators.maxLength(50)] },
 
 		{ name: 'confirm_password', label: 'Confirm Password', value: '', placeholder: 'Enter the password', 
 			type: 'text', 
-			class: 'sm:col-span-4 md:col-span-4',
+			cols: 'sm:col-span-4 md:col-span-4',
 			matchTo: 'password',
 			validators: [ Validators.required, matchToValidator('password') ] },
 
@@ -124,9 +124,11 @@ export class UsersComponent extends CrudBase  {
 		// 	validators: []
 		// },
 
-		{ name: 'images', label: 'Imágenes', value: '', placeholder: 'sube imagenes', class: 'col-span-12',
+		{ name: 'images', label: 'Imágenes', value: '', placeholder: 'sube imagenes', 
+			cols: 'col-span-12',
 			type: 'images',
 			imageProperties: {
+				maxImages: 5,
 				accept: 'image/*',
 				maxSize: 1000000,
 				useCropper: true,

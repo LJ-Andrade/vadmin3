@@ -23,7 +23,7 @@ export class MultipleImageUploaderComponent {
 	@ViewChild(ImagePreviewerComponent) imagePreviewer: ImagePreviewerComponent | undefined
 
 	@Input() sectionForm: any;
-	@Input() maxFiles: number = 5
+	@Input() maxImages: number = 5
 	@Input() acceptedExtensions: string[] = ['png', 'jpg', 'jpeg']
 	@Input() maxFileSize: number = 5 * 1024 * 1024 // 5 MB
 

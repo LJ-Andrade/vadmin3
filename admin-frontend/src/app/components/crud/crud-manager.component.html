@@ -5,15 +5,15 @@
 <p-toolbar styleClass="mb-1" >
 	<div class="p-toolbar-group-start">
 		@if(listVisibility) {
-			<p-button [label]="'New ' + sectionConfig.nameSingular" icon="pi pi-plus" class="mr-2 main-button"
+			<p-button [label]="'Nuevo ' + sectionConfig.nameSingular" icon="pi pi-plus" class="mr-2 main-button"
 				(onClick)="emitRequestCreation()" />
 		} @else {
-			<p-button label="List" icon="pi pi-list" class="mr-2 main-button"
+			<p-button label="Listado" icon="pi pi-list" class="mr-2 main-button"
 				(onClick)="emitRequestList()"
 			/>
 		}
 		@if(selectedRows().length > 0) {
-			<p-button severity="danger" label="Delete selected" icon="pi pi-trash" class="main-button" outlined 
+			<p-button severity="danger" label="Eliminar Seleccionados" icon="pi pi-trash" class="main-button"
 				(onClick)="addSelectedToDeleteQueue()"
 			/>
 		}
@@ -23,13 +23,13 @@
 	<ng-template #end>
 		@if(searchOptionsVisibility) {
 			<p-inputgroup>
-				<p-button label="Search" />
-				<input pInputText placeholder="Keyword" />
+				<p-button label="Buscar" class="main-button" />
+				<input pInputText placeholder="Palabra clave" />
 			</p-inputgroup>
 
 			@if(advancedSearchAvailable) {
-				<p-button label="Advanced search" 
-					class="ml-2" [styleClass]="'text-nowrap'"
+				<p-button label="Búsqueda Avanzada" 
+					class="ml-2 main-button" [styleClass]="'text-nowrap'"
 					(onClick)="toggleAdvancedSearchOptions()" />	
 			}
 
@@ -88,14 +88,14 @@
 					}
 				}
 
-				<p-button label="Search" type="submit"></p-button>
+				<p-button label="Buscar" type="submit" class="main-button"></p-button>
 			</div>
 		</form>
 		
 	</ng-template>
 
 	<ng-template #end>
-		<p-button label="Reset" class="ml-2" [styleClass]="'text-nowrap'"
+		<p-button label="Limpiar" class="ml-2  main-button" [styleClass]="'text-nowrap'"
 			(onClick)="resetAdvancedSearchOptions()" severity="danger" size="small"/>
 		<p-button icon="pi pi-times" [rounded]="true" [text]="true" severity="danger" class="ml-2"
 			(onClick)="toggleAdvancedSearchOptions()" />
@@ -219,17 +219,21 @@
 			'sm:max-w-xs md:max-w-md lg:max-w-lg xl:max-w-xl': sectionConfig.formSize == 'SMALL',
 			'sm:max-w-sm md:max-w-lg lg:max-w-xl xl:max-w-2xl': sectionConfig.formSize == 'MEDIUM'
 		}">
-		<p-panel>
+		<p-panel class="main-form-panel">
 			<ng-template pTemplate="header">
 				<i [class]="sectionConfig.icon" style="color: slateblue"></i> 
 				<b> {{ creationFormTitle }}</b>
 			</ng-template>
 			
-			<ng-template pTemplate="body">
+			<ng-template pTemplate="body" > 
 				<ng-content select="[mainForm]"></ng-content>
 			</ng-template>
 
 			<ng-template #icons>
+				<p-button [icon]="formIsShrinked ? 'pi pi-window-maximize' : 'pi pi-window-minimize'" [rounded]="true" [text]="true" [raised]="true" severity="success" class="main-button"
+					(onClick)="changeFormSize()"
+				/>
+
 				<p-button icon="pi pi-times" [rounded]="true" [text]="true" [raised]="true" severity="danger" class="main-button"
 					(onClick)="emitRequestList()"
 				/>

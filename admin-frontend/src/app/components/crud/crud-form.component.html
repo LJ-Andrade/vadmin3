@@ -1,5 +1,5 @@
 
-<div class="flex justify-center">
+<div class="flex justify-center ">
 	<div class="w-full" 
 		[ngClass]="{
 			'sm:max-w-xs md:max-w-md lg:max-w-lg xl:max-w-xl': formSize == 'SMALL',
@@ -13,7 +13,7 @@
 					@if(!field.hidden) {
 						@switch (field.type) {
 							@case('text') {
-								<div [class]="field.class" [ngClass]="{ 'Hidden': field.hidden }"
+								<div [class]="field.class" [class]="formSize !== 'SMALL' ? field.cols : null" [ngClass]="{ 'Hidden': field.hidden }"
 									class="col-span-12">
 									<p-iftalabel class="label"> 
 										<input [fluid]="true" [formControlName]="field.name" pInputText class="input-text"
@@ -37,7 +37,7 @@
 							}
 
 							@case('select') {
-								<div [class]="field.class" [ngClass]="{ 'Hidden': field.hidden }"
+								<div [class]="field.class" [class]="formSize !== 'SMALL' ? field.cols : null" [ngClass]="{ 'Hidden': field.hidden }"
 									class="col-span-12">
 									<!-- Field: {{ field | json}} -->
 									<p-iftalabel class="w-full label">
@@ -82,7 +82,7 @@
 								<div [class]="field.class"  class="col-span-12">
 									<app-multiple-image-uploader
 										[sectionForm]="sectionForm"
-										[maxFiles]="5"
+										[maxImages]="field.maxImages"
 										[acceptedExtensions]="['jpeg', 'png']"
 										[maxFileSize]="5242880">
 									</app-multiple-image-uploader>

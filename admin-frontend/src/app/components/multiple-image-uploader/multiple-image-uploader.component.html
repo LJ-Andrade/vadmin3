@@ -5,11 +5,13 @@
             (onClick)="inputImage.click()">
         </p-button>
     </div>
-
-    <input class="hidden" multiple #inputImage type="file" (change)="fileChangeEvent($event)">
+    {{ maxImages }}
+    <input class="hidden" [multiple]="maxImages > 1" #inputImage type="file" (change)="fileChangeEvent($event)">
 
     @for(image of sectionForm.get('images').value; track $index; let odd = $odd) {
-        <app-image-previewer [image]="image" [allowDelete]="true" (deleteImageRequested)="deleteImage($index)" />
+        <div class="image-previewer-slot">
+            <app-image-previewer [image]="image" [allowDelete]="true" (deleteImageRequested)="deleteImage($index)" />
+        </div>
     }
 
     <pre>{{ sectionForm.get('images')?.value | json }}</pre>
