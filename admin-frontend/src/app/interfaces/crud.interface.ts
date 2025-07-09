@@ -94,7 +94,7 @@ export interface FormField {
 	},
 	imageProperties?: {
 		maxImages: number;
-		accept?: string;
+		acceptedExtensions?: string;
 		maxSize?: number;
 		useCropper?: boolean;
 		maintainAspectRatio?: boolean;

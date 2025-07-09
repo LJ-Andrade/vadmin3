@@ -1,3 +1,53 @@
+.image-previewer-container
+	position: relative
+	display: flex
+	flex-direction: column
+	align-items: center
+
+.image-wrapper
+	position: relative
+
+.preview-img
+	max-width: 100%
+	border-radius: 6px
+	cursor: pointer // Agregar cursor pointer para indicar que es clickeable
+	transition: opacity 0.2s ease
+	&:hover
+		opacity: 0.9
+
+.image-actions
+	position: absolute
+	top: 8px
+	right: 8px
+	display: flex
+	gap: 0.5rem
+
+.preview-indicator
+	position: absolute
+	top: 50%
+	left: 50%
+	transform: translate(-50%, -50%)
+	background: rgba(0, 0, 0, 0.7)
+	color: white
+	border-radius: 50%
+	width: 40px
+	height: 40px
+	display: flex
+	align-items: center
+	justify-content: center
+	font-size: 16px
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3)
+	cursor: pointer
+	transition: all 0.2s ease
+	opacity: 0
+	&:hover
+		background: rgba(0, 0, 0, 0.9)
+		transform: translate(-50%, -50%) scale(1.1)
+		opacity: 1
+
+.image-wrapper:hover .preview-indicator
+	opacity: 1
+
 .image-container
 	display: flex
 	align-items: center
@@ -50,8 +100,6 @@
 				background-color: #fc6060
 				color: #fff
 
-
-
 		img
 			max-width: 100%
 			max-height: 400px
@@ -74,7 +122,6 @@
 			cursor: pointer
 			.overlay
 				opacity: 1
-
 
 .full-image
 	display: none
@@ -117,3 +164,25 @@
 	display: flex
 	justify-content: center
 	align-items: center
+
+// Estilos para el preview en pantalla completa
+.full-image-container
+	display: flex
+	justify-content: center
+	align-items: center
+	width: 100%
+	height: 100%
+
+.full-preview-img
+	max-width: 100%
+	max-height: 80vh
+	border-radius: 8px
+	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3)
+
+// Personalizar el diálogo de preview
+::ng-deep .p-dialog.p-component
+	.p-dialog-content
+		padding: 1rem !important
+		display: flex
+		justify-content: center
+		align-items: center

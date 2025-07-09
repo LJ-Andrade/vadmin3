@@ -4,17 +4,26 @@
             [label]="texts.selectImagesButton" 
             (onClick)="inputImage.click()">
         </p-button>
-    </div>
-    {{ maxImages }}
-    <input class="hidden" [multiple]="maxImages > 1" #inputImage type="file" (change)="fileChangeEvent($event)">
-
-    @for(image of sectionForm.get('images').value; track $index; let odd = $odd) {
-        <div class="image-previewer-slot">
-            <app-image-previewer [image]="image" [allowDelete]="true" (deleteImageRequested)="deleteImage($index)" />
+        
+        <div *ngIf="targetWidth > 0 || targetHeight > 0" class="image-size-info">
+            <small>Las imágenes se ajustarán a {{ targetWidth > 0 ? targetWidth + 'px' : 'ancho automático' }} x 
+                {{ targetHeight > 0 ? targetHeight + 'px' : 'alto automático' }}
+                {{ cropToFit ? ' (recortando para ajustar)' : '' }}
+            </small>
         </div>
-    }
+    </div>
+    <input class="hidden" [multiple]="maxImages > 1" #inputImage type="file" (change)="fileChangeEvent($event)" accept="image/*">
 
-    <pre>{{ sectionForm.get('images')?.value | json }}</pre>
-    <!-- (deleteImageRequested)="deleteImage()" -->
-
+        <div class="grid grid-cols-12 gap-4">
+            @for (imageItem of formImages; track imageItem.id; let i = $index) {
+                <!-- <div class="col-span-4"> -->
+                    <app-image-previewer
+                        [image]="imageItem.image"
+                        [allowDelete]="true"
+                        [imageIndex]="i"
+                        (deleteImageRequested)="deleteImage($event)">
+                    </app-image-previewer>
+                <!-- </div> -->
+            }
+        </div>
 </div>

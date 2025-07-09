@@ -82,12 +82,14 @@
 								<div [class]="field.class"  class="col-span-12">
 									<app-multiple-image-uploader
 										[sectionForm]="sectionForm"
-										[maxImages]="field.maxImages"
-										[acceptedExtensions]="['jpeg', 'png']"
+										[targetWidth]="300"
+  										[targetHeight]="300"
+										[cropToFit]="true"
+										[maxImages]="field.imageProperties.maxImages ?? 1"
+										[acceptedExtensions]="field.imageProperties.acceptedExtensions"
 										[maxFileSize]="5242880">
 									</app-multiple-image-uploader>
 								</div>
-								<!-- (filesSelected)="onFilesSelected({ fieldName: field.name, files: $event }) -->
 								
 							}
 

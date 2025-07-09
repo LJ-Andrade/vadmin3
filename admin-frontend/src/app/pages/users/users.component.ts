@@ -129,7 +129,7 @@ export class UsersComponent extends CrudBase  {
 			type: 'images',
 			imageProperties: {
 				maxImages: 5,
-				accept: 'image/*',
+				acceptedExtensions: 'image/*',
 				maxSize: 1000000,
 				useCropper: true,
 				aspectRatio: 1,
