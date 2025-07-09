@@ -10,11 +10,13 @@ class UserService
 {
     public function list(array $filters = [])
     {
-        $query = User::with(['roles']);
+        $query = User::with(['roles', 'media']);
 
         if ($search = Arr::get($filters, 'search')) {
             $query->where(function ($q) use ($search) {
-                $q->where('name',  'like', "%$search%")
+                $q->where('user',  'like', "%$search%")
+                  ->orWhere('first_name','like', "%$search%")
+                  ->orWhere('last_name','like', "%$search%")
                   ->orWhere('email','like', "%$search%");
             });
         }

@@ -25,6 +25,8 @@ Route::prefix('auth')->group(function () {
 Route::post('/ai-query', [ AIQueryController::class, 'handle' ]);
 Route::post('/ai-chat', [AIQueryController::class, 'testRawAI']);
 
+// Ruta temporal para debuggear sin autenticación
+Route::get('/debug/users/{id}', [UserController::class, 'show']);
 
 Route::middleware('auth:api')->group(function () {
 
