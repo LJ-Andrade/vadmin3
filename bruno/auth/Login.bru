@@ -5,7 +5,7 @@ meta {
 }
 
 post {
-  url: {{url}}auth/login
+  url: {{url}}/auth/login
   body: json
   auth: inherit
 }
@@ -22,6 +22,5 @@ script:post-response {
   {
     let data = res.getBody();
     let token = bru.setEnvVar("token", data.access_token);
-    console.log("Token stored");
   }
 }

@@ -1,24 +1,26 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, inject, Input, Output, ViewChild, QueryList, ViewChildren } from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output, ViewChild, QueryList, ViewChildren, AfterViewInit } from '@angular/core';
 import { DataService } from '@src/app/services/data.service';
 import { HelpersService } from '@src/app/services/herlpers.service';
-import { Button } from 'primeng/button';
+import { ButtonModule } from 'primeng/button';
 import { ImagePreviewerComponent } from '../image-previewer/image-previewer-component';
+import { NotificationService } from '@src/app/services/notification.service';
 
 
 @Component({
 	selector: 'app-multiple-image-uploader',
 	standalone: true,
-	imports: [ CommonModule, Button, ImagePreviewerComponent ],
+	imports: [ CommonModule, ButtonModule, ImagePreviewerComponent ],
 	templateUrl: './multiple-image-uploader.component.html',
 	styleUrls: ['./multiple-image-uploader.component.sass'],
 })
 
 
-export class MultipleImageUploaderComponent {
+export class MultipleImageUploaderComponent implements AfterViewInit {
 
 	dataService = inject(DataService)
 	helpers: any = inject(HelpersService)
+	notificationService: NotificationService = inject(NotificationService);
 	
 	@ViewChildren(ImagePreviewerComponent) imagePreviewers!: QueryList<ImagePreviewerComponent>;
 	
@@ -33,60 +35,105 @@ export class MultipleImageUploaderComponent {
 	images: string[] = [];
 	imageItems: { id: string; image: string }[] = [];
 
+
 	private generateUniqueId(): string {
 		return 'img_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
 	}
 
 
 	texts: any = {
-		selectImagesButton: 'Seleccionar imágen...',
+		selectImagesButton: 'Agregar imágenes...',
 		adjustImage: 'Ajuste la imágen',
 		previewImage: 'Previsualización',
 	};
 
 	get formImages(): { id: string; image: string }[] {
 		const images = this.sectionForm.get('images')?.value || [];
-		// Solo sincronizar si hay un cambio en la longitud del array
-		if (this.imageItems.length !== images.length) {
+		
+		
+		// If the form has images but our local state doesn't match, update it
+		if (images.length > 0 && this.imageItems.length === 0) {
+			console.log('FormImages getter: Syncing with form value because imageItems is empty', images);
+			this.updateImagesFromFormValue(images);
+		}
+		
+		// Check if arrays are different in content, not just length
+		const currentImageUrls = this.imageItems.map(item => item.image);
+		const formImageUrls = images;
+		
+		if (JSON.stringify(currentImageUrls) !== JSON.stringify(formImageUrls)) {
+			console.log('FormImages getter: Arrays differ, updating. Current:', currentImageUrls, 'Form:', formImageUrls);
 			this.imageItems = images.map((image: string, index: number) => ({
 				id: this.imageItems[index]?.id || this.generateUniqueId(),
 				image: image
 			}));
-		} else {
-			// Actualizar las imágenes sin cambiar los IDs
-			this.imageItems.forEach((item, index) => {
-				if (item.image !== images[index]) {
-					item.image = images[index];
-				}
-			});
 		}
+		
 		return this.imageItems;
 	}
 
+
 	ngOnInit() {
-		// Sincronizar el array local con el valor del formulario
+		if (this.maxImages == 1) {
+			this.texts.selectImagesButton = 'Agregar imagen...';
+		}
+
+	}
+
+	ngAfterViewInit() {
+		// Initialize images after view is ready
+		setTimeout(() => {
+			this.initializeImagesFromForm();
+			
+			// Subscribe to form value changes to detect when external code updates the images array
+			this.sectionForm.get('images')?.valueChanges.subscribe((images: string[]) => {
+				// Force update if the form value is different from current state
+				if (JSON.stringify(images || []) !== JSON.stringify(this.images)) {
+					console.log('Updating images due to form change - Old:', this.images, 'New:', images);
+					this.updateImagesFromFormValue(images || []);
+				}
+			});
+		}, 200); // Increased delay to ensure form is properly initialized
+	}
+
+	// Helper method to initialize images from form value
+	private initializeImagesFromForm() {
 		const formImages = this.sectionForm.get('images')?.value || [];
-		this.images = [...formImages];
-		this.imageItems = formImages.map((image: string) => ({
+		if (formImages.length > 0 || this.images.length !== formImages.length) {
+			this.updateImagesFromFormValue(formImages);
+		}
+	}
+
+	// Update local state with new images array
+	private updateImagesFromFormValue(images: string[]) {
+		
+		this.images = [...images];
+		this.imageItems = images.map((image: string) => ({
 			id: this.generateUniqueId(),
 			image: image
 		}));
-		console.log('maxImages:', this.maxImages);
-		console.log('images initialized:', this.images);
+		
+		
+		// Force change detection
+		setTimeout(() => {
+			console.log('Images after timeout:', this.images);
+		}, 0);
 	}
+
 
 	fileChangeEvent(event: any): void {
 		const input = event.target as HTMLInputElement;
 		if (!input.files || input.files.length === 0) return;
 
 		const files = Array.from(input.files);
-		console.log('Selected files:', files);
+		// console.log('Selected files:', files);
 		
 		const currentImages = this.sectionForm.get('images')?.value || [];
 		
 		// Validar que no se exceda el número máximo de imágenes
 		if (currentImages.length + files.length > this.maxImages) {
 			console.warn(`No se pueden agregar más de ${this.maxImages} imágenes`);
+			this.notificationService.error(`No se pueden agregar más de ${this.maxImages} imágenes`);
 			return;
 		}
 		
@@ -100,7 +147,7 @@ export class MultipleImageUploaderComponent {
 					// Procesar la imagen (recortar si es necesario)
 					const processedImage = await this.processImage(file);
 					newImages.push(processedImage);
-					console.log('Imagen procesada:', processedImage.substring(0, 50) + '...');
+					// console.log('Imagen procesada:', processedImage.substring(0, 50) + '...');
 				} catch (error) {
 					console.error('Error al procesar imagen:', error);
 				}
@@ -140,7 +187,7 @@ export class MultipleImageUploaderComponent {
 	}
 
 	deleteImage(index: number): void {
-		console.log("Deleting image at index:", index);
+		// console.log("Deleting image at index:", index);
 		const images = this.sectionForm.get('images')?.value || [];
 		images.splice(index, 1);
 		this.sectionForm.get('images')?.setValue([...images]);
@@ -234,5 +281,59 @@ export class MultipleImageUploaderComponent {
 			
 			reader.readAsDataURL(file);
 		});
+	}
+
+	// Método para mover una imagen hacia la izquierda (intercambiando con la anterior)
+	moveImageLeft(index: number): void {
+		// Si ya está en la primera posición, no hacer nada
+		if (index <= 0) return;
+		
+		// console.log(`Moviendo imagen ${index} hacia la izquierda`);
+		this.swapImages(index, index - 1);
+	}
+	
+	// Método para mover una imagen hacia la derecha (intercambiando con la siguiente)
+	moveImageRight(index: number): void {
+		const images = this.sectionForm.get('images')?.value || [];
+		// Si ya está en la última posición, no hacer nada
+		if (index >= images.length - 1) return;
+		
+		// console.log(`Moviendo imagen ${index} hacia la derecha`);
+		this.swapImages(index, index + 1);
+	}
+	
+	// Método auxiliar para intercambiar dos imágenes en el array
+	private swapImages(index1: number, index2: number): void {
+		// Obtener el array actual de imágenes
+		const images = [...(this.sectionForm.get('images')?.value || [])];
+		
+		// Verificar índices válidos
+		if (index1 < 0 || index2 < 0 || index1 >= images.length || index2 >= images.length) {
+			console.error('Índices fuera de rango', index1, index2, images.length);
+			return;
+		}
+		
+		// Intercambiar posiciones
+		[images[index1], images[index2]] = [images[index2], images[index1]];
+		
+		// Actualizar el formulario
+		this.sectionForm.get('images')?.setValue(images);
+		this.images = [...images];
+		
+		// Intercambiar también en imageItems para mantener sincronizado
+		const tempId = this.imageItems[index1].id;
+		const tempImage = this.imageItems[index1].image;
+		
+		this.imageItems[index1] = {
+			id: this.imageItems[index2].id,
+			image: this.imageItems[index2].image
+		};
+		
+		this.imageItems[index2] = {
+			id: tempId,
+			image: tempImage
+		};
+		
+		console.log('Imágenes reordenadas correctamente');
 	}
 }

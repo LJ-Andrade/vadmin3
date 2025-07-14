@@ -1,0 +1,24 @@
+meta {
+  name: Create
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{url}}/users
+  body: multipartForm
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:multipart-form {
+  user: javzero1
+  first_name: Leandro
+  last_name: Andrade
+  password: 12121212
+  avatar: @file(/home/leandro/Downloads/7bb2f858-ec9b-4f1d-aa78-c89b0fe906db.png)
+  email: test@fkamc.com
+}

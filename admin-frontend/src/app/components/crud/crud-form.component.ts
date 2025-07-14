@@ -42,12 +42,12 @@ export class CrudFormComponent {
 	}
 
 	submitForm() {
-		console.log(this.sectionForm.value)
-		console.log(this.files);
-		// this.submitFormEvent.emit({
-		// 	formValue: this.sectionForm.value,
-		// 	files: this.files 
-		// });
+		// console.log(this.sectionForm.value)
+		// console.log(this.files);
+		this.submitFormEvent.emit({
+			formValue: this.sectionForm.value,
+			files: this.files 
+		});
 	}
 
 	handleImages(images: File[]) {

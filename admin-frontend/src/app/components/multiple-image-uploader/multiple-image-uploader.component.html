@@ -1,29 +1,45 @@
 <div class="multiple-image-uploader">
-    <div class="centered">
+    <div class="">
         <p-button class="main-button" 
             [label]="texts.selectImagesButton" 
             (onClick)="inputImage.click()">
         </p-button>
-        
-        <div *ngIf="targetWidth > 0 || targetHeight > 0" class="image-size-info">
-            <small>Las imágenes se ajustarán a {{ targetWidth > 0 ? targetWidth + 'px' : 'ancho automático' }} x 
+        <div *ngIf="targetWidth > 0 || targetHeight > 0" class="image-size-info mb-5">
+            <p>Las imágenes se ajustarán a {{ targetWidth > 0 ? targetWidth + 'px' : 'ancho automático' }} x 
                 {{ targetHeight > 0 ? targetHeight + 'px' : 'alto automático' }}
-                {{ cropToFit ? ' (recortando para ajustar)' : '' }}
-            </small>
+            </p>
         </div>
     </div>
-    <input class="hidden" [multiple]="maxImages > 1" #inputImage type="file" (change)="fileChangeEvent($event)" accept="image/*">
 
-        <div class="grid grid-cols-12 gap-4">
+    <input class="hidden" [multiple]="maxImages > 1" #inputImage type="file" (change)="fileChangeEvent($event)" accept="image/*">
+    
+    <div class="grid grid-cols-12 gap-4">
             @for (imageItem of formImages; track imageItem.id; let i = $index) {
-                <!-- <div class="col-span-4"> -->
-                    <app-image-previewer
-                        [image]="imageItem.image"
-                        [allowDelete]="true"
-                        [imageIndex]="i"
-                        (deleteImageRequested)="deleteImage($event)">
-                    </app-image-previewer>
-                <!-- </div> -->
+                <div class="col-span-3">
+                    <div class="image-container">
+                        <div class="order-controls">
+                            <button pButton type="button" class="order-button left" 
+                                    [disabled]="i === 0"
+                                    (click)="moveImageLeft(i)" 
+                                    title="Mover a la izquierda">
+                                <i class="pi pi-chevron-left"></i>
+                            </button>
+                            <span class="order-number">{{i + 1}}</span>
+                            <button pButton type="button" class="order-button right" 
+                                    [disabled]="i === formImages.length - 1"
+                                    (click)="moveImageRight(i)" 
+                                    title="Mover a la derecha">
+                                <i class="pi pi-chevron-right"></i>
+                            </button>
+                        </div>
+                        <app-image-previewer
+                            [image]="imageItem.image"
+                            [allowDelete]="true"
+                            [imageIndex]="i"
+                            (deleteImageRequested)="deleteImage($event)">
+                        </app-image-previewer>
+                    </div>
+                </div>
             }
         </div>
 </div>

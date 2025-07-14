@@ -65,32 +65,17 @@
 							}
 
 							@case('images') {
-								<!-- <div [class]="field.class"  class="col-span-12">
-									<div class="hollow-panel">
-										<app-image-uploader
-											[formGroup]="sectionForm"
-											[fieldName]="field.name"
-											[currentImage]="field.currentImage"
-											[useCropper]="field.imageProperties.useCropper ?? false"
-											[aspectRatio]="field.imageProperties.aspectRatio ?? 16/9"
-											[resizeToWidth]="field.imageProperties.resizeToWidth ?? 400"
-											(onImageSelected)="field.onImageSelected ? field.onImageSelected($event) : null"
-											(onImageDeleted)="field.onImageDeleted ? field.onImageDeleted($event) : null"
-										></app-image-uploader>
-									</div>
-								</div> -->
 								<div [class]="field.class"  class="col-span-12">
 									<app-multiple-image-uploader
 										[sectionForm]="sectionForm"
-										[targetWidth]="300"
-  										[targetHeight]="300"
+										[targetWidth]="field.imageProperties?.resizeToWidth ?? 300"
+  										[targetHeight]="field.imageProperties?.resizeToWidth ?? 300"
 										[cropToFit]="true"
-										[maxImages]="field.imageProperties.maxImages ?? 1"
-										[acceptedExtensions]="field.imageProperties.acceptedExtensions"
-										[maxFileSize]="5242880">
+										[maxImages]="field.imageProperties?.maxImages ?? 1"
+										[acceptedExtensions]="field.imageProperties?.acceptedExtensions ? [field.imageProperties.acceptedExtensions] : ['image/*']"
+										[maxFileSize]="field.imageProperties?.maxSize ?? 5242880">
 									</app-multiple-image-uploader>
 								</div>
-								
 							}
 
 							@case('file') {

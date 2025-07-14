@@ -17,25 +17,11 @@ export class CrudBase implements OnInit {
 	currentPage: number = 1
 	existingImageUrl: string | null = null;
 	// relations: { [key: string]: any } = {};
-	debugData: boolean = false;
-	debugCreationForm: boolean = true;
-
+	
     ngOnInit(): void {
 	   	this.fetchData()
 	   	this.buildSectionForm()
 		this.buildSearchForm()
-
-		if (this.debugData) {
-			console.info("Debug mode is activated on the current view file")
-			console.log('Section config ', this.sectionConfig)
-			console.log('List data ', this.listData)
-			console.log('List config ', this.listConfig)
-			console.log('Form fields ', this.formFields)
-		}
-
-		if (this.debugCreationForm) {
-			this.toggleCreationForm()
-		}
     }
 
 	ngOnDestroy(): void {
@@ -74,7 +60,7 @@ export class CrudBase implements OnInit {
 		params['list_regs_per_page'] = perPage;
 		this.currentPage = params['page']
 		
-		this.crudService.read(this.sectionConfig.model, params, this.debugData)
+		this.crudService.read(this.sectionConfig.model, params)
 
 	}
 
@@ -97,12 +83,22 @@ export class CrudBase implements OnInit {
 		this.sectionForm = new FormGroup({});
 
 		this.formFields.forEach(field => {
+			// Initialize with proper default values based on field type
+			let defaultValue = field.value || null;
+			
+			// For images field, initialize as empty array
+			if (field.type === 'images') {
+				defaultValue = [];
+			}
+			
 			this.sectionForm.addControl(
 				field.name,
-				new FormControl(null, field.validators))
+				new FormControl(defaultValue, field.validators));
 
-			if (field.value)
-				this.sectionForm.get(field.name)?.setValue(field.value)
+			// If field has a predefined value, set it
+			if (field.value && field.type !== 'images') {
+				this.sectionForm.get(field.name)?.setValue(field.value);
+			}
 		});
 	}
 
@@ -212,7 +208,25 @@ export class CrudBase implements OnInit {
 	
 		// Agregar campos normales del formulario
 		Object.keys(this.sectionForm.value).forEach(key => {
-			formData.append(key, this.sectionForm.value[key]);
+			const value = this.sectionForm.value[key];
+			
+			// Handle images field specially - convert array to individual images
+			if (key === 'images' && Array.isArray(value)) {
+				// If we have images, add them to the FormData
+				value.forEach((image: string, index: number) => {
+					// If it's a data URL (new image), we might want to handle it differently
+					if (image.startsWith('data:')) {
+						// Convert data URL to blob and append
+						const blob = this.dataURLtoBlob(image);
+						formData.append(`images[${index}]`, blob, `image_${index}.jpg`);
+					} else {
+						// It's an existing URL, just append as string
+						formData.append(`images[${index}]`, image);
+					}
+				});
+			} else if (value !== null && value !== undefined) {
+				formData.append(key, value);
+			}
 		});
 	
 		// Agregar archivos cargados
@@ -268,6 +282,19 @@ export class CrudBase implements OnInit {
 				}
 			}
 		});
+	}
+
+	// Helper method to convert data URL to blob
+	private dataURLtoBlob(dataURL: string): Blob {
+		const arr = dataURL.split(',');
+		const mime = arr[0].match(/:(.*?);/)![1];
+		const bstr = atob(arr[1]);
+		let n = bstr.length;
+		const u8arr = new Uint8Array(n);
+		while (n--) {
+			u8arr[n] = bstr.charCodeAt(n);
+		}
+		return new Blob([u8arr], { type: mime });
 	}
 
 	
@@ -328,6 +355,9 @@ export class CrudBase implements OnInit {
 	// }
 
 	fillFormWithRecordData(record: any) {
+		this.currentRecord = record; // Store the current record
+		console.log("Filling form with record:", record);
+		
 		this.formFields.forEach(field => {
 	
 			if (field.isRelation) {
@@ -337,15 +367,55 @@ export class CrudBase implements OnInit {
 					this.sectionForm.get(field.name)?.setValue(record[field.options.name][0]);
 				}
 			} else {
-				this.sectionForm.get(field.name)?.setValue(record[field.name]);
-	
-				// Si es el campo 'image', además lo guardamos en una propiedad para mostrar el preview
-				if (field.name === 'image') {
-					// Esta propiedad debe existir en tu componente hijo, que extiende CrudBase
-					(this as any).existingImageUrl = record[field.name];
+				// Handle special cases based on field type
+				if (field.type === 'images') {
+					// Handle images field type - could be single image (avatar) or array of images
+					let imageUrls: string[] = [];
+					
+					// Check if the field contains an array of images
+					if (Array.isArray(record[field.name])) {
+						imageUrls = record[field.name];
+					} 
+					// Check if it's a single image (like avatar)
+					else if (record[field.name] && typeof record[field.name] === 'string') {
+						imageUrls = [record[field.name]];
+					}
+					// Check if avatar data is in a nested object structure (Laravel media library format)
+					else if (record['avatar'] && typeof record['avatar'] === 'object') {
+						// Use the main conversion URL if available, otherwise original_url, otherwise url
+						const avatarUrl = record['avatar'].url || 
+										  record['avatar'].original_url || 
+										  record['avatar'].thumb_url;
+						if (avatarUrl) {
+							imageUrls = [avatarUrl];
+						}
+					}
+					// Check if avatar is a simple string URL
+					else if (record['avatar'] && typeof record['avatar'] === 'string') {
+						imageUrls = [record['avatar']];
+					}
+					
+					console.log(`Setting ${field.name} field with images:`, imageUrls);
+					console.log(`Avatar data structure:`, record['avatar']);
+					
+					// Set the value and trigger change detection
+					this.sectionForm.get(field.name)?.setValue(imageUrls);
+					this.sectionForm.get(field.name)?.updateValueAndValidity();
+				} else {
+					// Default handling for other field types
+					this.sectionForm.get(field.name)?.setValue(record[field.name]);
+				
+					// If it's an image field, store it for preview
+					if (field.name === 'image' || field.name === 'avatar') {
+						this.existingImageUrl = record[field.name];
+					}
 				}
 			}
 		});
+		
+		// Force form to update and trigger change detection
+		this.sectionForm.updateValueAndValidity();
+		console.log("Form filled with record data:", this.sectionForm.value);
 	}
 	
 
@@ -373,10 +443,16 @@ export class CrudBase implements OnInit {
 	}
 
 	clearCreationForm(): void {
-		this.sectionForm.reset();
-		// this.sectionForm.clearValidators();
-		// this.sectionForm.updateValueAndValidity();
+		// Reset form values with proper defaults for each field type
+		this.formFields.forEach(field => {
+			if (field.type === 'images') {
+				this.sectionForm.get(field.name)?.setValue([]);
+			} else {
+				this.sectionForm.get(field.name)?.setValue(null);
+			}
+		});
 
+		// Clear all validation states
 		Object.values(this.sectionForm.controls).forEach(control => {
 			control.markAsPristine();
 			control.markAsUntouched();
@@ -384,7 +460,7 @@ export class CrudBase implements OnInit {
 		});
 	
 		this.sectionForm.updateValueAndValidity();
-		// console.log("Form ", this.sectionForm)
+		this.currentRecord = {}; // Clear current record
 	}
 
 		

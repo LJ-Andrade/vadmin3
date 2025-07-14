@@ -81,7 +81,11 @@ class User extends Authenticatable implements HasMedia
     {
         $this->addMediaCollection('avatar')
             ->singleFile()
-            ->withResponsiveImages(); // Esto puede ayudar a reducir el tamaño
+            ->withResponsiveImages();
+            
+        // Puedes agregar más colecciones si necesitas
+        $this->addMediaCollection('documents'); // Para documentos del usuario
+        $this->addMediaCollection('profile_banner')->singleFile(); // Para banner del perfil
     }
 
     public function registerMediaConversions(Media $media = null): void

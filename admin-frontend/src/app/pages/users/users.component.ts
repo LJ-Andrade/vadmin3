@@ -18,9 +18,8 @@ import { matchToValidator } from '@src/app/validators/match-fields.validator'
 export class UsersComponent extends CrudBase  {
 
 	override ngOnInit() {
-		this.debugData = false;
 		super.ngOnInit()
-		this.fetchRelation('roles', 'role', this.debugData)
+		this.fetchRelation('roles', 'role')
 	}
 
 	override sectionConfig: SectionConfig = {
@@ -124,18 +123,18 @@ export class UsersComponent extends CrudBase  {
 		// 	validators: []
 		// },
 
-		{ name: 'images', label: 'Imágenes', value: '', placeholder: 'sube imagenes', 
+		{ name: 'images', label: 'Imágenes / Avatar', value: [], placeholder: 'sube imagenes', 
 			cols: 'col-span-12',
 			type: 'images',
 			imageProperties: {
-				maxImages: 5,
+				maxImages: 1,
 				acceptedExtensions: 'image/*',
 				maxSize: 1000000,
-				useCropper: true,
-				aspectRatio: 1,
-				resizeToWidth: 300,
+				targetWidth: 300,
+				targetHeight: 300,
+				cropToFit: true,
 			},
-			validators: []
+			validators: [] // Sin validadores requeridos
 		},
 
 

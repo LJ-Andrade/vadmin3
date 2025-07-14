@@ -17,3 +17,9 @@ composer require spatie/laravel-medialibrary
 php artisan vendor:publish --provider="Spatie\MediaLibrary\MediaLibraryServiceProvider" --tag="medialibrary-migrations"
 php artisan migrate
 php artisan storage:link
+
+
+
+----
+Eliminar media que no tiene registros asociados
+php artisan media:clean-orphaned

@@ -96,10 +96,9 @@ export interface FormField {
 		maxImages: number;
 		acceptedExtensions?: string;
 		maxSize?: number;
-		useCropper?: boolean;
-		maintainAspectRatio?: boolean;
-		aspectRatio?: number;
-		resizeToWidth?: number;
+		targetWidth?: number;
+		targetHeight?: number;
+		cropToFit?: boolean;
 	}
 }
 

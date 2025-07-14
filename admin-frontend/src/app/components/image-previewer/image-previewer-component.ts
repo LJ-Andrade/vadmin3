@@ -87,7 +87,8 @@ export class ImagePreviewerComponent implements OnChanges, OnInit, OnDestroy {
 		this.confirmingDelete = true;
 	}
 
-	requestImageDeletion() {		this.actionIsLoading = true;
+	requestImageDeletion() {		
+		this.actionIsLoading = true;
 		this.confirmingDelete = false;
 		this.deleteImageRequested.emit(this.imageIndex);
 		// Limpiar la imagen después de emitir el evento

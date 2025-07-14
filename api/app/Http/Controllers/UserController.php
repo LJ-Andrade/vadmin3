@@ -176,4 +176,31 @@ class UserController extends Controller
             return [false, $errorMessage];
         }
     }
+
+    public function uploadAvatar(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+        
+        $request->validate([
+            'avatar' => 'required|image|max:10000',
+        ]);
+        
+        $result = $this->processAvatarUpload($user, $request);
+        
+        if ($result && !$result[0]) {
+            return response()->json([
+                'success' => false,
+                'message' => $result[1]
+            ], 400);
+        }
+        
+        // Recargar el usuario con sus relaciones
+        $user = User::with(['roles', 'media'])->find($user->id);
+        
+        return response()->json([
+            'success' => true,
+            'message' => 'Avatar uploaded successfully',
+            'data' => new UserResource($user)
+        ]);
+    }
 }
