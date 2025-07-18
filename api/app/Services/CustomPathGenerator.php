@@ -44,6 +44,7 @@ class CustomPathGenerator implements PathGenerator
             'avatar' => "users/avatars/{$media->model_id}",
             'documents' => "users/documents/{$media->model_id}",
             'profile_banner' => "users/banners/{$media->model_id}",
+            'users' => "users/{$media->model_id}",
             default => "users/{$collectionName}/{$media->model_id}"
         };
     }

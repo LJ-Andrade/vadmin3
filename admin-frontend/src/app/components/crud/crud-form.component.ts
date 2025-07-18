@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core'
+import { Component, Input, Output, EventEmitter, inject } from '@angular/core'
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { IftaLabelModule } from 'primeng/iftalabel'
 import { InputTextModule } from 'primeng/inputtext'
@@ -6,29 +6,35 @@ import { FieldErrorComponent } from '../field-error/field-error.component'
 import { ButtonModule } from 'primeng/button'
 import { CommonModule } from '@angular/common'
 import { SelectModule } from 'primeng/select'
+import { MultiSelectModule } from 'primeng/multiselect';
 import { TableModule } from 'primeng/table'
 import { FileUploaderComponent } from '../file-uploader/file-uploader.component'
-import { MultipleImageUploaderComponent } from '../multiple-image-uploader/multiple-image-uploader.component'
+import { ImageUploaderComponent } from '../image-uploader/image-uploader.component'
+import { FormField } from '@src/app/interfaces/crud.interface'
+import { HelpersService } from '@src/app/services/herlpers.service'
 
 @Component({
 	selector: 'app-crud-form',
-	imports: [CommonModule, ButtonModule, SelectModule, FormsModule, ReactiveFormsModule,
+	imports: [CommonModule, ButtonModule, SelectModule, MultiSelectModule, FormsModule, ReactiveFormsModule,
 		IftaLabelModule, FieldErrorComponent, InputTextModule, TableModule, 
-		FileUploaderComponent, MultipleImageUploaderComponent ],
+		ImageUploaderComponent, FileUploaderComponent ],
 	templateUrl: './crud-form.component.html',
 })
 
 export class CrudFormComponent {
 	@Input() sectionForm!: FormGroup;
-	@Input() formFields: any[] = []
+	@Input() formFields: FormField[] = []
 	@Input() formSize: string = 'LARGE'
 	@Input() loading: boolean = false
 	@Input() existingImageUrl: string | null = null;
 	@Output() submitFormEvent = new EventEmitter<any>();
 	
+	// @ViewChild(ImageUploaderComponent) imageUploader!: ImageUploaderComponent;
+	helpersService = inject(HelpersService);
+
 	imageChangedEvent: any = '';
-	croppedImage: any = '';
-	uploadedImages: File[] = [];
+	// croppedImage: any = '';
+	// uploadedImages: File[] = [];
 	files: { [key: string]: File[] } = {};
 
 	get saveBtnLabel(): string {
@@ -36,9 +42,11 @@ export class CrudFormComponent {
 	}
 
 	ngOnInit() {
-		if (this.sectionForm.get('image')?.value && !this.croppedImage) {
-			this.existingImageUrl = this.sectionForm.get('image')?.value;
-		}
+		// if (this.sectionForm.get('image')?.value && !this.croppedImage) {
+		// 	this.existingImageUrl = this.sectionForm.get('image')?.value;
+		// }
+
+		console.log(this.formFields)
 	}
 
 	submitForm() {
@@ -50,10 +58,10 @@ export class CrudFormComponent {
 		});
 	}
 
-	handleImages(images: File[]) {
-		this.uploadedImages = images;
-		console.log('Imágenes seleccionadas:', this.uploadedImages);
-	}
+	// handleImages(images: File[]) {
+	// 	this.uploadedImages = images;
+	// 	console.log('Imágenes seleccionadas:', this.uploadedImages);
+	// }
 
 	fileChangeEvent(event: any): void {
 		this.imageChangedEvent = event;
@@ -117,5 +125,22 @@ export class CrudFormComponent {
 	onFileDeleted(event: { fieldName: string, index: number }) {
 		this.files[event.fieldName].splice(event.index, 1);
 	}
+
+	// Llama a esto al cerrar el formulario o antes de cargar un nuevo registro
+	// resetUploaderImages() {
+	// 	if (this.imageUploader) {
+	// 		this.imageUploader.clearImages();
+	// 	}
+	// }
+
+	closeForm() {
+		console.log('Form closed');
+		// ...tu lógica de cierre...
+	}
+
+	editRecord(record: any) {
+		// ...tu lógica para cargar el registro...
+	}
+
 
 }

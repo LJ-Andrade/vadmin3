@@ -19,7 +19,11 @@ export class UsersComponent extends CrudBase  {
 
 	override ngOnInit() {
 		super.ngOnInit()
-		this.fetchRelation('roles', 'role')
+		this.fetchRelation('roles', 'roles')
+
+		setTimeout(() => {
+			console.log(this.crudService.relations())
+		}, 1000)
 	}
 
 	override sectionConfig: SectionConfig = {
@@ -43,6 +47,7 @@ export class UsersComponent extends CrudBase  {
 		 },
 
 		{ name: 'roles', text: 'Role', columnClass: 'w-6', showAsBadge: true,
+			isArray: true, isRelation: true, relationName: 'roles', relationDisplayName: 'name', relationValue: 'id',
 			search: { 
 				placeholder: 'By role...',
 				type: 'select',
@@ -85,9 +90,9 @@ export class UsersComponent extends CrudBase  {
 			cols: 'sm:col-span-3 md:col-span-3',
 			validators: [ Validators.required, Validators.minLength(3), Validators.maxLength(50)] },
 		
-		{ name: 'role', label: 'Role', value: '', placeholder: 'Select the role', type: 'select', 
+		{ name: 'roles', label: 'Role', value: '', placeholder: 'Select the role', type: 'select', 
 			cols: 'sm:col-span-3 md:col-span-3',
-			isRelation: true,
+			isRelation: true, isArray: true,
 			options: { 
 				name: 'roles', valueName: 'name', displayField: 'name'
 			},
@@ -123,12 +128,12 @@ export class UsersComponent extends CrudBase  {
 		// 	validators: []
 		// },
 
-		{ name: 'images', label: 'Imágenes / Avatar', value: [], placeholder: 'sube imagenes', 
+		{ name: 'avatar', label: 'Imágenes / Avatar', value: [], placeholder: 'sube imagenes', 
 			cols: 'col-span-12',
 			type: 'images',
 			imageProperties: {
 				maxImages: 1,
-				acceptedExtensions: 'image/*',
+				acceptedExtensions: ['png', 'jpg', 'jpeg'],
 				maxSize: 1000000,
 				targetWidth: 300,
 				targetHeight: 300,
@@ -136,9 +141,6 @@ export class UsersComponent extends CrudBase  {
 			},
 			validators: [] // Sin validadores requeridos
 		},
-
-
-
 
 	]
 }

@@ -43,7 +43,7 @@ export class CrudBase implements OnInit {
 	sectionForm: FormGroup = new FormGroup({})
 	files: { [key: string]: File[] } = {};
 	searchForm: FormGroup = new FormGroup({})
-	currentRecord: any = {}
+	// currentRecord: any = {}
 
 
 	fetchData(params: any = {}) {
@@ -76,7 +76,6 @@ export class CrudBase implements OnInit {
             }
         );
     }
-
 
 
 	buildSectionForm() {
@@ -116,7 +115,7 @@ export class CrudBase implements OnInit {
 		const field = this.formFields.find(f => f.name === fieldName);
 		if (!field || !field.options) return;
 	
-		field.options.data = relationData;
+		field.options.items = relationData;
 	
 		const control = formGroup.get(field.name);
 		if (control) {
@@ -139,7 +138,8 @@ export class CrudBase implements OnInit {
 			searchField.search.options = {
 				name: fieldName,
 				valueName: 'id',
-				displayField: 'name'
+				displayField: 'name',
+				items: []
 			};
 		}
 	}
@@ -199,58 +199,50 @@ export class CrudBase implements OnInit {
 
 	submitForm() {
 		console.log(this.sectionForm.value);
-	
+
 		if (!this.validateForm()) {
 			return;
 		}
-	
+
 		const formData = new FormData();
-	
-		// Agregar campos normales del formulario
+
 		Object.keys(this.sectionForm.value).forEach(key => {
 			const value = this.sectionForm.value[key];
-			
-			// Handle images field specially - convert array to individual images
+
 			if (key === 'images' && Array.isArray(value)) {
-				// If we have images, add them to the FormData
 				value.forEach((image: string, index: number) => {
-					// If it's a data URL (new image), we might want to handle it differently
 					if (image.startsWith('data:')) {
-						// Convert data URL to blob and append
+						// Imagen nueva, convertir a archivo
 						const blob = this.dataURLtoBlob(image);
-						formData.append(`images[${index}]`, blob, `image_${index}.jpg`);
-					} else {
-						// It's an existing URL, just append as string
-						formData.append(`images[${index}]`, image);
+						formData.append('images', blob, `image_${index}.jpg`);
 					}
+					// Si es una URL existente, NO la envíes como archivo
+					// El backend ya tiene esa imagen, no necesita que la envíes de nuevo
 				});
-			} else if (value !== null && value !== undefined) {
+			} else if (key !== 'images' && value !== null && value !== undefined) {
 				formData.append(key, value);
 			}
 		});
-	
-		// Agregar archivos cargados
+
+		// Agregar archivos cargados (si usas otro sistema de archivos)
 		Object.keys(this.files).forEach(fieldName => {
 			this.files[fieldName].forEach(file => {
 				formData.append(fieldName, file);
 			});
 		});
-	
+
 		let operation: string = '';
-	
+
 		this.crudService.save(formData, this.sectionConfig.model)!
 		.subscribe({
 			next: (res: any) => {
-				console.log("Response ", res)
 				let message: string = '';
 				if (res.meta && res.meta.operation == 'update') {
 					message = 'The record has been updated successfully';
 					operation = 'update';
-					console.log("Update ", res)
 				} else {
 					operation = 'create';
 					message = 'The record has been created successfully';
-					console.log("Create ", res)
 				}
 				this.crudService.notificationService.success(message, '');
 				this.fetchData();
@@ -260,25 +252,20 @@ export class CrudBase implements OnInit {
 				if (errors) {
 					this.sectionForm.get('errors')?.setErrors({ serverError: errors.errors });
 					console.log("Error on form ", errors);
-	
+
 					let error_message: string = '';
-	
+
 					if (errors.errors) {
 						for (let key in errors.errors) {
 							error_message += '- ' + errors.errors[key] + '\n';
 						}
 					}
-	
+
 					if (errors.error) {
 						error_message += '- ' + errors.error + '\n';
 					}
-	
+
 					this.crudService.notificationService.error("There are errors on the form ", error_message);
-				}
-			},
-			complete: () => {
-				if (operation == 'create') {
-					this.clearCreationForm();
 				}
 			}
 		});
@@ -354,68 +341,63 @@ export class CrudBase implements OnInit {
 	// 	});
 	// }
 
+	// fillFormWithRecordData(record: any) {
+	// 	// this.currentRecord = record;
+	// 	console.log("Form fields", this.formFields)
+	// 	console.log("Filling form with record:", record);
+
+	// 	this.formFields.forEach(field => {
+			
+	// 		if (field.type === 'images') {
+	// 			//  Si hay un field del form del tipo images busca en la data original,
+	// 			//  dentro de media a ver si hay imágenes
+	// 			// TODO luego hay que hacer lo mismo con files
+	// 			if (field.imageProperties?.multiple) {
+	// 				const images = record.media?.filter((m: any) => m.mime_type?.startsWith('image/'));
+	// 				this.sectionForm.get(field.name)?.value.push(...images);
+	// 			}
+	// 			else 
+	// 			{
+	// 				const image = record.media?.find((m: any) => m.mime_type?.startsWith('image/'));
+	// 				this.sectionForm.get(field.name)?.setValue(image);
+	// 			}
+	// 		} else {
+	// 			console.log(field.name)
+	// 			console.log(record[field.name]);
+	// 			this.sectionForm.get(field.name)?.setValue(record[field.name]);
+	// 		}
+			
+	// 	});
+
+	// 	this.sectionForm.updateValueAndValidity();
+	// 	console.log("Form filled with record data:", this.sectionForm.value);
+	// }
+
+
 	fillFormWithRecordData(record: any) {
-		this.currentRecord = record; // Store the current record
-		console.log("Filling form with record:", record);
-		
 		this.formFields.forEach(field => {
-	
-			if (field.isRelation) {
-				if (record[field.options.name][0] == undefined) {
-					this.sectionForm.get(field.name)?.setValue(null);
+			if (field.type === 'images') {
+				if (field.imageProperties?.multiple) {
+					const images = record.media?.filter((m: any) => m.mime_type?.startsWith('image/'));
+					this.sectionForm.get(field.name)?.setValue(images ?? []);
 				} else {
-					this.sectionForm.get(field.name)?.setValue(record[field.options.name][0]);
+					const image = record.media?.find((m: any) => m.mime_type?.startsWith('image/'));
+					this.sectionForm.get(field.name)?.setValue(image ?? null);
 				}
+			} else if (field.type === 'select' && field.isArray) {
+				// Para selects múltiples, asigna array de IDs
+				let value = record[field.name];
+				if (Array.isArray(value)) {
+					value = value.map(item => item[field.options?.valueName || 'id']);
+				}
+				this.sectionForm.get(field.name)?.setValue(value ?? []);
 			} else {
-				// Handle special cases based on field type
-				if (field.type === 'images') {
-					// Handle images field type - could be single image (avatar) or array of images
-					let imageUrls: string[] = [];
-					
-					// Check if the field contains an array of images
-					if (Array.isArray(record[field.name])) {
-						imageUrls = record[field.name];
-					} 
-					// Check if it's a single image (like avatar)
-					else if (record[field.name] && typeof record[field.name] === 'string') {
-						imageUrls = [record[field.name]];
-					}
-					// Check if avatar data is in a nested object structure (Laravel media library format)
-					else if (record['avatar'] && typeof record['avatar'] === 'object') {
-						// Use the main conversion URL if available, otherwise original_url, otherwise url
-						const avatarUrl = record['avatar'].url || 
-										  record['avatar'].original_url || 
-										  record['avatar'].thumb_url;
-						if (avatarUrl) {
-							imageUrls = [avatarUrl];
-						}
-					}
-					// Check if avatar is a simple string URL
-					else if (record['avatar'] && typeof record['avatar'] === 'string') {
-						imageUrls = [record['avatar']];
-					}
-					
-					console.log(`Setting ${field.name} field with images:`, imageUrls);
-					console.log(`Avatar data structure:`, record['avatar']);
-					
-					// Set the value and trigger change detection
-					this.sectionForm.get(field.name)?.setValue(imageUrls);
-					this.sectionForm.get(field.name)?.updateValueAndValidity();
-				} else {
-					// Default handling for other field types
-					this.sectionForm.get(field.name)?.setValue(record[field.name]);
-				
-					// If it's an image field, store it for preview
-					if (field.name === 'image' || field.name === 'avatar') {
-						this.existingImageUrl = record[field.name];
-					}
-				}
+				this.sectionForm.get(field.name)?.setValue(record[field.name] ?? null);
 			}
 		});
-		
-		// Force form to update and trigger change detection
+
 		this.sectionForm.updateValueAndValidity();
-		console.log("Form filled with record data:", this.sectionForm.value);
+		console.log("Form filled with record data: ", this.sectionForm.value);
 	}
 	
 
@@ -460,7 +442,7 @@ export class CrudBase implements OnInit {
 		});
 	
 		this.sectionForm.updateValueAndValidity();
-		this.currentRecord = {}; // Clear current record
+		// this.currentRecord = {}; // Clear current record
 	}
 
 		

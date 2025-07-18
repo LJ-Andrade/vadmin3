@@ -1,8 +1,87 @@
 .image-uploader
-    .preview-image
-        // border-radius: 10px
-        // margin-bottom: 10px
-        // overflow: hidden
-        // max-width: 100%
-        // img
-        //     max-width: 100%
+    // border: 1px solid red
+    border: 1px solid #dddddd60
+    border-radius: 10px
+    padding: 20px
+    .image-previewer-slot
+        border: 1px solid blue
+
+    .centered
+        display: flex
+        flex-direction: column
+        align-items: center
+        margin-bottom: 1rem
+
+    .image-size-info
+        margin-top: 8px
+        color: #666
+        font-style: italic
+        
+    .main-button
+        margin-bottom: 0.5rem
+
+    .image-container
+        position: relative
+        margin-bottom: 15px
+        padding-bottom: 28px // Espacio para los controles de orden
+
+    .order-controls
+        position: absolute
+        left: 50%
+        bottom: 0
+        transform: translateX(-50%)
+        display: flex
+        flex-direction: row
+        align-items: center
+        background: rgba(255, 255, 255, 0.9)
+        border-radius: 8px
+        padding: 6px 8px
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15)
+        z-index: 5
+
+    .order-button
+        background: none
+        border: none
+        padding: 4px
+        cursor: pointer
+        font-size: 14px
+        color: #333
+        display: flex
+        align-items: center
+        justify-content: center
+        width: 28px
+        height: 28px
+        border-radius: 6px
+        transition: all 0.2s ease
+        
+        &:hover:not(:disabled)
+            background-color: #e0e0e0
+            
+        &:disabled
+            color: #ccc
+            cursor: not-allowed
+            
+        &.left
+            margin-right: 4px
+            
+        &.right
+            margin-left: 4px
+            
+        i
+            font-size: 12px
+    
+    .order-number
+        font-size: 12px
+        font-weight: bold
+        color: #555
+        display: block
+        text-align: center
+        width: 20px
+        height: 20px
+        line-height: 20px
+
+    .imgs-container
+      
+        padding: 20px
+    .img-col
+        border: 1px solid #ddd

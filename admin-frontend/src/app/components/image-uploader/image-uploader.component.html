@@ -1,37 +1,45 @@
-
 <div class="image-uploader">
-    <div class="centered">
-        <p-button [label]="texts.selectImagesButton" (onClick)="inputImage.click()"></p-button>
+    <div class="">
+        <p-button class="main-button" 
+            [label]="texts.selectImagesButton" 
+            (onClick)="inputImage.click()">
+        </p-button>
+        <div *ngIf="targetWidth > 0 || targetHeight > 0" class="image-size-info mb-5">
+            <p>Las imágenes se ajustarán a {{ targetWidth > 0 ? targetWidth + 'px' : 'ancho automático' }} x 
+                {{ targetHeight > 0 ? targetHeight + 'px' : 'alto automático' }}
+            </p>
+        </div>
     </div>
 
-    <input class="hidden" #inputImage type="file" (change)="fileChangeEvent($event)">
+    <input class="hidden" [multiple]="maxImages > 1" #inputImage type="file" (change)="fileChangeEvent($event)" accept="image/*">
     
-    @if(selectedImage) {
-        <br>
-        <div @fadeIn class="row d-flex justify-content-center align-items-start mb-4">
-            <div class="flex flex-col sm:flex-row gap-4 justify-center items-start">
-                @if(useCropper && showCropper) {
-                    <ng-container>
-                        <div class="w-full sm:w-1/2" style="max-width: 400px;">
-                            <p class="text-center mb-4">{{ texts.adjustImage }}</p>
-                            <image-cropper
-                                [imageChangedEvent]="imageChangedEvent"
-                                [aspectRatio]="aspectRatio"
-                                [resizeToWidth]="resizeToWidth"
-                                format="png"
-                                (imageCropped)="imageCropped($event)"
-                                (imageLoaded)="imageLoaded($event)"
-                                (cropperReady)="cropperReady()"
-                                (loadImageFailed)="loadImageFailed()"
-                            ></image-cropper>
-                        </div>
-                    </ng-container>
-                }
-                <div [ngClass]="{ 'w-full': !useCropper || !showCropper, 'w-full sm:w-1/2': useCropper && showCropper }">
-                    <p class="text-center">{{ texts.previewImage }}</p>
-                    <app-image-previewer [image]="selectedImage" [allowDelete]="true" (deleteImageRequested)="deleteImage()"/>
+    <div class="grid grid-cols-12 gap-4">
+        @for (imageItem of formImages; track imageItem.id; let i = $index) {
+            <div class="col-span-3">
+                <div class="image-container">
+                    <div class="order-controls">
+                        <button pButton type="button" class="order-button left" 
+                                [disabled]="i === 0"
+                                (click)="moveImageLeft(i)" 
+                                title="Mover a la izquierda">
+                            <i class="pi pi-chevron-left"></i>
+                        </button>
+                        <span class="order-number">{{i + 1}}</span>
+                        <button pButton type="button" class="order-button right" 
+                                [disabled]="i === formImages.length - 1"
+                                (click)="moveImageRight(i)" 
+                                title="Mover a la derecha">
+                            <i class="pi pi-chevron-right"></i>
+                        </button>
+                    </div>
+                    <app-image-previewer
+                        [image]="imageItem.image"
+                        [allowDelete]="true"
+                        [imageIndex]="i"
+                        (deleteImageRequested)="deleteImage($event)">
+                    </app-image-previewer>
                 </div>
             </div>
-        </div>
-    }
+        }
+    </div>
 </div>

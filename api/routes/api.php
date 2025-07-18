@@ -27,6 +27,7 @@ Route::post('/ai-chat', [AIQueryController::class, 'testRawAI']);
 
 // Ruta temporal para debuggear sin autenticación
 Route::get('/debug/users/{id}', [UserController::class, 'show']);
+Route::post('/debug/users/{id}/avatar', [UserController::class, 'uploadAvatar']);
 
 Route::middleware('auth:api')->group(function () {
 

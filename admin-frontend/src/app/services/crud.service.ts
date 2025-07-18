@@ -33,6 +33,11 @@ export class CrudService extends DataService  {
 		this.#state.set({ loading: true, results: [], relations: [], pagination: undefined, error: '' })
 	}
 
+	getRelations(relationName: string): any {
+		return this.#state().relations[relationName];
+	}
+	
+
 	public read(url: string, params: any = {}) {
 		
 		this.dataService.httpFetch(url, params)

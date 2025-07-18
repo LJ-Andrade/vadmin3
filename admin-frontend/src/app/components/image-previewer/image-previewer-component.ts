@@ -57,9 +57,9 @@ export class ImagePreviewerComponent implements OnChanges, OnInit, OnDestroy {
 
 	ngOnChanges(changes: SimpleChanges): void {
 		if (changes['image'] && changes['image'].currentValue) {
-			console.log('🔄 Imagen cambiada, actualizando componente...');
-			console.log('Imagen anterior:', changes['image'].previousValue?.substring(0, 30) + '...');
-			console.log('Imagen nueva:', changes['image'].currentValue?.substring(0, 30) + '...');
+			// console.log('🔄 Imagen cambiada, actualizando componente...');
+			// console.log('Imagen anterior:', changes['image'].previousValue?.substring(0, 30) + '...');
+			// console.log('Imagen nueva:', changes['image'].currentValue?.substring(0, 30) + '...');
 			
 			this.displayedImage = this.image!;
 			this.imageVersion++; // Incrementar versión para forzar actualización
@@ -111,20 +111,21 @@ export class ImagePreviewerComponent implements OnChanges, OnInit, OnDestroy {
 	}
 
 	// Método público para actualizar la imagen desde el componente padre
-	updateImage(newImage: string) {
-		console.log('🔄 Actualizando imagen desde el componente padre:', newImage.substring(0, 50) + '...');
-		this.image = newImage;
-		this.displayedImage = newImage;
-		this.imageVersion++; // Incrementar para forzar actualización del template
-		this.cdr.markForCheck();
-		this.cdr.detectChanges();
-	}
+	// updateImage(newImage: string) {
+	// 	console.log('🔄 Actualizando imagen desde el componente padre:', newImage.substring(0, 50) + '...');
+	// 	this.image = newImage;
+	// 	this.displayedImage = newImage;
+	// 	this.imageVersion++; // Incrementar para forzar actualización del template
+	// 	this.cdr.markForCheck();
+	// 	this.cdr.detectChanges();
+	// }
 
-	debugComponentState() {
-		console.log('🔍 Debug estado del componente:');
-		console.log('- imageIndex:', this.imageIndex);
-		console.log('- image:', this.image?.substring(0, 50) + '...');
-		console.log('- displayedImage:', this.displayedImage?.substring(0, 50) + '...');
-		console.log('- imageVersion:', this.imageVersion);
-	}
+	// debugComponentState() {
+	// 	console.log('🔍 Debug estado del componente:');
+	// 	console.log('- imageIndex:', this.imageIndex);
+	// 	console.log('- image:', this.image?.substring(0, 50) + '...');
+	// 	console.log('- displayedImage:', this.displayedImage?.substring(0, 50) + '...');
+	// 	console.log('- imageVersion:', this.imageVersion);
+	// }
+	
 }

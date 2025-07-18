@@ -61,6 +61,8 @@ export interface FormFieldOptionConfig {
      * Array of items to be used in select/dropdown fields if data is not fetched from the backend (relations)
      */
     items?: any[];
+
+    // data?: any[]; // <-- AGREGA ESTA LÍNEA
 }
 
 
@@ -85,6 +87,8 @@ export interface FormField {
 	cols?: string;
 	hidden?: boolean;
 	isRelation?: boolean;
+	isArray?: boolean;
+	data?: any[];
 	options?: FormFieldOptionConfig;
 	matchTo?: string;
 	validators?: ValidatorFn[];
@@ -94,7 +98,7 @@ export interface FormField {
 	},
 	imageProperties?: {
 		maxImages: number;
-		acceptedExtensions?: string;
+		acceptedExtensions: string[];
 		maxSize?: number;
 		targetWidth?: number;
 		targetHeight?: number;

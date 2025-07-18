@@ -19,6 +19,7 @@ import { SelectModule } from 'primeng/select'
 // import { UtilsService } from '@src/app/services/utils.service'
 import { RelationLabelPipe } from '@src/app/pipes/relation-label.pipe';
 import { HelpersService } from '@src/app/services/herlpers.service'
+import { EventBusService } from '@src/app/services/event.bus.service'
 
 
 @Component({
@@ -36,6 +37,7 @@ export class CrudManagerComponent {
 	notificationService: NotificationService = inject(NotificationService);
 	crudService: CrudService = inject(CrudService);
 	helpersService: HelpersService = inject(HelpersService);
+	eventBusService: EventBusService = inject(EventBusService);
 
 	@Input() sectionConfig: SectionConfig = { model: '', icon: '', nameSingular: '', namePlural: '', formSize: 'LARGE' };
 	@Input() listData: any[] = [];
@@ -91,6 +93,7 @@ export class CrudManagerComponent {
 
 	emitRequestList() {
 		this.requestList.emit()
+		this.eventBusService.emit('resetMainForm');
 	}
 
 	emitRequestCreation() {
@@ -265,15 +268,15 @@ export class CrudManagerComponent {
 
 //#region Style
 
-changeFormSize() {
-	if (this.sectionConfig.formSize === 'LARGE' || this.sectionConfig.formSize === 'MEDIUM') {
-		this.sectionConfig.formSize = 'SMALL';
-		this.formIsShrinked = true;
-	} else {
-		this.sectionConfig.formSize = this.originalFormSize;
-		this.formIsShrinked = false;
+	changeFormSize() {
+		if (this.sectionConfig.formSize === 'LARGE' || this.sectionConfig.formSize === 'MEDIUM') {
+			this.sectionConfig.formSize = 'SMALL';
+			this.formIsShrinked = true;
+		} else {
+			this.sectionConfig.formSize = this.originalFormSize;
+			this.formIsShrinked = false;
+		}
 	}
-}
 
 //#endregion Style
 

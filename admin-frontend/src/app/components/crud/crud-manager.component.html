@@ -135,13 +135,18 @@
 									@if(item.isRelation) {
 										<!-- Relation Data -->
 										<td [ngClass]="item['columnClass']">
-											@if(item.isArray) {
-												@for(relation of record[item.relationName]; track $index) {
+											
+											@if(item.isArray) 
+											{
+												@for(relation of record[item.relationName]; track $index) 
+												{	
 													<span [ngClass]="{'inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-blue-700/10 ring-inset': item.showAsBadge }">
-														{{ item.relationName | relationLabel:record[item.name]:item.relationDisplayName:item.relationValue }}
-													</span>	
+														{{ relation[item.relationDisplayName] }}
+													</span>
 												}
-											} @else {
+											} 
+											@else
+											{
 												<span [ngClass]="{'inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-blue-700/10 ring-inset': item.showAsBadge && record[item.name] != '' }">
 													
 													<!-- {{ record | json }} -->
@@ -151,7 +156,6 @@
 													{{ item.relationName | relationLabel:record[item.name]:item.relationDisplayName:item.relationValue }}
 												</span>
 											}
-
 										</td>
 
 									} @else {

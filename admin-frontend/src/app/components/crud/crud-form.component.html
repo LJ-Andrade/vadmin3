@@ -1,4 +1,3 @@
-
 <div class="flex justify-center ">
 	<div class="w-full" 
 		[ngClass]="{
@@ -13,7 +12,7 @@
 					@if(!field.hidden) {
 						@switch (field.type) {
 							@case('text') {
-								<div [class]="field.class" [class]="formSize !== 'SMALL' ? field.cols : null" [ngClass]="{ 'Hidden': field.hidden }"
+								<div [class]="field.class ?? ''" [class]="formSize !== 'SMALL' ? (field.cols ?? '') : ''" [ngClass]="{ 'Hidden': field.hidden } "
 									class="col-span-12">
 									<p-iftalabel class="label"> 
 										<input [fluid]="true" [formControlName]="field.name" pInputText class="input-text"
@@ -25,7 +24,7 @@
 							}
 
 							@case('number') {
-								<div [class]="field.class" [ngClass]="{ 'Hidden': field.hidden }"
+								<div [class]="field.class || ''" [ngClass]="{ 'Hidden': field.hidden }"
 									class="col-span-12">
 									<p-iftalabel class="label">
 										<input [fluid]="true" [formControlName]="field.name" pInputText class="input-text"
@@ -37,27 +36,30 @@
 							}
 
 							@case('select') {
-								<div [class]="field.class" [class]="formSize !== 'SMALL' ? field.cols : null" [ngClass]="{ 'Hidden': field.hidden }"
+								<div [class]="field.class || ''" [class]="formSize !== 'SMALL' ? (field.cols ?? '') : ''" [ngClass]="{ 'Hidden': field.hidden }"
 									class="col-span-12">
-									<!-- Field: {{ field | json}} -->
 									<p-iftalabel class="w-full label">
-										@if(field.options.items != null && field.options.items.length > 0) {
-											<p-select class="w-full input-select"
+										<!-- <pre>{{ field.options.data | json }}</pre> -->
+										@if(field.isArray) {
+											<p-multiSelect class="w-full input-select"
 												[formControlName]="field.name"
-												[options]="field.options.items"
-												[optionLabel]="field.options.displayField"
+												[options]="field.options?.items || []"
+												[optionLabel]="field.options?.displayField"
+												[optionValue]="field.options?.valueName"
 												[placeholder]="field.placeholder"
-												[optionValue]="field.options.valueName"
+												display="chip"
 											/>
-										} @else {
-											<p-select class="w-full input-select"
+										}
+										@else {
+											not array
+											<!-- <p-select class="w-full input-select"
 												[formControlName]="field.name"
-												[options]="field.options.data"
-												[optionLabel]="field.options.displayField"
+												[options]="field.options?.items?.length ? field.options?.items : field.options.data"
+												[optionLabel]="field.options?.displayField"
+												[optionValue]="field.options?.valueName"
 												[placeholder]="field.placeholder"
-												[optionValue]="field.options.valueName"
-											/>
-										}	
+											/> -->
+										}
 										<label>{{ field.label }}</label>
 									</p-iftalabel>
 									<app-field-error [field]="sectionForm.get(field.name)" />
@@ -66,15 +68,15 @@
 
 							@case('images') {
 								<div [class]="field.class"  class="col-span-12">
-									<app-multiple-image-uploader
+									<app-image-uploader
 										[sectionForm]="sectionForm"
-										[targetWidth]="field.imageProperties?.resizeToWidth ?? 300"
-  										[targetHeight]="field.imageProperties?.resizeToWidth ?? 300"
+										[targetWidth]="field.imageProperties?.targetWidth ?? 300"
+  										[targetHeight]="field.imageProperties?.targetHeight ?? 300"
 										[cropToFit]="true"
 										[maxImages]="field.imageProperties?.maxImages ?? 1"
-										[acceptedExtensions]="field.imageProperties?.acceptedExtensions ? [field.imageProperties.acceptedExtensions] : ['image/*']"
+										[acceptedExtensions]="field.imageProperties?.acceptedExtensions ?? []"
 										[maxFileSize]="field.imageProperties?.maxSize ?? 5242880">
-									</app-multiple-image-uploader>
+									</app-image-uploader>
 								</div>
 							}
 
