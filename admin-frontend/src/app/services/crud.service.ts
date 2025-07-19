@@ -43,14 +43,14 @@ export class CrudService extends DataService  {
 		this.dataService.httpFetch(url, params)
 			.subscribe({
 				next: (res: any) => {
+					console.log("Read results ", res);
 					this.#state.set({
 						loading: false,
 						results: res.data,
 						relations: this.#state().relations,
-						pagination: this.dataService.makePagination(res.meta),
+						pagination: this.dataService.makePagination(res),
 						error: ''
 					})
-					console.log("Read results ", res.data);
 				},
 				error: (error: any) => {
 					console.log("Error on users ", error)
@@ -198,5 +198,9 @@ export class CrudService extends DataService  {
 		return formData
 	}
 
-
+	setPerPageAndReload(perPage: number, model: string) {
+		localStorage.setItem('perPage', String(perPage));
+		this.read(model, { list_regs_per_page: perPage, page: 1 });
+	}
 }
+

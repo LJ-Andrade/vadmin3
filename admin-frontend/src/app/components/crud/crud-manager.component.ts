@@ -69,13 +69,16 @@ export class CrudManagerComponent {
 
 	originalFormSize: FormSize = this.sectionConfig.formSize;
 	formIsShrinked: boolean = false;
+	rowsPerPage: number = Number(localStorage.getItem('perPage')) || 10;
 
 
 	ngOnInit() {
 		this.searchOptionsVisibility = this.helpersService.loadSetting('searchVisibility', false);
 		this.ensureSearchFormControls();
-		this.originalFormSize= this.sectionConfig.formSize;
-		this.creationFormTitle = 'Creando ' + this.sectionConfig.nameSingular
+		this.originalFormSize = this.sectionConfig.formSize;
+		this.creationFormTitle = 'Creando ' + this.sectionConfig.nameSingular;
+		// Al cargar, emitir la petición con el tamaño de paginación guardado
+		this.requestRead.emit({ page: 1, per_page: this.rowsPerPage });
 	}
 
 	ensureSearchFormControls() {
@@ -287,12 +290,27 @@ export class CrudManagerComponent {
 		if (page !== undefined && rows !== undefined) {
 			const currentPage = page + 1;
 			const perPage = rows;
-			// const url = `${this.sectionConfig.model}?page=${currentPage}&list_regs_per_page=${perPage}`;
 			localStorage.setItem('perPage', perPage.toString());
-			this.requestRead.emit({ page: currentPage })
+
+			this.requestRead.emit({ 
+				page: currentPage,
+				per_page: perPage
+			});
+
 			this.currentPage = currentPage;
 		}
 	}
+
+	// onPageChange(page?: number, rows?: number) {
+	// 	if (page !== undefined && rows !== undefined) {
+	// 		const currentPage = page + 1;
+	// 		const perPage = rows;
+	// 		// const url = `${this.sectionConfig.model}?page=${currentPage}&list_regs_per_page=${perPage}`;
+	// 		localStorage.setItem('perPage', perPage.toString());
+	// 		this.requestRead.emit({ page: currentPage })
+	// 		this.currentPage = currentPage;
+	// 	}
+	// }
 
 //#endregion Pagination
 

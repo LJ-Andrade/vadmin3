@@ -50,12 +50,12 @@ export interface FormFieldOptionConfig {
     /**
      * The field to be displayed in the UI
      */
-    displayField?: string;
+    labelFieldName?: string;
 
     /**
      * The name of the value field to be used when submitting forms
      */
-    valueName?: string;
+    valueFieldName?: string;
 
     /**
      * Array of items to be used in select/dropdown fields if data is not fetched from the backend (relations)

@@ -137,8 +137,8 @@ export class CrudBase implements OnInit {
 		if (!searchField.search.options) {
 			searchField.search.options = {
 				name: fieldName,
-				valueName: 'id',
-				displayField: 'name',
+				labelFieldName: 'name',
+				valueFieldName: 'id',
 				items: []
 			};
 		}
@@ -232,7 +232,8 @@ export class CrudBase implements OnInit {
 		});
 
 		let operation: string = '';
-
+		console.log("Form data to submit: ", formData);
+		
 		this.crudService.save(formData, this.sectionConfig.model)!
 		.subscribe({
 			next: (res: any) => {
@@ -388,7 +389,7 @@ export class CrudBase implements OnInit {
 				// Para selects múltiples, asigna array de IDs
 				let value = record[field.name];
 				if (Array.isArray(value)) {
-					value = value.map(item => item[field.options?.valueName || 'id']);
+					value = value.map(item => String(item[field.options?.valueName || 'id'])); // Normaliza a string si tus IDs son string
 				}
 				this.sectionForm.get(field.name)?.setValue(value ?? []);
 			} else {

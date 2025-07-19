@@ -53,8 +53,8 @@ export class UsersComponent extends CrudBase  {
 				type: 'select',
 				options: {
 					name: 'roles',
-					valueName: 'name',
-					displayField: 'name'
+					valueFieldName: 'id',
+					labelFieldName: 'name'
 				}
 			},
 		},
@@ -94,7 +94,7 @@ export class UsersComponent extends CrudBase  {
 			cols: 'sm:col-span-3 md:col-span-3',
 			isRelation: true, isArray: true,
 			options: { 
-				name: 'roles', valueName: 'name', displayField: 'name'
+				name: 'roles', valueFieldName: 'id', labelFieldName: 'name'
 			},
 			validators: []
 		},

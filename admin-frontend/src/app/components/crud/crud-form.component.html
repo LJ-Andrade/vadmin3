@@ -39,13 +39,14 @@
 								<div [class]="field.class || ''" [class]="formSize !== 'SMALL' ? (field.cols ?? '') : ''" [ngClass]="{ 'Hidden': field.hidden }"
 									class="col-span-12">
 									<p-iftalabel class="w-full label">
+										<!-- <pre>{{ field.options?.items | json }}</pre> -->
 										<!-- <pre>{{ field.options.data | json }}</pre> -->
 										@if(field.isArray) {
 											<p-multiSelect class="w-full input-select"
 												[formControlName]="field.name"
 												[options]="field.options?.items || []"
-												[optionLabel]="field.options?.displayField"
-												[optionValue]="field.options?.valueName"
+												[optionLabel]="field.options?.labelFieldName"
+												[optionValue]="field.options?.valueFieldName"
 												[placeholder]="field.placeholder"
 												display="chip"
 											/>

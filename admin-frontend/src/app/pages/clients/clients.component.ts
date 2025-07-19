@@ -44,8 +44,8 @@ export class ClientsComponent extends CrudBase  {
                 type: 'select',
 				options: {
 					name: 'roles',
-					valueName: 'name',
-					displayField: 'name',
+					valueFieldName: 'id',
+					labelFieldName: 'name',
                     items: [
                         { id: 0, name: 'INACTIVE' },
                         { id: 1, name: 'ACTIVE'},
@@ -87,7 +87,7 @@ export class ClientsComponent extends CrudBase  {
         { name: 'status', label: 'Status', value: '', placeholder: 'Select status', 
             type: 'select', class: 'col-span-6',
             options: {
-                name: 'roles', valueName: 'id', displayField: 'name',
+                name: 'roles', valueFieldName: 'id', labelFieldName: 'name',
                 items: [
                     { id: 0, name: 'INACTIVE' },
                     { id: 1, name: 'ACTIVE'},

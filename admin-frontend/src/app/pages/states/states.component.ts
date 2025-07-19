@@ -52,8 +52,8 @@ export class StatesComponent extends CrudBase  {
                 type: 'select',
                 options: {
                   name: 'countries',
-                  valueName: 'id',
-                  displayField: 'name',
+                  valueFieldName: 'id',
+                  labelFieldName: 'name',
                 }
               }
         },
@@ -78,7 +78,7 @@ export class StatesComponent extends CrudBase  {
         { name: 'country_id', label: 'Country', value: '', placeholder: 'Select the country', type: 'select', class: 'col-span-12',
             isRelation: true,
             options: { 
-                name: 'countries', valueName: 'id', displayField: 'name'
+                name: 'countries', valueFieldName: 'id', labelFieldName: 'name'
             },
             validators: [ Validators.required ]
         }
