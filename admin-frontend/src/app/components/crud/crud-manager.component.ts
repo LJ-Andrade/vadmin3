@@ -16,10 +16,10 @@ import { InputGroupAddonModule } from 'primeng/inputgroupaddon'
 import { InputTextModule } from 'primeng/inputtext'
 import { InputGroup } from 'primeng/inputgroup'
 import { SelectModule } from 'primeng/select'
-// import { UtilsService } from '@src/app/services/utils.service'
 import { RelationLabelPipe } from '@src/app/pipes/relation-label.pipe';
 import { HelpersService } from '@src/app/services/herlpers.service'
 import { EventBusService } from '@src/app/services/event.bus.service'
+import { SplitButtonModule } from 'primeng/splitbutton';
 
 
 @Component({
@@ -28,7 +28,7 @@ import { EventBusService } from '@src/app/services/event.bus.service'
 	standalone: true,
 	imports: [ CommonModule, SkeletonComponent,	 ToolbarModule, CheckboxModule, FormsModule, ReactiveFormsModule,
 		 InputGroupAddonModule, InputTextModule, InputGroup, PaginatorModule, ButtonModule, 
-		 DialogModule, PanelModule, SelectModule, RelationLabelPipe
+		 DialogModule, PanelModule, SelectModule, RelationLabelPipe, SplitButtonModule,
 	]
 })
 
@@ -39,7 +39,7 @@ export class CrudManagerComponent {
 	helpersService: HelpersService = inject(HelpersService);
 	eventBusService: EventBusService = inject(EventBusService);
 
-	@Input() sectionConfig: SectionConfig = { model: '', icon: '', nameSingular: '', namePlural: '', formSize: 'LARGE' };
+	@Input() sectionConfig: SectionConfig = { model: '', icon: '', nameSingular: '', namePlural: '', formSize: 'LARGE', gender: 'M' };
 	@Input() listData: any[] = [];
 	@Input() listConfig: any = {};
 	@Input() apiDataResponse!: Signal<Results<any>>
@@ -71,6 +71,7 @@ export class CrudManagerComponent {
 	formIsShrinked: boolean = false;
 	rowsPerPage: number = Number(localStorage.getItem('perPage')) || 10;
 
+	currentFilters: { [key: string]: any } = {};
 
 	ngOnInit() {
 		this.searchOptionsVisibility = this.helpersService.loadSetting('searchVisibility', false);
@@ -101,42 +102,58 @@ export class CrudManagerComponent {
 
 	emitRequestCreation() {
 		this.requestCreation.emit()
-		this.creationFormTitle = 'Creating ' + this.sectionConfig.nameSingular
+		this.creationFormTitle = 'Creando ' + this.sectionConfig.nameSingular
 		this.toggleSearchOptions(false)
 	}
 
 	emitRequestEdit(record: any) {
 		this.requestEdit.emit(record);
-		this.creationFormTitle = 'Editing ' + this.sectionConfig.nameSingular
+		this.creationFormTitle = 'Editando ' + this.sectionConfig.nameSingular
 		this.toggleSearchOptions(false)
 	}
 
 //#region Search
 
 	submitSearch() {
+		console.log("Submitting search with values:", this.searchForm.value);
 		let searchParams: any = {};
 
 		for (const key in this.searchForm.value) {
 			const value = this.searchForm.value[key];
-
 			if (value !== null && value !== undefined && value !== '') {
 				searchParams[key] = value;
 			}
 		}
 
+		this.currentFilters = { ...searchParams }; // ← GUARDAMOS LOS FILTROS
+
+		searchParams.page = 1;
+		searchParams.per_page = this.rowsPerPage;
+
+		this.currentPage = 1;
 		this.requestRead.emit(searchParams);
 	}
 
 
-	// submitSearch() {
-	// 	let searchParams: any = {};
-	// 	for (const key in this.searchForm.value) {
-	// 		if (this.searchForm.value[key] !== null) {
-	// 			searchParams[key] = this.searchForm.value[key]
-	// 		}
-	// 	}
-	// 	this.requestRead.emit(searchParams)
-	// }
+
+	onKeywordSearch(keyword: string) {
+		this.currentPage = 1;
+
+		if (keyword && keyword.trim() !== '') {
+			this.currentFilters = { keyword: keyword.trim() }; // ← GUARDAMOS LOS FILTROS
+
+			this.requestRead.emit({
+				...this.currentFilters,
+				page: 1,
+				per_page: this.rowsPerPage
+			});
+		} else {
+			this.currentFilters = {}; // ← LIMPIAMOS LOS FILTROS
+			this.requestRead.emit({ page: 1, per_page: this.rowsPerPage });
+		}
+	}
+
+
 
 	toggleSearchOptions(show: boolean = true) {
 		if (show) {
@@ -156,11 +173,12 @@ export class CrudManagerComponent {
 		this.advancedSearchOptionsVisibility = !this.advancedSearchOptionsVisibility;
 	}
 
-
 	resetAdvancedSearchOptions() {
-		this.requestRead.emit()
-		this.searchForm.reset()
+		this.searchForm.reset(); // Limpiamos el formulario
+		this.currentPage = 1; // Volvemos a la primera página
+		this.requestRead.emit({ page: 1, per_page: this.rowsPerPage }); // Pedimos datos limpios
 	}
+
 //#endregion Search
 
 
@@ -290,9 +308,11 @@ export class CrudManagerComponent {
 		if (page !== undefined && rows !== undefined) {
 			const currentPage = page + 1;
 			const perPage = rows;
+
 			localStorage.setItem('perPage', perPage.toString());
 
-			this.requestRead.emit({ 
+			this.requestRead.emit({
+				...this.currentFilters, // ← esto mantiene los filtros activos
 				page: currentPage,
 				per_page: perPage
 			});
@@ -300,17 +320,6 @@ export class CrudManagerComponent {
 			this.currentPage = currentPage;
 		}
 	}
-
-	// onPageChange(page?: number, rows?: number) {
-	// 	if (page !== undefined && rows !== undefined) {
-	// 		const currentPage = page + 1;
-	// 		const perPage = rows;
-	// 		// const url = `${this.sectionConfig.model}?page=${currentPage}&list_regs_per_page=${perPage}`;
-	// 		localStorage.setItem('perPage', perPage.toString());
-	// 		this.requestRead.emit({ page: currentPage })
-	// 		this.currentPage = currentPage;
-	// 	}
-	// }
 
 //#endregion Pagination
 

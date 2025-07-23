@@ -23,6 +23,7 @@ export class RolesComponent extends CrudBase  {
     override sectionConfig: SectionConfig = {
         model: 'roles',
         icon: 'pi pi-crown',
+        gender: 'M',
         nameSingular: 'role',
         namePlural: 'roles',
         formSize: 'SMALL'

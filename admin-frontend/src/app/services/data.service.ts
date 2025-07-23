@@ -81,7 +81,7 @@ export class DataService {
 	}
 
 	makePagination<T>(paginationData: Pagination<T>): any {
-		console.log("Pagination data: ", paginationData);
+		// console.log("Pagination data: ", paginationData);
 		if (!paginationData) {
 			console.error('No pagination data provided by the server');
 			return null;

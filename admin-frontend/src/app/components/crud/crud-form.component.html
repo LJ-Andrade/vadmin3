@@ -40,7 +40,7 @@
 									class="col-span-12">
 									<p-iftalabel class="w-full label">
 										<!-- <pre>{{ field.options?.items | json }}</pre> -->
-										<!-- <pre>{{ field.options.data | json }}</pre> -->
+										<!-- <pre>{{ field | json }}</pre> -->
 										@if(field.isArray) {
 											<p-multiSelect class="w-full input-select"
 												[formControlName]="field.name"
@@ -52,14 +52,13 @@
 											/>
 										}
 										@else {
-											not array
-											<!-- <p-select class="w-full input-select"
+											<p-select class="w-full input-select"
 												[formControlName]="field.name"
-												[options]="field.options?.items?.length ? field.options?.items : field.options.data"
-												[optionLabel]="field.options?.displayField"
-												[optionValue]="field.options?.valueName"
+												[options]="field.options?.items || []"
+												[optionLabel]="field.options?.labelFieldName"
+												[optionValue]="field.options?.valueFieldName"
 												[placeholder]="field.placeholder"
-											/> -->
+											/>
 										}
 										<label>{{ field.label }}</label>
 									</p-iftalabel>
@@ -76,7 +75,8 @@
 										[cropToFit]="true"
 										[maxImages]="field.imageProperties?.maxImages ?? 1"
 										[acceptedExtensions]="field.imageProperties?.acceptedExtensions ?? []"
-										[maxFileSize]="field.imageProperties?.maxSize ?? 5242880">
+										[maxFileSize]="field.imageProperties?.maxSize ?? 5242880"
+										(onFilesSelected)="onFilesSelected($event)">
 									</app-image-uploader>
 								</div>
 							}

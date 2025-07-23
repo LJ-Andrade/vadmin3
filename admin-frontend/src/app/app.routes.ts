@@ -10,9 +10,9 @@ import { ExamplesComponent } from './pages/examples/examples.component';
 import { UsersComponent } from './pages/users/users.component';
 import { RolesComponent } from './pages/roles/roles.component';
 import { CountriesComponent } from './pages/countries/countries.component';
-import { StatesComponent } from './pages/states/states.component';
 import { ClientsComponent } from './pages/clients/clients.component';
 import { ChatComponent } from './pages/chat/chat.component';
+import { CategoryComponent } from './pages/category/category.component';
 
 /**
  * App routes
@@ -91,14 +91,32 @@ export const routes: Routes = [
 							icon: 'pi pi-globe'
 						}
 					},
+				]
+			},
+			{
+				path: 'articles',
+				data: { 
+					title: 'Artículos',
+					icon: 'pi pi-briefcase',
+					noRedirect: true
+				},
+				children: [
 					{
-						path: 'states',
-						component: StatesComponent,
+						path: 'articles',
+						component: UsersComponent,
 						data: {
-							title: 'States',
-							icon: 'pi pi-map'
+							title: 'Users',
+							icon: 'pi pi-users'
 						}
 					},
+					{
+						path: 'categories',
+						component: CategoryComponent,
+						data: {
+							title: 'Categorías',
+							icon: 'pi pi-crown'
+						}
+					}
 				]
 			},
 			{

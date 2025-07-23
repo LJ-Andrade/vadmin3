@@ -46,8 +46,10 @@ export class CrudFormComponent {
 		// 	this.existingImageUrl = this.sectionForm.get('image')?.value;
 		// }
 
-		console.log(this.formFields)
+		// console.log(this.formFields)
 	}
+
+	
 
 	submitForm() {
 		// console.log(this.sectionForm.value)
@@ -119,6 +121,7 @@ export class CrudFormComponent {
 	
 
 	onFilesSelected(event: { fieldName: string, files: File[] }) {
+		console.log(event.files)
 		this.files[event.fieldName] = event.files;
 	}
 	

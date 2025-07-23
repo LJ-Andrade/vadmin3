@@ -23,6 +23,7 @@ export class CountriesComponent extends CrudBase  {
     override sectionConfig: SectionConfig = {
         model: 'countries',
         icon: 'pi pi-crown',
+        gender: 'F',
         nameSingular: 'country',
         namePlural: 'countries',
         formSize: 'SMALL',

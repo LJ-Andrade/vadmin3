@@ -32,6 +32,7 @@ export class CrudBase implements OnInit {
 	sectionConfig: SectionConfig = {
 		model: '',
         icon: '',
+		gender: 'M',
 		nameSingular: '',
 		namePlural: '',
         formSize: 'LARGE',
@@ -64,15 +65,12 @@ export class CrudBase implements OnInit {
 
 	}
 
-    fetchRelation(model: string, field: string, debug: boolean = false) {
+    fetchRelation(model: string, field: string) {
         this.crudService.dataService.getModelData(model).subscribe(
             data => {
 				this.crudService.appendRelation(model, data);
                 this.updateFormFieldsWithData(field, data);
 				this.updateSearchFormWithData(model, data);
-				if (debug) {
-					console.log("Relations ", this.crudService.relations())
-				}
             }
         );
     }
@@ -206,45 +204,76 @@ export class CrudBase implements OnInit {
 
 		const formData = new FormData();
 
-		Object.keys(this.sectionForm.value).forEach(key => {
-			const value = this.sectionForm.value[key];
-
-			if (key === 'images' && Array.isArray(value)) {
-				value.forEach((image: string, index: number) => {
-					if (image.startsWith('data:')) {
-						// Imagen nueva, convertir a archivo
-						const blob = this.dataURLtoBlob(image);
-						formData.append('images', blob, `image_${index}.jpg`);
-					}
-					// Si es una URL existente, NO la envíes como archivo
-					// El backend ya tiene esa imagen, no necesita que la envíes de nuevo
-				});
-			} else if (key !== 'images' && value !== null && value !== undefined) {
-				formData.append(key, value);
+		Object.entries(this.sectionForm.value).forEach(([key, value]) => {
+		if (value !== null && value !== undefined) {
+				if (Array.isArray(value)) {
+					value.forEach((v, i) => {
+						formData.append(`${key}[${i}]`, v.toString());
+					});
+				} else if (
+					typeof value === 'string' ||
+					typeof value === 'number' ||
+					value instanceof Blob
+				) {
+					formData.append(key, value.toString());
+				} else {
+					formData.append(key, JSON.stringify(value));
+				}
 			}
 		});
 
-		// Agregar archivos cargados (si usas otro sistema de archivos)
-		Object.keys(this.files).forEach(fieldName => {
-			this.files[fieldName].forEach(file => {
-				formData.append(fieldName, file);
-			});
-		});
+		for (let [key, value] of formData.entries()) {
+			if (value instanceof File) {
+				console.log(`${key}:`, value.name, '-', value.type, '-', value.size, 'bytes');
+			} else {
+				console.log(`${key}:`, value);
+			}
+		}
+			
 
-		let operation: string = '';
+
+
+
+
+		// Object.entries(this.sectionForm.value).forEach(([key, value]) => {
+		// 	if (value === null || value === undefined) return;
+
+		// 	if (key === 'images' && Array.isArray(value)) {
+		// 		// Convertir dataURL a Blob si es necesario
+		// 		value.forEach((image: string, index: number) => {
+		// 			if (image.startsWith('data:')) {
+		// 				const blob = this.dataURLtoBlob(image);
+		// 				formData.append('images', blob, `image_${index}.jpg`);
+		// 			}
+		// 		});
+		// 	}
+		// 	else if (Array.isArray(value)) {
+		// 		// Serializar cualquier array como key[]
+		// 		value.forEach(val => {
+		// 			formData.append(`${key}[]`, val);
+		// 		});
+		// 	}
+		// 	else {
+		// 		formData.append(key, String(value));
+		// 	}
+		// });
+
+		// Agregar archivos adicionales si los tenés separados
+		// Object.keys(this.files).forEach(fieldName => {
+		// 	this.files[fieldName].forEach(file => {
+		// 		formData.append(fieldName, file);
+		// 	});
+		// });
+
 		console.log("Form data to submit: ", formData);
-		
+
 		this.crudService.save(formData, this.sectionConfig.model)!
 		.subscribe({
 			next: (res: any) => {
-				let message: string = '';
-				if (res.meta && res.meta.operation == 'update') {
-					message = 'The record has been updated successfully';
-					operation = 'update';
-				} else {
-					operation = 'create';
-					message = 'The record has been created successfully';
-				}
+				let message = res.meta?.operation === 'update'
+					? 'The record has been updated successfully'
+					: 'The record has been created successfully';
+
 				this.crudService.notificationService.success(message, '');
 				this.fetchData();
 			},
@@ -254,7 +283,7 @@ export class CrudBase implements OnInit {
 					this.sectionForm.get('errors')?.setErrors({ serverError: errors.errors });
 					console.log("Error on form ", errors);
 
-					let error_message: string = '';
+					let error_message = '';
 
 					if (errors.errors) {
 						for (let key in errors.errors) {
@@ -271,6 +300,8 @@ export class CrudBase implements OnInit {
 			}
 		});
 	}
+
+	
 
 	// Helper method to convert data URL to blob
 	private dataURLtoBlob(dataURL: string): Blob {
@@ -386,12 +417,14 @@ export class CrudBase implements OnInit {
 					this.sectionForm.get(field.name)?.setValue(image ?? null);
 				}
 			} else if (field.type === 'select' && field.isArray) {
-				// Para selects múltiples, asigna array de IDs
-				let value = record[field.name];
-				if (Array.isArray(value)) {
-					value = value.map(item => String(item[field.options?.valueName || 'id'])); // Normaliza a string si tus IDs son string
+				let values: any[] = record[field.name];
+				console.log(values)
+				if (Array.isArray(values)) {
+					console.log(field.options?.valueFieldName )
+					values = values.map((item: any) => item[field.options?.valueFieldName]);
 				}
-				this.sectionForm.get(field.name)?.setValue(value ?? []);
+				console.log(values)
+				this.sectionForm.get(field.name)?.setValue(values ?? []);
 			} else {
 				this.sectionForm.get(field.name)?.setValue(record[field.name] ?? null);
 			}

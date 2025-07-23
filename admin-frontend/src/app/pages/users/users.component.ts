@@ -29,6 +29,7 @@ export class UsersComponent extends CrudBase  {
 	override sectionConfig: SectionConfig = {
 		model: 'users',
 		icon: 'pi pi-users',
+		gender: 'M',
 		nameSingular: 'usuario',
 		namePlural: 'usuarios',
 		formSize: 'LARGE',

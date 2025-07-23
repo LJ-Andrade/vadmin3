@@ -5,8 +5,12 @@
 <p-toolbar styleClass="mb-1" >
 	<div class="p-toolbar-group-start">
 		@if(listVisibility) {
-			<p-button [label]="'Nuevo ' + sectionConfig.nameSingular" icon="pi pi-plus" class="mr-2 main-button"
-				(onClick)="emitRequestCreation()" />
+			<p-button 
+				[label]="(sectionConfig.gender === 'F' ? 'Nueva ' : 'Nuevo ') + sectionConfig.nameSingular" 
+				icon="pi pi-plus" 
+				class="mr-2 main-button"
+				(onClick)="emitRequestCreation()" 
+			/>
 		} @else {
 			<p-button label="Listado" icon="pi pi-list" class="mr-2 main-button"
 				(onClick)="emitRequestList()"
@@ -23,14 +27,18 @@
 	<ng-template #end>
 		@if(searchOptionsVisibility) {
 			<p-inputgroup>
-				<p-button label="Buscar" class="main-button" />
-				<input pInputText placeholder="Palabra clave" />
+				<p-button label="Buscar" class="main-button" 
+				(onClick)="onKeywordSearch(keywordInput.value)" />
+				<input #keywordInput pInputText placeholder="Palabra clave" />
+				@if(keywordInput.value && keywordInput.value.length > 0) {
+					<p-button icon="pi pi-trash" class="ml-2" severity="danger" [rounded]="true" [text]="true" (onClick)="keywordInput.value=''; onKeywordSearch('')" />
+				}
 			</p-inputgroup>
 
 			@if(advancedSearchAvailable) {
 				<p-button label="Búsqueda Avanzada" 
-					class="ml-2 main-button" [styleClass]="'text-nowrap'"
-					(onClick)="toggleAdvancedSearchOptions()" />	
+				class="ml-2 main-button" [styleClass]="'text-nowrap'"
+				(onClick)="toggleAdvancedSearchOptions()" />	
 			}
 
 			<p-button icon="pi pi-times" [rounded]="true" [text]="true" severity="danger" class="ml-2"
@@ -60,8 +68,8 @@
 										pSize="small"
 										[formControlName]="column.name"
 										[options]="column.search.options.items"
-										[optionLabel]="column.search.options.displayField"
-										[optionValue]="column.search.options.valueName"
+										[optionLabel]="column.search.options.labelFieldName"
+										[optionValue]="column.search.options.valueFieldName"
 										[placeholder]="column.search.placeholder"
 									/>
 								} @else {
@@ -69,8 +77,8 @@
 										pSize="small"
 										[formControlName]="column.name"
 										[options]="crudService.apiDataResponse().relations[column.search.options.name]"
-										[optionLabel]="column.search.options.displayField"
-										[optionValue]="column.search.options.valueName"   
+										[optionLabel]="column.search.options.labelFieldName"
+										[optionValue]="column.search.options.valueFieldName"   
 										[placeholder]="column.search.placeholder"
 									/>
 								}
