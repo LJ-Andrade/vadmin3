@@ -1,0 +1,20 @@
+meta {
+  name: Get Categories
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{url}}/categories?module=Article&list_regs_per_page=10
+  body: none
+  auth: bearer
+}
+
+params:query {
+  module: Article
+  list_regs_per_page: 10
+}
+
+auth:bearer {
+  token: {{token}}
+}

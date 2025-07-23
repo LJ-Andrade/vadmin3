@@ -10,7 +10,7 @@ use App\Http\Controllers\AIQueryController;
 
 
 Route::get('/health', function () {
-    return response()->json(["success" => true, "message" => "Server is responding"]);
+    return response()->json(["success" => true, "message" => "Server is responding"]);    
 });
 
 Route::prefix('auth')->group(function () {
@@ -47,5 +47,23 @@ Route::middleware('auth:api')->group(function () {
         Route::post   ('/{id}', [RoleController::class, 'update' ])->name('roles.update');
         Route::delete('/{id}', [RoleController::class, 'destroy'])->name('roles.destroy');
     });
+
+
+    Route::prefix('articles')->group(function () {
+        Route::get   ('/',     [App\Http\Controllers\ArticleController::class, 'index'  ])->name('articles.index');
+        Route::post  ('/',     [App\Http\Controllers\ArticleController::class, 'store'  ])->name('articles.store');
+        Route::get   ('/{id}', [App\Http\Controllers\ArticleController::class, 'show'   ])->name('articles.show');
+        Route::post  ('/{id}', [App\Http\Controllers\ArticleController::class, 'update' ])->name('articles.update');
+        Route::delete('/{id}', [App\Http\Controllers\ArticleController::class, 'destroy'])->name('articles.destroy');
+    });
+
+    Route::prefix('categories')->group(function () {
+        Route::get   ('/',     [App\Http\Controllers\CategoryController::class, 'index'  ])->name('categories.index');
+        Route::post  ('/',     [App\Http\Controllers\CategoryController::class, 'store'  ])->name('categories.store');
+        Route::get   ('/{id}', [App\Http\Controllers\CategoryController::class, 'show'   ])->name('categories.show');
+        Route::post  ('/{id}', [App\Http\Controllers\CategoryController::class, 'update' ])->name('categories.update');
+        Route::delete('/{id}', [App\Http\Controllers\CategoryController::class, 'destroy'])->name('categories.destroy');
+    });
+
 
 });

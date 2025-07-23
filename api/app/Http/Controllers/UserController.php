@@ -44,9 +44,11 @@ class UserController extends Controller
         ]);
 
         $roles = $validated['roles'] ?? [];
+        
         $user = \App\Models\User::create(\Illuminate\Support\Arr::except($validated, ['roles', 'images', 'password']) + [
             'password' => bcrypt($validated['password']),
         ]);
+
         if ($roles) {
             $user->syncRoles($roles);
         }
@@ -74,7 +76,7 @@ class UserController extends Controller
             'email'      => "sometimes|email|max:255|unique:users,email,{$user->id}",
             'first_name' => 'sometimes|string|max:255',
             'last_name'  => 'sometimes|string|max:255',
-            'password'   => 'sometimes|string|min:8',
+            // 'password'   => 'sometimes|string|min:8',
             'roles'      => 'sometimes|array',
             'images' => 'sometimes|image|max:2048',
         ]);

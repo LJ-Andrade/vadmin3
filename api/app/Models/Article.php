@@ -17,12 +17,18 @@ class Article extends Model implements HasMedia
         'title',
         'content',
         'slug',
-        'published_at'
+        'published_at',
+        'category_id',
     ];
 
     protected $casts = [
         'published_at' => 'datetime',
     ];
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
 
     public function registerMediaCollections(): void
     {
