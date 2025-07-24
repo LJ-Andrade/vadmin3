@@ -20,10 +20,6 @@ export class UsersComponent extends CrudBase  {
 	override ngOnInit() {
 		super.ngOnInit()
 		this.fetchRelation('roles', 'roles')
-
-		setTimeout(() => {
-			console.log(this.crudService.relations())
-		}, 1000)
 	}
 
 	override sectionConfig: SectionConfig = {
@@ -45,7 +41,7 @@ export class UsersComponent extends CrudBase  {
 
 		{ name: 'email', text: 'Email',
 			search: { placeholder: 'By email...' },
-		 },
+		},
 
 		{ name: 'roles', text: 'Role', columnClass: 'w-6', showAsBadge: true,
 			isArray: true, isRelation: true, relationName: 'roles', relationDisplayName: 'name', relationValue: 'id',

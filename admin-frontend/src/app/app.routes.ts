@@ -12,7 +12,9 @@ import { RolesComponent } from './pages/roles/roles.component';
 import { CountriesComponent } from './pages/countries/countries.component';
 import { ClientsComponent } from './pages/clients/clients.component';
 import { ChatComponent } from './pages/chat/chat.component';
-import { CategoryComponent } from './pages/category/category.component';
+
+import { UsersList } from './pages/users/users-list';
+import { CategoryList } from './pages/category/category-list';
 
 /**
  * App routes
@@ -69,7 +71,7 @@ export const routes: Routes = [
 				children: [
 					{
 						path: 'users',
-						component: UsersComponent,
+						component: UsersList,
 						data: {
 							title: 'Users',
 							icon: 'pi pi-users'
@@ -111,7 +113,7 @@ export const routes: Routes = [
 					},
 					{
 						path: 'categories',
-						component: CategoryComponent,
+						component: CategoryList,
 						data: {
 							title: 'Categorías',
 							icon: 'pi pi-crown'

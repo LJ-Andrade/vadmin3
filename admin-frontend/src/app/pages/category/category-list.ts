@@ -1,18 +1,22 @@
-import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { Validators } from '@angular/forms';
-import { CrudBase } from '@src/app/components/crud/crud-base';
-import { CrudManagerComponent } from '@src/app/components/crud/crud-manager.component';
-import { CrudFormComponent } from '@src/app/components/crud/crud-form.component';
-import { SectionConfig, ListData, ListConfig, FormField } from '@src/app/interfaces/crud.interface';
+import { Component } from '@angular/core'
+import { CommonModule } from '@angular/common'
+import { Validators } from '@angular/forms'
+import { CrudBase } from '@src/app/components/crud/crud-base'
+import { SectionConfig, ListData, FormField } from '@src/app/interfaces/crud.interface'
+import { AppList } from '@src/app/crud/list/list'
 
 @Component({
     selector: 'app-category',
     standalone: true,
-    imports: [ CommonModule, CrudManagerComponent, CrudFormComponent ],
-    templateUrl: './category.component.html'
+    imports: [ CommonModule, AppList ],
+    template: ` <app-list
+					[sectionConfig]="sectionConfig"
+					[listData]="listData"
+					[listConfig]="listConfig">
+				</app-list>
+			`
 })
-export class CategoryComponent extends CrudBase  {
+export class CategoryList extends CrudBase  {
 
     override ngOnInit() {
         super.ngOnInit();
