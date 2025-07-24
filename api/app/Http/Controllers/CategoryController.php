@@ -9,11 +9,20 @@ class CategoryController extends Controller
 {
     public function index(Request $request)
     {
-        $perPage = $request->input('list_regs_per_page');
+        $perPage = $request->input('list_regs_per_page', 15);
+
+        $allowedSorts = ['id', 'name', 'created_at', 'updated_at']; # Prevent SQL injection by allowing only specific fields to be sorted
+        $sortBy = in_array($request->input('sort_by'), $allowedSorts) ? $request->input('sort_by') : 'created_at';
+        $sortDirection = $request->input('sort_direction') === 'asc' ? 'asc' : 'desc';
+
+
         $categories = Category::filter($request->all())
-            ->orderBy('id', 'asc')->paginate($perPage);
+            ->orderBy($sortBy, $sortDirection)
+            ->paginate($perPage);
+
         return response()->json($categories);
     }
+
 
     public function show($id)
     {

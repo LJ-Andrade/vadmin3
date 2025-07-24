@@ -10,6 +10,12 @@ class UserController extends Controller
     {
         $filters = $request->all();
         $query = \App\Models\User::with(['roles', 'media']);
+
+        $allowedSorts = ['id', 'user', 'first_name', 'last_name', 'created_at', 'email']; # Prevent SQL injection by allowing only specific fields to be sorted
+        $sortBy = in_array($request->input('sort_by'), $allowedSorts) ? $request->input('sort_by') : 'created_at';
+        $sortDirection = $request->input('sort_direction') === 'asc' ? 'asc' : 'desc';
+
+        $query->orderBy($sortBy, $sortDirection);
         if (!empty($filters['search'])) {
             $search = $filters['search'];
             $query->where(function ($q) use ($search) {

@@ -24,6 +24,7 @@ import { Observable } from 'rxjs'
 @Component({
 	selector: 'app-list',
 	templateUrl: './list.html',
+	styleUrl: './list.sass',
 	standalone: true,
 	imports: [
 		CommonModule, SkeletonComponent, ToolbarModule, CheckboxModule, FormsModule, ReactiveFormsModule,
@@ -61,6 +62,8 @@ export class AppList {
 
 	currentFilters: { [key: string]: any } = {}
 	batchDeleteButtonVisible = false
+	sortState: { column: string, direction: 'asc' | 'desc' } = { column: 'created_at', direction: 'desc' };
+
 
 	#state = signal<Results<any>>({
 		loading: true,
@@ -84,6 +87,7 @@ export class AppList {
 
 	ngOnInit() {
 		this.searchOptionsVisibility = this.helpersService.loadSetting('searchVisibility', false);
+		this.advancedSearchOptionsVisibility = this.helpersService.loadSetting('advancedSearchVisibility', false);
 		this.ensureSearchFormControls();
 		// this.originalFormSize = this.sectionConfig.formSize;
 		this.fetchRelation('roles', 'roles');
@@ -171,6 +175,7 @@ export class AppList {
 
 	toggleAdvancedSearchOptions() {
 		this.advancedSearchOptionsVisibility = !this.advancedSearchOptionsVisibility;
+		this.helpersService.saveSetting('advancedSearchVisibility', this.advancedSearchOptionsVisibility);
 	}
 
 	resetAdvancedSearchOptions() {
@@ -179,6 +184,28 @@ export class AppList {
 		this.fetchData({ page: 1, per_page: this.rowsPerPage });
 	}
 
+	
+	// ---------------- Sorting ----------------
+	sortByColumn(columnName: string): void {
+		if (this.sortState.column === columnName) {
+			// Si hace clic sobre la misma columna, se invierte
+			this.sortState.direction = this.sortState.direction === 'asc' ? 'desc' : 'asc';
+		} else {
+			// Nueva columna, resetea a asc o desc según prefieras
+			this.sortState = { column: columnName, direction: 'asc' };
+		}
+
+		this.fetchData({
+			...this.currentFilters,
+			page: 1,
+			per_page: this.rowsPerPage,
+			sort_by: this.sortState.column,
+			sort_direction: this.sortState.direction
+		});
+
+		this.currentPage = 1;
+		console.log(`Sorting by ${this.sortState.column} (${this.sortState.direction})`);
+	}
 
 	// ---------------- Row Selection ----------------
 

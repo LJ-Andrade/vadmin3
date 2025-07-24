@@ -49,6 +49,11 @@ export class CategoryList extends CrudBase  {
 				}
 			},
         },
+        { name: 'created_at', text: 'Fecha de creación', columnClass: 'w-3', hideOnCreation: true, hideOnEdition: true,
+            mutate: (value: string) => { 
+                return value ? new Date(value).toLocaleDateString() : '';
+            }
+         },
 
     ];
 

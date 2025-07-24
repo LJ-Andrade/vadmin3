@@ -32,7 +32,7 @@
 				}
 			</p-inputgroup>
 
-			@if(advancedSearchAvailable) {
+			@if(advancedSearchAvailable && !advancedSearchOptionsVisibility) {
 				<p-button label="Búsqueda Avanzada" 
 				class="ml-2 main-button" [styleClass]="'text-nowrap'"
 				(onClick)="toggleAdvancedSearchOptions()" />	
@@ -118,7 +118,7 @@
 						</th>
 						@for(column of listData; track $index) {
 							@if(!column.hidden && !column.hideOnList) {
-								<th scope="col">
+								<th scope="col" class="column-title" (click)="sortByColumn(column.name)">
 									{{ column.text }}
 								</th>
 							}
@@ -171,7 +171,11 @@
 													' px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-blue-700/10 ring-inset' 
 													: ''"
 												>
-												{{ record[item.name] }}
+												@if(item.mutate) {
+													{{ item.mutate(record[item.name]) }}
+												} @else {
+													{{ record[item.name] }}
+												}
 											</span>
 										</td>
 									} 
