@@ -28,18 +28,18 @@ export class UsersList  {
 	}
 
 	listData: ListData[] = [
-		{ name: 'id', text: 'Id', columnClass: 'w-3', hideOnCreation: false, hideOnEdition: false,
+		{ value: 'id', label: 'Id', columnClass: 'w-3', hideOnCreation: false, hideOnEdition: false,
 			unDeleteableIds: [ 1, 2 ], unEditableIds: [ 1, 2 ] },
 
-		{ name: 'user', text: 'Username',
+		{ value: 'user', label: 'Username',
 			search: { placeholder: 'By username...' },
 		 },
 
-		{ name: 'email', text: 'Email',
+		{ value: 'email', label: 'Email',
 			search: { placeholder: 'By email...' },
 		},
 
-		{ name: 'roles', text: 'Role', columnClass: 'w-6', showAsBadge: true,
+		{ value: 'roles', label: 'Role', columnClass: 'w-6', showAsBadge: true,
 			isArray: true, isRelation: true, relationName: 'roles', relationDisplayName: 'name', relationValue: 'id',
 			search: { 
 				placeholder: 'By role...',
@@ -52,11 +52,11 @@ export class UsersList  {
 			},
 		},
 
-		{ name: 'first_name', text: 'First Name', 
+		{ value: 'first_name', label: 'First Name', 
 			search: { placeholder: 'By first name...' },
 		},
 
-		{ name: 'last_name', text: 'Last Name', columnClass: '',
+		{ value: 'last_name', label: 'Last Name', columnClass: '',
 			search: { placeholder: 'By last name...' },
 		}
 	];

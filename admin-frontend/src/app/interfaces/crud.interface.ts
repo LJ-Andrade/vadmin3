@@ -1,18 +1,27 @@
 import { ValidatorFn } from "@angular/forms";
 
 export interface ListData {
-	name: string;
-	text: string;
+	value: string;
+	label: string;
 	unDeleteableIds?: number[];
 	unEditableIds?: number[];
 
-	valueClass?: string;
-	image?: boolean;
+	// image?: boolean;
 	mutate?: (data: any) => string;
 	hidden?: boolean;
 	hideOnList?: boolean;
 	hideOnCreation?: boolean;
 	hideOnEdition?: boolean;
+
+	/**
+	 * Class to apply to the value
+	 * Used for styling purposes
+	 */
+	valueClass?: string;
+	/**
+	 * Class to apply to the column
+	 * Used for styling purposes
+	 */
 	columnClass?: string;
 	/**
 	 * Show the value as a badge
@@ -25,13 +34,17 @@ export interface ListData {
 	 * Possible values: bg-yellow-50, bg-red-50, bg-green-50, bg-blue-50, bg-purple-50, bg-pink-50
 	*/
 	badgeBgClass?: string;
+
+	/**
+	 * Show the value as a relation
+	 * Possible values: true, false
+	*/
 	isRelation?: boolean;
 	isArray?: boolean;
 	relationName?: any;
 	relationDisplayName?: any;
 	relationValue?: any;
 	
-
 	search?: {
 		placeholder: string;
 		type?: string;
@@ -123,6 +136,13 @@ export interface SectionConfig {
 	 * The icon to use for the section
 	 */
 	icon: string
+	
+	/**
+	 * The parent route for the section
+	 * Used to navigate to the section
+	 */
+	parentRoute?: string
+	
 	/**
 	 * The name of the model in masculine or feminine form
 	 * Used for translations and display purposes

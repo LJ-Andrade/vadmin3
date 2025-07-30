@@ -63,7 +63,7 @@ export class HeaderComponent implements OnInit {
     buildMenu(routes: any[], parentPath: string): MenuItem[] {
         return routes
             .filter(route => route.data?.title || route.data?.icon)
-            .filter(route => !route.data?.skipFromMenu)
+            .filter(route => !route.data?.hideOnMenu)
             .map(route => {
                 let currentPath: string;
                 let pathForChildren = parentPath;

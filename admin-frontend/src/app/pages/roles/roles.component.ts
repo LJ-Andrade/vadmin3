@@ -30,10 +30,10 @@ export class RolesComponent extends CrudBase  {
     }
 
     override listData: ListData[] = [
-        { name: 'id', text: 'Id', columnClass: 'w-3', hideOnCreation: false, hideOnEdition: false,
+        { value: 'id', label: 'Id', columnClass: 'w-3', hideOnCreation: false, hideOnEdition: false,
             unDeleteableIds: [ 1, 2 ], unEditableIds: [ 1, 2 ] },
-            
-        { name: 'name', text: 'Name',
+
+        { value: 'name', label: 'Name',
             search: {
                 placeholder: 'By name...'
             }

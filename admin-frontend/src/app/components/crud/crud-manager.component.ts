@@ -239,7 +239,7 @@ export class CrudManagerComponent {
 
 		for (let record of this.recordsToDelete) {
 			if(this.listConfig.unDeleteableIds.includes(record['id'])) {
-				this.notificationService.error('You cannot delete the record: ' + record.name, '');
+				this.notificationService.error('You cannot delete the record: ' + record.value, '');
 			} else {
 				const success = await this.performDelete(record['id']);
 				if (!success) {

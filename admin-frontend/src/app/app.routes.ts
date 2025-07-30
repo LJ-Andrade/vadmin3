@@ -9,19 +9,18 @@ import DashboardComponent from './pages/dashboard/dashboard.component';
 import { ExamplesComponent } from './pages/examples/examples.component';
 import { UsersComponent } from './pages/users/users.component';
 import { RolesComponent } from './pages/roles/roles.component';
-import { CountriesComponent } from './pages/countries/countries.component';
-import { ClientsComponent } from './pages/clients/clients.component';
 import { ChatComponent } from './pages/chat/chat.component';
 
 import { UsersList } from './pages/users/users-list';
-import { CategoryList } from './pages/category/category-list';
+import { CategoryList } from './pages/category/category.list';
+import { CategoryCreateEdit } from './pages/category/category.create-edit';
 
 /**
  * App routes
  */
 
 // If you want to specify a route but don't want it to appear in the main menu
-// add "skipFromMenu: true" to the route's data
+// add "hideOnMenu: true" to the route's data
 
 
 export const routes: Routes = [
@@ -49,7 +48,7 @@ export const routes: Routes = [
 				data: {
 					title: 'Examples',
 					icon: 'pi pi-users',
-					skipFromMenu: true
+					hideOnMenu: true
 				}
 			},
 			{
@@ -58,7 +57,7 @@ export const routes: Routes = [
 				data: { 
 					title: 'Profile',
 					icon: 'pi pi-user',
-					skipFromMenu: true
+					hideOnMenu: true
 				}
 			},
 			{
@@ -84,40 +83,29 @@ export const routes: Routes = [
 							title: 'Roles',
 							icon: 'pi pi-crown'
 						}
-					},
-					{
-						path: 'countries',
-						component: CountriesComponent,
-						data: {
-							title: 'Countries',
-							icon: 'pi pi-globe'
-						}
-					},
+					}
 				]
 			},
 			{
 				path: 'articles',
-				data: { 
+				data: {
 					title: 'Artículos',
 					icon: 'pi pi-briefcase',
 					noRedirect: true
 				},
 				children: [
 					{
-						path: 'articles',
-						component: UsersComponent,
-						data: {
-							title: 'Users',
-							icon: 'pi pi-users'
-						}
-					},
-					{
 						path: 'categories',
-						component: CategoryList,
 						data: {
 							title: 'Categorías',
-							icon: 'pi pi-crown'
-						}
+							icon: 'pi pi-tags',
+							noRedirect: true
+						},
+						children: [
+							{ path: '', component: CategoryList, data: { title: 'Listado', icon: 'pi pi-list' } },
+							{ path: 'create', component: CategoryCreateEdit, data: { title: 'Crear', icon: 'pi pi-plus' } },
+							{ path: ':id/edit', component: CategoryCreateEdit, data: { title: 'Editar', icon: 'pi pi-pencil', hideOnMenu: true } }
+						]
 					}
 				]
 			},

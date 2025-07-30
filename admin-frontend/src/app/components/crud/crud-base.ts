@@ -128,7 +128,7 @@ export class CrudBase implements OnInit {
 
 
 	updateSearchFormWithData(fieldName: string, _data: any[]): void {
-		const searchField = this.listData.find(f => f.name === fieldName);
+		const searchField = this.listData.find(f => f.value === fieldName);
 		if (!searchField || !searchField.search) return;
 	
 		// Asegura que options exista, pero NO le metemos .data

@@ -1,14 +1,15 @@
 <h1><i [class]="sectionConfig.icon" style="color: slateblue"></i> 
 	<span class="section-title">{{ sectionConfig.namePlural | titlecase }}</span>
 </h1>
-
 <p-toolbar styleClass="mb-1" >
 	<div class="p-toolbar-group-start">
-			<p-button 
-				[label]="(sectionConfig.gender === 'F' ? 'Nueva ' : 'Nuevo ') + sectionConfig.nameSingular" 
-				icon="pi pi-plus" 
-				class="mr-2 main-button"
-                />
+			<a [routerLink]="['/', sectionConfig.parentRoute, sectionConfig.model, 'create']">
+				<p-button 
+					[label]="(sectionConfig.gender === 'F' ? 'Nueva ' : 'Nuevo ') + sectionConfig.nameSingular" 
+					icon="pi pi-plus" 
+					class="mr-2 main-button"
+				/>
+			</a>
 				<!-- (onClick)="emitRequestCreation()"  -->
 		
 
@@ -23,14 +24,15 @@
 	</div>
 	<ng-template #end>
 		@if(searchOptionsVisibility) {
-			<p-inputgroup>
-				<p-button label="Buscar" class="main-button" 
-				(onClick)="onKeywordSearch(keywordInput.value)" />
-				<input #keywordInput pInputText placeholder="Palabra clave" />
-				@if(keywordInput.value && keywordInput.value.length > 0) {
-					<p-button icon="pi pi-trash" class="ml-2" severity="danger" [rounded]="true" [text]="true" (onClick)="keywordInput.value=''; onKeywordSearch('')" />
-				}
-			</p-inputgroup>
+			<form (ngSubmit)="onKeywordSearch(keywordInput.value)">
+				<p-inputgroup>
+					<input #keywordInput pInputText placeholder="Palabra clave" />
+					<p-button label="Buscar" type="submit" class="main-button" />
+					@if(keywordInput.value && keywordInput.value.length > 0) {
+						<p-button icon="pi pi-trash" class="ml-2" severity="danger" [rounded]="true" [text]="true" (onClick)="keywordInput.value=''; onKeywordSearch('')" />
+					}
+				</p-inputgroup>
+			</form>
 
 			@if(advancedSearchAvailable && !advancedSearchOptionsVisibility) {
 				<p-button label="Búsqueda Avanzada" 
@@ -53,28 +55,28 @@
 		<!-- SEARCH FORM -->
 		<form [formGroup]="searchForm" (ngSubmit)="submitSearch()">
 			<div class="flex flex-wrap gap-3 justify-content-center md:flex-row sm:flex-column w-full">
-				@for(column of listData; track $index) {
-					@if(column.search) {
-						@if(column.search.type == 'select') {
+				@for(item of listData; track $index) {
+					@if(item.search) {
+						@if(item.search.type == 'select') {
 							<div class="flex flex-column gap-2 w-full sm:w-full md:w-auto align-items-center">
 
-								@if(column.search.options.items != undefined && column.search.options.items.length > 0) {
+								@if(item.search.options.items != undefined && item.search.options.items.length > 0) {
 									<p-select class="w-full"
 										pSize="small"
-										[formControlName]="column.name"
-										[options]="column.search.options.items"
-										[optionLabel]="column.search.options.labelFieldName"
-										[optionValue]="column.search.options.valueFieldName"
-										[placeholder]="column.search.placeholder"
+										[formControlName]="item.value"
+										[options]="item.search.options.items"
+										[optionLabel]="item.search.options.labelFieldName"
+										[optionValue]="item.search.options.valueFieldName"
+										[placeholder]="item.search.placeholder"
 									/>
 								} @else {
 									<p-select class="w-full"
 										pSize="small"
-										[formControlName]="column.name"
-										[options]="relations()[column.search.options.name]"
-										[optionLabel]="column.search.options.labelFieldName"
-										[optionValue]="column.search.options.valueFieldName"   
-										[placeholder]="column.search.placeholder"
+										[formControlName]="item.value"
+										[options]="relations()[item.search.options.name]"
+										[optionLabel]="item.search.options.labelFieldName"
+										[optionValue]="item.search.options.valueFieldName"
+										[placeholder]="item.search.placeholder"
 									/>
 								}
 
@@ -83,8 +85,8 @@
 							<div class="flex flex-column gap-2 w-full sm:w-full md:w-auto align-items-center">
 								<input [fluid]="true" pInputText text="text" class="inpueeet"
 									pSize="small"
-									[formControlName]="column.name"
-									[placeholder]="column.search.placeholder"
+									[formControlName]="item.value"
+									[placeholder]="item.search.placeholder"
 								/>
 							</div>
 						}
@@ -119,7 +121,7 @@
 						@for(column of listData; track $index) {
 							@if(!column.hidden && !column.hideOnList) {
 								<th scope="col" class="column-title" (click)="sortByColumn(column.name)">
-									{{ column.text }}
+									{{ column.label }}
 								</th>
 							}
 						}
@@ -150,13 +152,13 @@
 											} 
 											@else
 											{
-												<span [ngClass]="{'inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-blue-700/10 ring-inset': item.showAsBadge && record[item.name] != '' }">
+												<span [ngClass]="{'inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-blue-700/10 ring-inset': item.showAsBadge && record[item.value] != '' }">
 													
 													<!-- {{ record | json }} -->
 													<!-- {{ record[item.name] }} -->
 													<!--  {{ item.relationValue }}
 													{{ item.relationDisplayName }} -->
-													{{ item.relationName | relationLabel:record[item.name]:item.relationDisplayName:item.relationValue }}
+													{{ item.relationName | relationLabel:record[item.value]:item.relationDisplayName:item.relationValue }}
 												</span>
 											}
 										</td>
@@ -165,16 +167,16 @@
 										<!-- Main Data -->
 										<td [ngClass]="item['columnClass']">
 											<span
-													[ngClass]="item.showAsBadge && record[item.name] != '' ? 
+													[ngClass]="item.showAsBadge && record[item.value] != '' ? 
 													'inline-flex items-center rounded-md ' + 
 													(item.badgeBgClass || 'bg-blue-50') + 
 													' px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-blue-700/10 ring-inset' 
 													: ''"
 												>
 												@if(item.mutate) {
-													{{ item.mutate(record[item.name]) }}
+													{{ item.mutate(record[item.value]) }}
 												} @else {
-													{{ record[item.name] }}
+													{{ record[item.value] }}
 												}
 											</span>
 										</td>
@@ -189,7 +191,8 @@
 								@if(listConfig.unEditableIds && !listConfig.unEditableIds.includes(+record.id)) {
 									<p-button styleClass="mr-3 small-action-button" icon="pi pi-pencil" 
 										[rounded]="true" [text]="true" [raised]="true" size="small" 
-										(onClick)="requestEdit(record)" class="main-button"
+										class="main-button"
+										[routerLink]="['/', sectionConfig.parentRoute, sectionConfig.model, record.id, 'edit']	"
 									/>
 								}
 

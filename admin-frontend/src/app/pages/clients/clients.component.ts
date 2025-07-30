@@ -31,16 +31,16 @@ export class ClientsComponent extends CrudBase  {
     }
 
     override listData: ListData[] = [
-        { name: 'id', text: 'Id', columnClass: 'w-3', hideOnCreation: false, hideOnEdition: false,
+        { value: 'id', label: 'Id', columnClass: 'w-3', hideOnCreation: false, hideOnEdition: false,
             unDeleteableIds: [ 1, 2 ], unEditableIds: [ 1, 2 ] },
-        { name: 'domain', text: 'Domain', search: { placeholder: 'By domain...' } },
-        { name: 'name', text: 'Name', search: { placeholder: 'By name...' } },
-        
-        { name: 'primary_color', text: 'Primary color', showAsBadge: true, badgeBgClass: 'bg-yellow-50' },
-        { name: 'secondary_color', text: 'Secondary color', showAsBadge: true, badgeBgClass: 'bg-yellow-50' },
-        
-        { name: 'account_balance', text: 'Account Balancde' },
-        { name: 'status', text: 'Status', showAsBadge: true, badgeBgClass: 'bg-blue-50',
+        { value: 'domain', label: 'Domain', search: { placeholder: 'By domain...' } },
+        { value: 'name', label: 'Name', search: { placeholder: 'By name...' } },
+
+        { value: 'primary_color', label: 'Primary color', showAsBadge: true, badgeBgClass: 'bg-yellow-50' },
+        { value: 'secondary_color', label: 'Secondary color', showAsBadge: true, badgeBgClass: 'bg-yellow-50' },
+
+        { value: 'account_balance', label: 'Account Balance' },
+        { value: 'status', label: 'Status', showAsBadge: true, badgeBgClass: 'bg-blue-50',
             search: { placeholder: 'By status...',
                 type: 'select',
 				options: {
