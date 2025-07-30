@@ -1,52 +1,45 @@
-<h1><i [class]="sectionConfig.icon" style="color: slateblue"></i> 
-	<span class="section-title">{{ sectionConfig.namePlural | titlecase }}</span>
-</h1>
-<p-toolbar styleClass="mb-1" >
-	<div class="p-toolbar-group-start">
-			<a [routerLink]="['/', sectionConfig.parentRoute, sectionConfig.model, 'create']">
-				<p-button 
-					[label]="(sectionConfig.gender === 'F' ? 'Nueva ' : 'Nuevo ') + sectionConfig.nameSingular" 
-					icon="pi pi-plus" 
-					class="mr-2 main-button"
-				/>
-			</a>
-				<!-- (onClick)="emitRequestCreation()"  -->
-		
+<p-toolbar styleClass="mb-1">
+    <div class="p-toolbar-group-start">
+        <a [routerLink]="['/', sectionConfig.parentRoute, sectionConfig.model, 'create']">
+            <p-button 
+                [label]="(sectionConfig.gender === 'F' ? 'Nueva ' : 'Nuevo ') + sectionConfig.nameSingular" 
+                icon="pi pi-plus" 
+                class="mr-2 main-button"
+            />
+        </a>
 
+        @if(selectedRows().length > 0) {
+            <p-button severity="danger" label="Eliminar Seleccionados" icon="pi pi-trash" class="main-button"
+                (onClick)="addSelectedToDeleteQueue()"
+            />
+        }
+        <ng-content select="[slot=actions]"></ng-content>
+    </div>
+    <ng-template #end>
+        @if(searchOptionsVisibility) {
+            <form (ngSubmit)="onKeywordSearch(keywordInput.value)">
+                <p-inputgroup>
+                    <input #keywordInput pInputText placeholder="Palabra clave" />
+                    <p-button label="Buscar" type="submit" class="main-button" />
+                    @if(keywordInput.value && keywordInput.value.length > 0) {
+                        <p-button icon="pi pi-trash" class="ml-2" severity="danger" [rounded]="true" [text]="true" (onClick)="keywordInput.value=''; onKeywordSearch('')" />
+                    }
+                </p-inputgroup>
+            </form>
 
-		@if(selectedRows().length > 0) {
-			<p-button severity="danger" label="Eliminar Seleccionados" icon="pi pi-trash" class="main-button"
-				(onClick)="addSelectedToDeleteQueue()"
-			/>
-		}
-		<ng-content select="[slot=actions]"></ng-content>
+            @if(advancedSearchAvailable && !advancedSearchOptionsVisibility) {
+                <p-button label="Búsqueda Avanzada" 
+                class="ml-2 main-button" [styleClass]="'text-nowrap'"
+                (onClick)="toggleAdvancedSearchOptions()" />
+            }
 
-	</div>
-	<ng-template #end>
-		@if(searchOptionsVisibility) {
-			<form (ngSubmit)="onKeywordSearch(keywordInput.value)">
-				<p-inputgroup>
-					<input #keywordInput pInputText placeholder="Palabra clave" />
-					<p-button label="Buscar" type="submit" class="main-button" />
-					@if(keywordInput.value && keywordInput.value.length > 0) {
-						<p-button icon="pi pi-trash" class="ml-2" severity="danger" [rounded]="true" [text]="true" (onClick)="keywordInput.value=''; onKeywordSearch('')" />
-					}
-				</p-inputgroup>
-			</form>
-
-			@if(advancedSearchAvailable && !advancedSearchOptionsVisibility) {
-				<p-button label="Búsqueda Avanzada" 
-				class="ml-2 main-button" [styleClass]="'text-nowrap'"
-				(onClick)="toggleAdvancedSearchOptions()" />	
-			}
-
-			<p-button icon="pi pi-times" [rounded]="true" [text]="true" severity="danger" class="ml-2"
-				(onClick)="toggleSearchOptions(false)" />
-		}  @else {
-			<p-button icon="pi pi-search" [rounded]="true" [text]="true" [raised]="true"
-			(onClick)="toggleSearchOptions()" />
-		}
-	</ng-template>
+            <p-button icon="pi pi-times" [rounded]="true" [text]="true" severity="danger" class="ml-2"
+                (onClick)="toggleSearchOptions(false)" />
+        }  @else {
+            <p-button icon="pi pi-search" [rounded]="true" [text]="true" [raised]="true"
+            (onClick)="toggleSearchOptions()" />
+        }
+    </ng-template>
 </p-toolbar>
 
 <!-- ADVANCE SEARCH -->

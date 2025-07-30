@@ -1,0 +1,125 @@
+
+
+<app-actions-bar *ngIf="showActionsBar">
+    <div slot="start">
+		<ng-content select="[slot=start]"></ng-content>
+	</div>
+	
+	<div slot="end">
+		<ng-content select="[slot=end]"></ng-content>
+	</div>
+
+</app-actions-bar>
+
+<div class="flex justify-center mt-4">
+	<div class="w-full" 
+		[ngClass]="{
+			'sm:max-w-xs md:max-w-md lg:max-w-lg xl:max-w-xl': formSize == 'SMALL',
+			'sm:max-w-sm md:max-w-lg lg:max-w-xl xl:max-w-2xl': formSize == 'MEDIUM'
+		}">
+
+		<form class="main-form" [formGroup]="sectionForm">
+			<!-- {{ sectionForm.value | json }} -->
+			<div class="grid grid-cols-12 gap-4">
+				@for(field of formFields; track $index) {
+					@if(!field.hidden) {
+						@switch (field.type) {
+							@case('text') {
+								<div [class]="field.class ?? ''" [class]="formSize !== 'SMALL' ? (field.cols ?? '') : ''" [ngClass]="{ 'Hidden': field.hidden } "
+									class="col-span-12">
+									<p-iftalabel class="label"> 
+										<input [fluid]="true" [formControlName]="field.name" pInputText class="input-text"
+										[placeholder]="field.placeholder" type="text" />
+										<label for="username">{{ field.label }}</label>
+									</p-iftalabel>
+									<app-field-error [field]="sectionForm.get(field.name)"/>
+								</div>
+							}
+
+							@case('number') {
+								<div [class]="field.class || ''" [ngClass]="{ 'Hidden': field.hidden }"
+									class="col-span-12">
+									<p-iftalabel class="label">
+										<input [fluid]="true" [formControlName]="field.name" pInputText class="input-text"
+										[placeholder]="field.placeholder" type="number" />
+										<label for="username">{{ field.label }}</label>
+									</p-iftalabel>
+									<app-field-error [field]="sectionForm.get(field.name)"/>
+								</div>
+							}
+
+							@case('select') {
+								<div [class]="field.class || ''" [class]="formSize !== 'SMALL' ? (field.cols ?? '') : ''" [ngClass]="{ 'Hidden': field.hidden }"
+									class="col-span-12">
+									<p-iftalabel class="w-full label">
+										<!-- <pre>{{ field.options?.items | json }}</pre> -->
+										<!-- <pre>{{ field | json }}</pre> -->
+										@if(field.isArray) {
+											<p-multiSelect class="w-full input-select"
+												[formControlName]="field.name"
+												[options]="field.options?.items || []"
+												[optionLabel]="field.options?.labelFieldName"
+												[optionValue]="field.options?.valueFieldName"
+												[placeholder]="field.placeholder"
+												display="chip"
+											/>
+										}
+										@else {
+											<p-select class="w-full input-select"
+												[formControlName]="field.name"
+												[options]="field.options?.items || []"
+												[optionLabel]="field.options?.labelFieldName"
+												[optionValue]="field.options?.valueFieldName"
+												[placeholder]="field.placeholder"
+											/>
+										}
+										<label>{{ field.label }}</label>
+									</p-iftalabel>
+									<app-field-error [field]="sectionForm.get(field.name)" />
+								</div>
+							}
+
+							@case('images') {
+								<!-- <div [class]="field.class"  class="col-span-12">
+									<app-image-uploader
+										[sectionForm]="sectionForm"
+										[targetWidth]="field.imageProperties?.targetWidth ?? 300"
+  										[targetHeight]="field.imageProperties?.targetHeight ?? 300"
+										[cropToFit]="true"
+										[maxImages]="field.imageProperties?.maxImages ?? 1"
+										[acceptedExtensions]="field.imageProperties?.acceptedExtensions ?? []"
+										[maxFileSize]="field.imageProperties?.maxSize ?? 5242880"
+										(onFilesSelected)="onFilesSelected($event)">
+									</app-image-uploader>
+								</div> -->
+							}
+
+							@case('file') {
+								<!-- <div [class]="field.class"  class="col-span-12">
+									<div class="hollow-panel">
+										<app-file-uploader
+											[fieldName]="field.name"
+											[files]="files[field.name] || []"
+											(onSingleFileSelected)="onSingleFileSelected($event)"
+											(onSingleFileDeleted)="onSingleFileDeleted($event)">
+										</app-file-uploader>
+									</div>
+								</div> -->
+							}
+						}
+					}
+				}
+
+				<div class="col-span-12 mt-3">
+					<p-button 
+						[label]="saveBtnLabel"
+						icon="pi pi-check" severity="success"
+						(onClick)="submitForm()"
+						[loading]="loading"
+						class="main-button"
+					/>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>

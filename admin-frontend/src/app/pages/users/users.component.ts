@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common'
 import { Validators } from '@angular/forms'
 import { CrudBase } from '@src/app/components/crud/crud-base'
 import { CrudManagerComponent } from '@src/app/components/crud/crud-manager.component'
-import { CrudFormComponent } from '@src/app/components/crud/crud-form.component'
+// import { CrudFormComponent } from '@src/app/components/crud/crud-form.component'
 import { SectionConfig, ListData, ListConfig, FormField } from '@src/app/interfaces/crud.interface'
 import { matchToValidator } from '@src/app/validators/match-fields.validator'
 
@@ -11,7 +11,7 @@ import { matchToValidator } from '@src/app/validators/match-fields.validator'
 @Component({
 	selector: 'app-users',
 	standalone: true,
-	imports: [ CommonModule, CrudManagerComponent, CrudFormComponent ],
+	imports: [ CommonModule ],
 	templateUrl: './users.component.html'
 })
 

@@ -10,7 +10,7 @@ import { PaginatorModule } from 'primeng/paginator'
 import { DialogModule } from 'primeng/dialog'
 import { PanelModule } from 'primeng/panel'
 import { NotificationService } from '@src/app/services/notification.service'
-import { FormSize, SectionConfig } from '@src/app/interfaces/crud.interface'
+import { SectionConfig } from '@src/app/interfaces/crud.interface'
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon'
 import { InputTextModule } from 'primeng/inputtext'
 import { InputGroup } from 'primeng/inputgroup'
@@ -21,6 +21,7 @@ import { SplitButtonModule } from 'primeng/splitbutton'
 import { DataService } from '@src/app/services/data.service'
 import { Observable } from 'rxjs'
 import { RouterLink } from '@angular/router'
+import { ActionsBar } from '@src/app/components/actions-bar/actions-bar'
 
 @Component({
 	selector: 'app-list',
@@ -28,7 +29,7 @@ import { RouterLink } from '@angular/router'
 	styleUrl: './list.sass',
 	standalone: true,
 	imports: [
-		CommonModule, SkeletonComponent, ToolbarModule, CheckboxModule, FormsModule, ReactiveFormsModule,
+		CommonModule, SkeletonComponent, ToolbarModule, ActionsBar, CheckboxModule, FormsModule, ReactiveFormsModule,
 		InputGroupAddonModule, InputTextModule, InputGroup, PaginatorModule, ButtonModule,
 		DialogModule, PanelModule, SelectModule, RelationLabelPipe, SplitButtonModule, RouterLink
 	]
@@ -39,10 +40,7 @@ export class AppList {
 	notificationService: NotificationService = inject(NotificationService)
 	helpersService: HelpersService = inject(HelpersService)
 
-	@Input() sectionConfig: SectionConfig = {
-		model: '', icon: '', nameSingular: '', namePlural: '',
-		formSize: 'LARGE', gender: 'M'
-	}
+	@Input() sectionConfig!: SectionConfig 
 	@Input() listData: any[] = []
 	@Input() listConfig: any = {}
 
