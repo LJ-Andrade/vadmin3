@@ -19,6 +19,7 @@ import { SectionConfig } from '@src/app/interfaces/crud.interface';
         </h1>
     `
 })
+
 export class SectionHeader {
     @Input() sectionConfig!: SectionConfig
     @Input() sectionAction: string = ''

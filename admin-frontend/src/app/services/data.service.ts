@@ -50,7 +50,7 @@ export class DataService {
 	// httpPost<T>(url: string, body: any, options?: any): Observable<any> {
 	// 	return this.http.post<T>(`${environment.apiUrl}${url}`, body, options ?? this.defaultOptions);
 	// }
-
+ 
 	// httpPut<T>(url: string, body: any, options?: any): Observable<any> {
 	// 	return this.http.put<T>(`${environment.apiUrl}${url}`, body, options ?? this.defaultOptions);
 	// }

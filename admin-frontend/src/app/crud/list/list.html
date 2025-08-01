@@ -180,12 +180,11 @@
 							<!-- ROW ACTIONS -->
 							<td class="action-column">
 								<!-- EDIT ACTION -->
-							
 								@if(listConfig.unEditableIds && !listConfig.unEditableIds.includes(+record.id)) {
 									<p-button styleClass="mr-3 small-action-button" icon="pi pi-pencil" 
 										[rounded]="true" [text]="true" [raised]="true" size="small" 
 										class="main-button"
-										[routerLink]="['/', sectionConfig.parentRoute, sectionConfig.model, record.id, 'edit']	"
+										[routerLink]="['/', sectionConfig.parentRoute, sectionConfig.model, 'edit', record.id]	"
 									/>
 								}
 

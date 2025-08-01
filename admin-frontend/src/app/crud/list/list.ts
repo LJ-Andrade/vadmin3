@@ -21,7 +21,6 @@ import { SplitButtonModule } from 'primeng/splitbutton'
 import { DataService } from '@src/app/services/data.service'
 import { Observable } from 'rxjs'
 import { RouterLink } from '@angular/router'
-import { ActionsBar } from '@src/app/components/actions-bar/actions-bar'
 
 @Component({
 	selector: 'app-list',
@@ -29,7 +28,7 @@ import { ActionsBar } from '@src/app/components/actions-bar/actions-bar'
 	styleUrl: './list.sass',
 	standalone: true,
 	imports: [
-		CommonModule, SkeletonComponent, ToolbarModule, ActionsBar, CheckboxModule, FormsModule, ReactiveFormsModule,
+		CommonModule, SkeletonComponent, ToolbarModule, CheckboxModule, FormsModule, ReactiveFormsModule,
 		InputGroupAddonModule, InputTextModule, InputGroup, PaginatorModule, ButtonModule,
 		DialogModule, PanelModule, SelectModule, RelationLabelPipe, SplitButtonModule, RouterLink
 	]

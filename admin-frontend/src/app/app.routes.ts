@@ -104,7 +104,7 @@ export const routes: Routes = [
 						children: [
 							{ path: '', component: CategoryList, data: { title: 'Listado', icon: 'pi pi-list' } },
 							{ path: 'create', component: CategoryCreateEdit, data: { title: 'Crear', icon: 'pi pi-plus' } },
-							{ path: ':id/edit', component: CategoryCreateEdit, data: { title: 'Editar', icon: 'pi pi-pencil', hideOnMenu: true } }
+							{ path: 'edit/:id', component: CategoryCreateEdit, data: { title: 'Editar', icon: 'pi pi-pencil', hideOnMenu: true } }
 						]
 					}
 				]

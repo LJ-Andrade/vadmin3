@@ -50,8 +50,8 @@ export const CategoryConfig = {
                     valueFieldName: 'id',
                     labelFieldName: 'name',
                     items: [
-                        { id: 'Article', name: 'Article' },
-                        { id: 'Product', name: 'Product' },
+                        { id: '1', name: 'Article' },
+                        { id: '2', name: 'Product' },
                     ]
                 }
             }
