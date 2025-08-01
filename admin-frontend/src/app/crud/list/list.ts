@@ -20,7 +20,7 @@ import { HelpersService } from '@src/app/services/herlpers.service'
 import { SplitButtonModule } from 'primeng/splitbutton'
 import { DataService } from '@src/app/services/data.service'
 import { Observable } from 'rxjs'
-import { RouterLink } from '@angular/router'
+import { Router, RouterLink } from '@angular/router'
 
 @Component({
 	selector: 'app-list',

@@ -1,6 +1,6 @@
-import { Injectable, inject } from '@angular/core';
-import { environment } from '@src/environments/environment';
-import { NotificationService } from './notification.service';
+import { Injectable, inject } from '@angular/core'
+import { environment } from '@src/environments/environment'
+import { NotificationService } from './notification.service'
 
 @Injectable({
 	providedIn: 'root'
@@ -8,7 +8,6 @@ import { NotificationService } from './notification.service';
 
 export class HelpersService {
 	notificationService = inject(NotificationService);
-
 
 	public log(message: any) {
 		console.log(message);

@@ -1,6 +1,6 @@
 <p-toolbar styleClass="mb-1">
     <div class="p-toolbar-group-start">
-        <a [routerLink]="['/', sectionConfig.parentRoute, sectionConfig.model, 'create']">
+        <a [routerLink]="[ sectionConfig.sectionPath + '/' + 'crear']">
             <p-button 
                 [label]="(sectionConfig.gender === 'F' ? 'Nueva ' : 'Nuevo ') + sectionConfig.nameSingular" 
                 icon="pi pi-plus" 
@@ -184,15 +184,17 @@
 									<p-button styleClass="mr-3 small-action-button" icon="pi pi-pencil" 
 										[rounded]="true" [text]="true" [raised]="true" size="small" 
 										class="main-button"
-										[routerLink]="['/', sectionConfig.parentRoute, sectionConfig.model, 'edit', record.id]	"
+										[routerLink]="sectionConfig.sectionPath + 'editar/' + record.id "
 									/>
+										<!-- [routerLink]="['/', sectionConfig.parentRoute, sectionConfig.model, 'edit', record.id]	" -->
 								}
 
 								<!-- DELETE ACTION -->
 								@if(listConfig.unEditableIds && !listConfig.unDeleteableIds.includes(+record.id)) {
 									<p-button styleClass="small-action-button" icon="pi pi-trash" [rounded]="true" [text]="true"
 										[raised]="true" severity="danger" size="small"
-										(onClick)="deleteSingleRecord(record)" />
+										(onClick)="deleteSingleRecord(record)" 
+									/>
 								} 
 							</td>
 						</tr>

@@ -1,11 +1,11 @@
-import { SectionConfig, FormField, ListData, ListConfig } from '@src/app/interfaces/crud.interface';
-import { Validators } from '@angular/forms';
+import { SectionConfig, FormField, ListData, ListConfig } from '@src/app/interfaces/crud.interface'
+import { Validators } from '@angular/forms'
 
 export const CategoryConfig = {
 
     sectionConfig: <SectionConfig>{
         model: 'categories',
-        parentRoute: 'articles',
+        sectionPath: '/articulos/categorias/',
         icon: 'pi pi-tags',
         gender: 'F',
         nameSingular: 'categoría',

@@ -1,19 +1,18 @@
-import { Routes } from '@angular/router';
-import MainComponent from '@src/app/pages/main.component';
-import { LoginComponent } from './pages/login/login.component';
-import { RequestResetPasswordComponent } from './pages/request-password-reset/request-password-reset.component';
-import { ResetPasswordComponent } from './pages/reset-password/reset-password.component';
-import { authGuard } from '@src/app/services/auth/auth.guard';
-import { ProfileComponent } from './pages/profile/profile.component';
-import DashboardComponent from './pages/dashboard/dashboard.component';
-import { ExamplesComponent } from './pages/examples/examples.component';
-import { UsersComponent } from './pages/users/users.component';
-import { RolesComponent } from './pages/roles/roles.component';
-import { ChatComponent } from './pages/chat/chat.component';
-
-import { UsersList } from './pages/users/users-list';
-import { CategoryList } from './pages/category/category.list';
-import { CategoryCreateEdit } from './pages/category/category.create-edit';
+import { Routes } from '@angular/router'
+import MainComponent from '@src/app/pages/main.component'
+import { LoginComponent } from './pages/login/login.component'
+import { RequestResetPasswordComponent } from './pages/request-password-reset/request-password-reset.component'
+import { ResetPasswordComponent } from './pages/reset-password/reset-password.component'
+import { authGuard } from '@src/app/services/auth/auth.guard'
+import { ProfileComponent } from './pages/profile/profile.component'
+import DashboardComponent from './pages/dashboard/dashboard.component'
+import { ExamplesComponent } from './pages/examples/examples.component'
+import { RolesComponent } from './pages/roles/roles.component'
+import { ChatComponent } from './pages/chat/chat.component'
+import { UsersList } from './pages/users/users.list'
+import { CategoryList } from './pages/category/category.list'
+import { CategoryCreateEdit } from './pages/category/category.create-edit'
+import { UsersCreateEdit } from './pages/users/users.create-edit'
 
 /**
  * App routes
@@ -61,21 +60,27 @@ export const routes: Routes = [
 				}
 			},
 			{
-				path: 'settings',
+				path: 'general',
 				data: { 
-					title: 'Settings',
-					icon: 'pi pi-briefcase',
+					title: 'General',
+					icon: 'pi pi-cog',
 					noRedirect: true
 				},
 				children: [
 					{
-						path: 'users',
-						component: UsersList,
+						path: 'usuarios',
 						data: {
-							title: 'Users',
-							icon: 'pi pi-users'
-						}
+							title: 'Usuatios',
+							icon: 'pi pi-users',
+							noRedirect: true
+						},
+						children: [
+							{ path: '', component: UsersList, data: { title: 'Listado', icon: 'pi pi-list' } },
+							{ path: 'crear', component: UsersCreateEdit, data: { title: 'Crear', icon: 'pi pi-plus' } },
+							{ path: 'editar/:id', component: UsersCreateEdit, data: { title: 'Editar', icon: 'pi pi-pencil', hideOnMenu: true } }
+						]
 					},
+
 					{
 						path: 'roles',
 						component: RolesComponent,
@@ -87,7 +92,7 @@ export const routes: Routes = [
 				]
 			},
 			{
-				path: 'articles',
+				path: 'articulos',
 				data: {
 					title: 'Artículos',
 					icon: 'pi pi-briefcase',
@@ -95,7 +100,7 @@ export const routes: Routes = [
 				},
 				children: [
 					{
-						path: 'categories',
+						path: 'categorias',
 						data: {
 							title: 'Categorías',
 							icon: 'pi pi-tags',
@@ -103,8 +108,8 @@ export const routes: Routes = [
 						},
 						children: [
 							{ path: '', component: CategoryList, data: { title: 'Listado', icon: 'pi pi-list' } },
-							{ path: 'create', component: CategoryCreateEdit, data: { title: 'Crear', icon: 'pi pi-plus' } },
-							{ path: 'edit/:id', component: CategoryCreateEdit, data: { title: 'Editar', icon: 'pi pi-pencil', hideOnMenu: true } }
+							{ path: 'crear', component: CategoryCreateEdit, data: { title: 'Crear', icon: 'pi pi-plus' } },
+							{ path: 'editar/:id', component: CategoryCreateEdit, data: { title: 'Editar', icon: 'pi pi-pencil', hideOnMenu: true } }
 						]
 					}
 				]

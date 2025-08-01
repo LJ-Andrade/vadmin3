@@ -143,6 +143,8 @@ export interface SectionConfig {
 	 */
 	parentRoute?: string
 	
+	sectionPath?: string
+
 	/**
 	 * The name of the model in masculine or feminine form
 	 * Used for translations and display purposes

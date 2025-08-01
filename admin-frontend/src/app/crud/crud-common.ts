@@ -1,5 +1,5 @@
-import { inject, Injectable } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
+import { inject, Injectable } from "@angular/core"
+import { ActivatedRoute } from "@angular/router"
 
 @Injectable({
     providedIn: 'root'
@@ -7,7 +7,8 @@ import { ActivatedRoute } from "@angular/router";
 
 export class CrudCommon {
 
-    private route = inject(ActivatedRoute);
+    route = inject(ActivatedRoute)
+    // helpersService: HelpersService = inject(HelpersService) 
 
     existingRecordId!: string;
 
