@@ -16,6 +16,12 @@ class RoleController extends Controller
         return response()->json($roles); 
     }
 
+    public function all(Request $request)
+    {
+        $roles = Role::all();
+        return response()->json($roles);
+    }
+
 
     public function show($id)
     {

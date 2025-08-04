@@ -19,15 +19,30 @@ export class FieldErrorComponent {
     getText(errors: any): string {
         if (!errors) return '';
     
-        if (errors.required) return 'This field is required';
-        if (errors.minlength?.requiredLength) return 'Must enter at least ' + errors.minlength.requiredLength + ' characters';
-        if (errors.maxLength?.requiredLength) return 'Must enter maximum ' + errors.maxLength.requiredLength + ' characters';
-        if (errors.maxlength) return 'Must enter less than 50 characters';
-        if (errors.email) return 'Must enter a valid email';
-    
-        if (errors.match) return 'Passwords do not match';
-        if (errors?.['match']) return 'Passwords do not match';
-        
+        if (errors.required) return 'Este campo es obligatorio';
+        if (errors.minlength?.requiredLength) return 'Debe ingresar al menos ' + errors.minlength.requiredLength + ' caracteres';
+        if (errors.maxLength?.requiredLength) return 'Debe ingresar un máximo de ' + errors.maxLength.requiredLength + ' caracteres';
+        if (errors.maxlength) return 'Debe ingresar menos de 50 caracteres';
+        if (errors.email) return 'Debe ingresar un correo electrónico válido';
+
+        if (errors.match) return 'Las contraseñas no coinciden';
+        if (errors?.['match']) return 'Las contraseñas no coinciden';
+
         return 'Error';
     }
+
+    // getText(errors: any): string {
+    //     if (!errors) return '';
+    
+    //     if (errors.required) return 'This field is required';
+    //     if (errors.minlength?.requiredLength) return 'Must enter at least ' + errors.minlength.requiredLength + ' characters';
+    //     if (errors.maxLength?.requiredLength) return 'Must enter maximum ' + errors.maxLength.requiredLength + ' characters';
+    //     if (errors.maxlength) return 'Must enter less than 50 characters';
+    //     if (errors.email) return 'Must enter a valid email';
+    
+    //     if (errors.match) return 'Passwords do not match';
+    //     if (errors?.['match']) return 'Passwords do not match';
+        
+    //     return 'Error';
+    // }
 }

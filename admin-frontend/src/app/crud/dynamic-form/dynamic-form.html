@@ -30,6 +30,7 @@
 										[placeholder]="field.placeholder" type="text" />
 										<label for="username">{{ field.label }}</label>
 									</p-iftalabel>
+									
 									<app-field-error [field]="sectionForm.get(field.name)"/>
 								</div>
 							}
@@ -109,14 +110,14 @@
 				}
 
 				<div class="col-span-12 mt-3">
-					@if(loading) {
+					@if(loading()) {
 						Recuperando datos...
 					} @else {
 						<p-button 
 							[label]="saveBtnLabel"
 							icon="pi pi-check" severity="success"
 							(onClick)="submitForm()"
-							[loading]="loading"
+							[loading]="loading()"
 							class="main-button"
 						/>
 					}

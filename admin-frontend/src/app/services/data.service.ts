@@ -105,7 +105,7 @@ export class DataService {
 
 	getModelData(modelName: string) {
 		return this.getDataFromModel(modelName).pipe(
-			map((response: any) => response.data),
+			map((response: any) => response),
 			catchError((error) => {
 				console.error(`Error fetching ${modelName}:`, error);
 				return of([]);

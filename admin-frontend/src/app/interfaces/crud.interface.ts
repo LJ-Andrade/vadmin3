@@ -144,7 +144,8 @@ export interface SectionConfig {
 	parentRoute?: string
 	
 	sectionPath?: string
-
+	relations?: { model: string, name: string }[]; // Array of objects with relation name and model name
+	ignoreFieldsOnUpdate?: string[];
 	/**
 	 * The name of the model in masculine or feminine form
 	 * Used for translations and display purposes

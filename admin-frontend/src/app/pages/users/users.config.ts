@@ -13,6 +13,8 @@ export const UsersConfig = {
         nameSingular: 'usuario',
         namePlural: 'usuarios',
         formSize: 'LARGE',
+        relations: [ { model: 'roles', name: 'roles' } ],
+        ignoreFieldsOnUpdate: [ 'password', 'confirm_password' ] 
     },
 
 
@@ -29,13 +31,13 @@ export const UsersConfig = {
         },
 
         { value: 'roles', label: 'Role', columnClass: 'w-6', showAsBadge: true,
-            isArray: true, isRelation: true, relationName: 'roles', relationDisplayName: 'name', relationValue: 'id',
+            isArray: true, isRelation: true, relationName: 'roles', relationDisplayName: 'name', relationValue: 'name',
             search: { 
                 placeholder: 'By role...',
                 type: 'select',
                 options: {
                     name: 'roles',
-                    valueFieldName: 'id',
+                    valueFieldName: 'name',
                     labelFieldName: 'name'
                 }
             },

@@ -113,7 +113,7 @@
 						</th>
 						@for(column of listData; track $index) {
 							@if(!column.hidden && !column.hideOnList) {
-								<th scope="col" class="column-title" (click)="sortByColumn(column.name)">
+								<th scope="col" class="column-title" (click)="sortByColumn(column.value)">
 									{{ column.label }}
 								</th>
 							}
